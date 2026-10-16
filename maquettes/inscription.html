@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription — PIGHACK</title>
+<meta name="description" content="Créez votre compte PIGHACK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="auth-page">
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<main id="contenu" class="auth-shell">
+  <div class="auth-visual" aria-hidden="true">
+    <div class="auth-radar"><span class="radar-ring ring-1"></span><span class="radar-ring ring-2"></span><span class="radar-ring ring-3"></span><span class="radar-sweep"></span><i class="radar-point point-a"></i><i class="radar-point point-b"></i><i class="radar-point point-c"></i><span class="radar-cross"></span><span class="radar-center">BJ / 06</span></div>
+    <div class="auth-visual-inner">
+      <span class="auth-kicker">INSCRIPTION — PHASE D'INITIATION</span>
+      <p class="auth-brand">PIG<b>HACK</b></p>
+      <p class="auth-tagline">Pseudonyme public, e-mail privé. Apprenez à votre rythme, sans mentor obligatoire.</p>
+    </div>
+  </div>
+
+  <div class="auth-panel">
+    <a class="brand auth-logo" href="bienvenue.html" aria-label="PIGHACK — Accueil public">
+      <span class="brand-mark">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+
+    <h1>Créer un compte</h1>
+    <p class="auth-sub">Rejoignez la plateforme en quelques minutes.</p>
+
+    <form class="auth-form" novalidate>
+      <div class="field">
+        <label class="label" for="pseudo">Pseudonyme (public)</label>
+        <input class="input" id="pseudo" name="pseudo" type="text" autocomplete="nickname" required placeholder="N0va_7" minlength="3" maxlength="24">
+        <div class="hint-text">Visible dans le classement. Pas de nom réel.</div>
+      </div>
+      <div class="field">
+        <label class="label" for="email">Adresse e-mail (privée)</label>
+        <input class="input" id="email" name="email" type="email" autocomplete="email" required placeholder="vous@etudiant.bj">
+      </div>
+      <div class="field">
+        <label class="label" for="password">Mot de passe</label>
+        <input class="input" id="password" name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="8 caractères minimum">
+      </div>
+      <div class="field">
+        <label class="label" for="password2">Confirmer le mot de passe</label>
+        <input class="input" id="password2" name="password2" type="password" autocomplete="new-password" required minlength="8" placeholder="Répétez le mot de passe">
+      </div>
+      <label class="auth-check auth-check-block">
+        <input type="checkbox" name="rules" required>
+        J’accepte de n’utiliser la plateforme que sur des environnements de laboratoire autorisés.
+      </label>
+      <p class="auth-message" id="auth-message" role="status" aria-live="polite" hidden></p>
+      <button class="btn btn-primary btn-lg btn-block" type="submit">Créer mon compte</button>
+    </form>
+
+    <p class="auth-switch">Déjà inscrit ? <a href="connexion.html">Se connecter</a></p>
+    <p class="auth-demo small muted">Maquette : l’inscription ouvre l’espace opérations sans enregistrement réel.</p>
+  </div>
+</main>
+<script src="assets/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau de bord — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <a class="btn btn-outline btn-sm" href="profil.html">N0va_7</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container page-head animate-enter">
+    <div class="head-row">
+      <div>
+        <h1>Tableau de bord</h1>
+        <p class="page-sub">Bienvenue, N0va_7. Retrouvez vos modules en cours et vos prochains défis.</p>
+      </div>
+      <a class="btn btn-primary" href="lecon.html">
+        Reprendre : Linux & Terminal
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="container section" style="padding-top:16px">
+
+    <!-- Métriques principales animées en cascade -->
+    <div class="stats">
+      <div class="stat stagger-1">
+        <div class="stat-header">
+          <span class="stat-label">Score actuel</span>
+          <div class="stat-icon">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+        </div>
+        <div class="stat-value">1 240</div>
+        <span class="small muted">+80 pts aujourd'hui</span>
+      </div>
+
+      <div class="stat stagger-2">
+        <div class="stat-header">
+          <span class="stat-label">Défis validés</span>
+          <div class="stat-icon">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          </div>
+        </div>
+        <div class="stat-value">12 <span class="muted" style="font-size:1.1rem;font-weight:400">/ 48</span></div>
+        <span class="small muted">25% du catalogue</span>
+      </div>
+
+      <div class="stat stagger-3">
+        <div class="stat-header">
+          <span class="stat-label">Classement</span>
+          <div class="stat-icon">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path><path d="M6 4h12v7a6 6 0 0 1-12 0V4z"></path></svg>
+          </div>
+        </div>
+        <div class="stat-value">#14</div>
+        <span class="small muted">Top 5% des apprenants</span>
+      </div>
+
+      <div class="stat stagger-4">
+        <div class="stat-header">
+          <span class="stat-label">Distinctions</span>
+          <div class="stat-icon">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          </div>
+        </div>
+        <div class="stat-value">5</div>
+        <span class="small muted">Prochain palier à 1 500 pts</span>
+      </div>
+    </div>
+
+    <div class="split">
+
+      <!-- Colonne principale -->
+      <div>
+        <!-- Module actif -->
+        <section class="panel stagger-2">
+          <div class="section-head" style="margin-bottom:14px">
+            <div>
+              <h2 class="section-title">Parcours en cours</h2>
+              <p class="section-sub">Linux et terminal — Module 2 sur 4</p>
+            </div>
+            <span class="tabnum strong" style="font-size:1.1rem;color:var(--brand)">45 %</span>
+          </div>
+          <div class="progress" style="margin-bottom:18px">
+            <div class="progress-bar" style="width:45%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+            <span class="small muted">Dernière leçon validée : <strong>2.3 — Redirections et pipes</strong></span>
+            <a class="btn btn-brand btn-sm" href="lecon.html">
+              Continuer la leçon
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </section>
+
+        <!-- Défis recommandés -->
+        <section class="panel stagger-3">
+          <div class="section-head" style="margin-bottom:16px">
+            <div>
+              <h2 class="section-title">Recommandations</h2>
+              <p class="section-sub">Défis adaptés à vos compétences actuelles</p>
+            </div>
+            <a class="btn btn-ghost btn-sm" href="parcours.html">Voir la progression →</a>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="card">
+              <div>
+                <div class="card-meta">
+                  <span class="chip chip-cat">Linux</span>
+                  <span class="level lv-n2">Niveau 2</span>
+                </div>
+                <h3 class="card-title">Permissions mal réglées</h3>
+                <p class="card-desc">Exploitez une attribution de droits permissive sur un script pour lire un fichier restreint.</p>
+              </div>
+              <div class="card-foot">
+                <span class="small muted strong">120 pts</span>
+                <a class="btn btn-outline btn-sm" href="defi-detail.html">Accéder</a>
+              </div>
+            </div>
+
+            <div class="card">
+              <div>
+                <div class="card-meta">
+                  <span class="chip chip-cat">Crypto</span>
+                  <span class="level lv-n1">Niveau 1</span>
+                </div>
+                <h3 class="card-title">Mots de passe oubliés</h3>
+                <p class="card-desc">Décodez une empreinte de hachage stockée dans une base de données d'exercice.</p>
+              </div>
+              <div class="card-foot">
+                <span class="small muted strong">80 pts</span>
+                <a class="btn btn-outline btn-sm" href="defi-detail.html">Accéder</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Historique récent -->
+        <section class="panel stagger-4">
+          <h2 class="panel-title">Dernières validations</h2>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Élément</th>
+                  <th>Statut</th>
+                  <th class="num">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="small muted">Aujourd'hui · 14:31</td>
+                  <td class="strong">Leçon — Trouver le fichier caché</td>
+                  <td>
+                    <span class="status st-done">
+                      <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Validé
+                    </span>
+                  </td>
+                  <td class="num strong" style="color:var(--success)">+80</td>
+                </tr>
+                <tr>
+                  <td class="small muted">Aujourd'hui · 14:22</td>
+                  <td class="strong">Défi — Le blog qui ne devait pas mentir</td>
+                  <td>
+                    <span class="status st-progress">
+                      <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                      En cours
+                    </span>
+                  </td>
+                  <td class="num muted">—</td>
+                </tr>
+                <tr>
+                  <td class="small muted">Hier · 18:04</td>
+                  <td class="strong">Défi — Mots de passe oubliés</td>
+                  <td>
+                    <span class="status st-done">
+                      <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Validé
+                    </span>
+                  </td>
+                  <td class="num strong" style="color:var(--success)">+80</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- Colonne latérale -->
+      <aside class="stagger-3">
+        <div class="panel">
+          <h2 class="panel-title">Position au classement</h2>
+          <div style="font-size:2.2rem;font-weight:700;margin-bottom:6px;letter-spacing:-0.03em">
+            #14
+          </div>
+          <p class="small muted" style="margin-bottom:16px">Vous êtes à seulement 20 pts de dépasser la 13ᵉ place.</p>
+          <div class="progress" style="margin-bottom:16px">
+            <div class="progress-bar" style="width:78%"></div>
+          </div>
+          <a class="btn btn-outline btn-sm btn-block" href="classement.html">Voir le tableau complet</a>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Dernier badge obtenu</h2>
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
+            <div class="icon-box" style="margin-bottom:0">
+              <svg class="ico ico-md" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            </div>
+            <div>
+              <div class="strong" style="font-size:.92rem">Explorateur Linux</div>
+              <div class="small muted">3 leçons système validées</div>
+            </div>
+          </div>
+          <a class="btn btn-ghost btn-sm btn-block" href="profil.html">Tous mes badges →</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Plateforme d'apprentissage de la cybersécurité.</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+</body>
+</html>

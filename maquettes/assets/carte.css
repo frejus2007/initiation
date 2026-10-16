@@ -1,0 +1,466 @@
+/* ==========================================================================
+   CTF ACADEMY BJ — Cyber Range v6 : Carte de Progression & Itinéraire Roadmap
+   Design épuré, vertical, fluide et sans commandes complexes
+   ========================================================================== */
+
+/* Variables spécifiques à la roadmap */
+:root {
+  --road-bg: #12100d;
+  --road-card: #181512;
+  --road-border: rgba(143, 123, 99, 0.22);
+  --road-accent: #f15a38;
+  --road-amber: #f3b952;
+  --road-green: #5cb88a;
+  --road-dim: #6d665b;
+  --road-text: #f3efea;
+  --road-text-sub: #a39e97;
+  --road-line-color: rgba(188, 164, 128, 0.2);
+  --road-line-active: #5cb88a;
+}
+
+/* En-tête de la roadmap */
+.roadmap-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.roadmap-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--road-amber);
+  font: 600 0.68rem var(--mono);
+  letter-spacing: 0.12em;
+}
+
+.kicker-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--road-amber);
+  box-shadow: 0 0 8px var(--road-amber);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.roadmap-tag {
+  background: rgba(243, 185, 82, 0.1);
+  border: 1px solid rgba(243, 185, 82, 0.3);
+  color: var(--road-amber);
+  font: 600 0.62rem var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   CONTENEUR DU CHEMIN DE PROGRESSION VERTICAL
+   ========================================================================== */
+.roadmap-container {
+  position: relative;
+  max-width: 860px;
+  margin: 32px auto 60px;
+  padding: 20px 0;
+}
+
+/* Ligne continue d'arrière-plan */
+.roadmap-track-line {
+  position: absolute;
+  top: 50px;
+  bottom: 80px;
+  left: 36px;
+  width: 3px;
+  background: var(--road-line-color);
+  z-index: 1;
+}
+
+/* Portion déjà parcourue (verte) */
+.roadmap-track-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 28%; /* Couvre jusqu'à l'étape 2 */
+  background: linear-gradient(180deg, var(--road-green), var(--road-amber));
+  box-shadow: 0 0 10px rgba(92, 184, 138, 0.4);
+}
+
+/* ==========================================================================
+   ÉTAPES DU PARCOURS (ROADMAP STAGES)
+   ========================================================================== */
+.roadmap-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.roadmap-stage:last-child {
+  margin-bottom: 0;
+}
+
+/* Marqueur / Cercle sur la ligne */
+.roadmap-marker {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--road-card);
+  border: 2px solid var(--road-border);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.roadmap-marker svg {
+  width: 30px;
+  height: 30px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Statut 1 : VALIDÉ */
+.stage-done .roadmap-marker {
+  border-color: var(--road-green);
+  background: radial-gradient(circle at 35% 30%, #1e3828, #101c15);
+  color: var(--road-green);
+  box-shadow: 0 0 16px rgba(92, 184, 138, 0.35);
+}
+
+.stage-done-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--road-green);
+  color: #0b140e;
+  display: grid;
+  place-items: center;
+  font: 700 0.65rem var(--mono);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Statut 2 : EN COURS (VOUS ÊTES ICI) */
+.stage-current .roadmap-marker {
+  border-color: var(--road-amber);
+  background: radial-gradient(circle at 35% 30%, #473418, #1c150a);
+  color: #ffe094;
+  box-shadow: 0 0 24px rgba(243, 185, 82, 0.45);
+  animation: pulseCurrentMarker 2.2s infinite;
+}
+
+@keyframes pulseCurrentMarker {
+  50% { box-shadow: 0 0 32px rgba(243, 185, 82, 0.6), 0 0 0 5px rgba(243, 185, 82, 0.18); }
+}
+
+/* Statut 3 : PROCHAIN / DÉBLOQUÉ */
+.stage-ready .roadmap-marker {
+  border-color: rgba(241, 90, 56, 0.5);
+  background: #1c1814;
+  color: var(--road-accent);
+}
+
+/* Statut 4 : VERROUILLÉ */
+.stage-locked .roadmap-marker {
+  border-color: rgba(109, 102, 91, 0.3);
+  border-style: dashed;
+  background: #131210;
+  color: var(--road-dim);
+}
+
+/* Statut 5 : CITADELLE FINALE */
+.stage-final .roadmap-marker {
+  border-color: var(--road-accent);
+  background: radial-gradient(circle at 35% 30%, #522316, #201310);
+  color: #ffc4b5;
+  box-shadow: 0 0 22px rgba(241, 90, 56, 0.3);
+}
+
+/* ==========================================================================
+   FICHE DE L'ÉTAPE (STAGE CARD)
+   ========================================================================== */
+.roadmap-card {
+  flex-grow: 1;
+  background: var(--road-card);
+  border: 1px solid var(--road-border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmap-card:hover {
+  border-color: rgba(188, 164, 128, 0.4);
+}
+
+/* Mise en avant de l'étape en cours */
+.stage-current .roadmap-card {
+  border-color: var(--road-amber);
+  background: linear-gradient(135deg, #241c13 0%, #171410 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 30px rgba(243, 185, 82, 0.12);
+}
+
+/* Badge « VOUS ÊTES ICI » */
+.you-are-here-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #362612;
+  border: 1px solid var(--road-amber);
+  color: #ffe6aa;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font: 700 0.65rem var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  box-shadow: 0 0 12px rgba(243, 185, 82, 0.25);
+}
+
+.you-are-here-pill i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--road-amber);
+  box-shadow: 0 0 6px var(--road-amber);
+}
+
+/* En-tête de la carte d'étape */
+.roadmap-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.stage-number {
+  font: 600 0.65rem var(--mono);
+  letter-spacing: 0.12em;
+  color: var(--road-text-sub);
+  text-transform: uppercase;
+}
+
+.stage-status-tag {
+  font: 600 0.62rem var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stage-status-tag.done {
+  background: rgba(92, 184, 138, 0.15);
+  color: var(--road-green);
+  border: 1px solid rgba(92, 184, 138, 0.35);
+}
+.stage-status-tag.current {
+  background: rgba(243, 185, 82, 0.15);
+  color: var(--road-amber);
+  border: 1px solid rgba(243, 185, 82, 0.4);
+}
+.stage-status-tag.ready {
+  background: rgba(241, 90, 56, 0.15);
+  color: var(--road-accent);
+  border: 1px solid rgba(241, 90, 56, 0.35);
+}
+.stage-status-tag.locked {
+  background: rgba(109, 102, 91, 0.12);
+  color: var(--road-dim);
+  border: 1px solid rgba(109, 102, 91, 0.25);
+}
+
+.roadmap-card-title {
+  margin: 0 0 8px;
+  font: 700 1.25rem var(--font-sans, "Sora", sans-serif);
+  color: var(--road-text);
+  line-height: 1.35;
+}
+
+.roadmap-card-desc {
+  margin: 0 0 16px;
+  font-size: 0.82rem;
+  color: var(--road-text-sub);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   LISTE COMPACTE DES DÉFIS DE L'ÉTAPE
+   ========================================================================== */
+.stage-challenges-list {
+  background: rgba(10, 9, 8, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stage-challenge-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.stage-challenge-item:last-child {
+  border-bottom: none;
+}
+
+.challenge-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.challenge-item-state {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 0.6rem var(--mono);
+}
+
+.challenge-item-state.done {
+  background: rgba(92, 184, 138, 0.2);
+  color: var(--road-green);
+  border: 1px solid var(--road-green);
+}
+.challenge-item-state.current {
+  background: rgba(243, 185, 82, 0.2);
+  color: var(--road-amber);
+  border: 1px solid var(--road-amber);
+}
+.challenge-item-state.ready {
+  background: rgba(241, 90, 56, 0.15);
+  color: var(--road-accent);
+  border: 1px solid rgba(241, 90, 56, 0.4);
+}
+.challenge-item-state.locked {
+  background: #181614;
+  color: var(--road-dim);
+  border: 1px solid rgba(109, 102, 91, 0.3);
+}
+
+.challenge-item-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--road-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-challenge-item.active-item .challenge-item-name {
+  color: #fff;
+  font-weight: 600;
+}
+
+.challenge-item-pts {
+  flex-shrink: 0;
+  font: 600 0.68rem var(--mono);
+  color: var(--road-amber);
+}
+
+/* ==========================================================================
+   PIED DE CARTE & ACTIONS DIRECTES
+   ========================================================================== */
+.roadmap-card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.roadmap-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 500 0.65rem var(--mono);
+  color: var(--road-text-sub);
+}
+
+.roadmap-card-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-stage-current {
+  background: var(--road-amber);
+  color: #161108;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 14px rgba(243, 185, 82, 0.3);
+}
+
+.btn-stage-current:hover {
+  background: #ffe399;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .roadmap-container {
+    padding: 10px 0;
+  }
+  .roadmap-track-line {
+    left: 24px;
+  }
+  .roadmap-stage {
+    gap: 16px;
+  }
+  .roadmap-marker {
+    width: 50px;
+    height: 50px;
+  }
+  .roadmap-marker svg {
+    width: 22px;
+    height: 22px;
+  }
+  .roadmap-card {
+    padding: 16px 18px;
+  }
+  .roadmap-card-title {
+    font-size: 1.05rem;
+  }
+  .roadmap-card-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kicker-pulse,
+  .stage-current .roadmap-marker {
+    animation: none;
+  }
+}

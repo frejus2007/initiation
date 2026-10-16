@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration — Éditeur de défi — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container-wide topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation d'administration">
+      <a href="admin.html" class="active" aria-current="page">Administration</a>
+    </nav>
+    <div class="topbar-right">
+      <span class="chip chip-cat">Rôle : Administrateur</span>
+      <a class="btn btn-outline btn-sm" href="index.html">Voir le site</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container-wide admin-shell">
+
+  <!-- ========== Rail d'administration ========== -->
+  <aside class="sidebar" aria-label="Sections d'administration">
+    <div class="sidebar-title">Pilotage</div>
+    <a href="admin.html">Tableau de bord</a>
+    <a class="is-soon" href="admin.html" title="À venir dans une prochaine maquette">Statistiques</a>
+
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-title">Contenus</div>
+    <a class="is-soon" href="admin.html" title="À venir">Parcours &amp; modules</a>
+    <a class="is-soon" href="admin.html" title="À venir">Leçons</a>
+    <a href="admin-defi.html" class="active">Défis <span class="count">3 brouillons</span></a>
+    <a class="is-soon" href="admin.html" title="À venir">Missions</a>
+    <a class="is-soon" href="admin.html" title="À venir">Laboratoires</a>
+
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-title">Communauté</div>
+    <a class="is-soon" href="admin.html" title="À venir">Utilisateurs</a>
+    <a class="is-soon" href="admin.html" title="À venir">Badges &amp; classement</a>
+
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-title">Exploitation</div>
+    <a class="is-soon" href="admin.html" title="À venir">Journal d'audit</a>
+    <a class="is-soon" href="admin.html" title="À venir">Sauvegardes</a>
+    <a class="is-soon" href="admin.html" title="À venir">Paramètres</a>
+  </aside>
+
+  <!-- ========== Contenu ========== -->
+  <main id="contenu">
+    <nav class="crumbs" aria-label="Fil d'Ariane">
+      <a href="admin.html">Administration</a> <span class="sep">/</span>
+      <a href="admin-defi.html">Défis</a> <span class="sep">/</span>
+      <strong id="editor-crumb">Créer ou modifier un défi</strong>
+    </nav>
+
+    <div class="admin-head">
+      <div>
+        <div class="head-chips" style="margin-bottom:6px">
+          <span class="status st-draft">Brouillon</span>
+          <span class="chip chip-slate">Modifié le 15/10/2026</span>
+        </div>
+        <h1 style="margin-bottom:0">Éditeur de défi</h1>
+      </div>
+      <div class="row-actions">
+        <a class="btn btn-ghost" href="admin.html">Annuler</a>
+        <button class="btn btn-outline" type="button" data-save="draft">Enregistrer le brouillon</button>
+        <button class="btn btn-outline" type="button" data-preview>Prévisualiser</button>
+        <button class="btn btn-primary" type="button" data-save="published">Publier…</button>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <i class="ico" aria-hidden="true">ℹ</i>
+      <div><strong>Avant publication :</strong> le défi sera visible par tous les étudiants. La
+      publication est une action explicite, journalisée dans le journal d'audit
+      (admin, date, défi, version).</div>
+    </div>
+
+    <form id="challenge-editor" novalidate>
+
+      <!-- Informations générales -->
+      <section class="panel">
+        <h2 class="panel-title">Informations générales</h2>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="titre">Titre</label>
+            <input class="input" id="titre" type="text" value="Opération Banque Fantôme — volet 2">
+          </div>
+          <div class="field">
+            <label class="label" for="cat">Catégorie</label>
+            <select class="select" id="cat">
+              <option>Linux</option><option>Réseaux</option>
+              <option selected>Web</option><option>Crypto</option>
+              <option>Analyse</option><option>Mission</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="niv">Niveau</label>
+            <select class="select" id="niv">
+              <option>N1 — Découverte</option><option>N2 — Fondamentaux</option>
+              <option>N3 — Analyse</option><option>N4 — Mise en pratique contrôlée</option>
+              <option selected>N5 — Techniques combinées</option><option>N6 — Mission complète</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="pts">Points de base</label>
+            <input class="input" id="pts" type="number" value="400" min="10" step="10">
+            <p class="field-help">Règle transparente affichée aux étudiants avant le défi.</p>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="pre">Prérequis</label>
+            <select class="select" id="pre" multiple size="3" style="height:auto">
+              <option selected>Parcours Réseaux ≥ 60 %</option>
+              <option selected>Parcours Web ≥ 60 %</option>
+              <option>Défi « volet 1 » réussi</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="lab">Laboratoire associé</label>
+            <select class="select" id="lab">
+              <option selected>banque-fantome (isolé, arrêté au repos)</option>
+              <option>blog-lab</option><option>reseaux-lab</option>
+              <option>Aucun — exercice local uniquement</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu -->
+      <section class="panel">
+        <h2 class="panel-title">Contenu du défi <span class="small muted" style="font-weight:400">structure obligatoire §4.3</span></h2>
+        <div class="field">
+          <label class="label" for="obj">Objectif (verbe d'action)</label>
+          <input class="input" id="obj" type="text" value="Reconstituer la chronologie d'un incident sur le laboratoire banque-fantome et en prouver l'impact.">
+        </div>
+        <div class="field">
+          <label class="label" for="scen">Contexte / scénario fictif</label>
+          <textarea class="textarea" id="scen" style="min-height:80px;font-family:inherit;font-size:.92rem">Banque imaginaire « Nyala Finance » (démo) : après un signalement interne fictif, l'équipe doit vérifier des journaux et des requêtes capturées sur le laboratoire, uniquement sur des données de démonstration.</textarea>
+        </div>
+        <div class="field">
+          <label class="label" for="cons">Consignes pratiques (étapes)</label>
+          <textarea class="textarea" id="cons">1. Démarrer le laboratoire banque-fantome (fiche fournie).
+2. Relever les éléments visibles de l'application de test.
+3. Analyser la capture HTTP fournie et les journaux du service.
+4. Identifier la faiblesse intégrée et démontrer son impact sur les données fictives.
+5. Rassembler les preuves et retrouver les flags intermédiaires.</textarea>
+        </div>
+        <div class="field">
+          <label class="label" for="res">Résultat attendu et format de la réponse</label>
+          <input class="input" id="res" type="text" value="Flag unique CTFABJ{…} + court rapport (constat, preuve, impact, limites, mesures correctives).">
+        </div>
+      </section>
+
+      <!-- Sécurité & validation -->
+      <section class="panel">
+        <h2 class="panel-title">Sécurité &amp; validation</h2>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="flag">Flag attendu (secret)</label>
+            <input class="input mono" id="flag" type="password" value="••••••••••••••••••••" autocomplete="new-password">
+            <p class="field-help">Valeur masquée et chiffrée côté base. Elle n'est <strong>jamais</strong>
+            renvoyée au navigateur et ne figure ni dans le JavaScript, ni dans le dépôt Git.
+            Elle est comparée côté serveur, en temps constant.</p>
+          </div>
+          <div class="field">
+            <label class="label" for="limite">Tentatives maximales</label>
+            <select class="select" id="limite">
+              <option>3 tentatives, puis 1 h d'attente</option>
+              <option selected>5 tentatives, puis 30 min d'attente</option>
+              <option>10 tentatives, puis 15 min d'attente</option>
+            </select>
+            <p class="field-help">Protection contre le spam et les essais automatisés.</p>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label class="label" for="corr-correction">Flag intermédiaire (facultatif, volet séparé)</label>
+          <input class="input mono" id="corr-correction" type="password" value="••••••••••••" autocomplete="new-password">
+          <p class="field-help">Les missions peuvent comporter plusieurs flags ; chacun est stocké
+          et validé de la même façon.</p>
+        </div>
+      </section>
+
+      <!-- Indices -->
+      <section class="panel">
+        <h2 class="panel-title">Indices <button class="btn btn-outline btn-sm" id="add-hint" type="button">+ Ajouter un indice</button></h2>
+        <div class="form-row" style="align-items:start">
+          <div class="field">
+            <label class="label" for="i1">Indice 1 — réduction de points</label>
+            <input class="input" id="i1" type="text" value="Commencez par la capture HTTP fournie dans le dossier du défi.">
+            <p class="field-help">Coût : −40 points. Visible après confirmation par l'étudiant.</p>
+          </div>
+          <div class="field">
+            <label class="label" for="i2">Indice 2 — réduction de points</label>
+            <input class="input" id="i2" type="text" value="Comparez les en-têtes Host de deux requêtes successives.">
+            <p class="field-help">Coût : cumulé −80 points.</p>
+          </div>
+        </div>
+        <p class="small muted" style="margin-bottom:0">Le coût des indices est annoncé <strong>avant</strong>
+        le défi, sur la fiche visible par l'étudiant (§7 du cahier des charges).</p>
+      </section>
+
+      <!-- Correction -->
+      <section class="panel">
+        <h2 class="panel-title">Correction &amp; explications</h2>
+        <div class="field">
+          <label class="label" for="corr">Correction détaillée (affichée après réussite)</label>
+          <textarea class="textarea" id="corr" style="min-height:120px">Raisonnement attendu, preuves à produire, erreurs fréquentes, mesure de prévention ou de remédiation liée à la vulnérabilité démontrée.</textarea>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label class="label" for="aff">Disponibilité de la correction</label>
+          <select class="select" id="aff">
+            <option selected>Après réussite du défi</option>
+            <option>Après la première tentative</option>
+            <option>Toujours visible</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Signalement de l'objectif -->
+      <div class="callout callout-danger">
+        <i class="mark-block" aria-hidden="true"></i>
+        <div><strong>Rappel de conformité.</strong> Avant publication : scénario 100 % fictif, aucune
+        cible réelle, aucun service tiers, aucune donnée personnelle. Le laboratoire doit être
+        isolé et ses commandes d'arrêt/remise à zéro documentées.</div>
+      </div>
+
+      <div class="form-actions">
+        <a class="btn btn-ghost" href="admin.html">Annuler</a>
+        <button class="btn btn-outline" type="button" data-save="draft">Enregistrer le brouillon</button>
+        <button class="btn btn-outline" type="button" data-preview>Prévisualiser comme un étudiant</button>
+        <button class="btn btn-primary" type="button" data-save="published">Publier le défi (action journalisée)</button>
+        <span class="small muted">Brouillon → Publié → Archivé · modification d'un défi publié = nouvelle version journalisée</span>
+      </div>
+    </form>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="container-wide">
+    <div class="footer-inner">
+      <div><strong>PIGHACK</strong> — Administration. Toutes les opérations sensibles sont journalisées.</div>
+      <div class="footer-links">
+        <a href="admin-defi.html">Guide de création de défis</a>
+        <a href="admin.html">Documentation admin</a>
+        <a href="admin.html">Signaler un incident</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/challenges.js"></script>
+<script>
+(function () {
+  var api = window.PigHackChallenges, form = document.getElementById('challenge-editor');
+  var fields = {title:'titre',category:'cat',level:'niv',points:'pts',objective:'obj',scenario:'scen',instructions:'cons',result:'res',flag:'flag',hint1:'i1',hint2:'i2',solution:'corr'};
+  var params = new URLSearchParams(location.search), id = params.get('id'), items = api.load();
+  var current = id ? items.find(function (x) { return x.id === id; }) : null;
+  if (current) Object.keys(fields).forEach(function (key) { var el = document.getElementById(fields[key]); if (el && current[key] != null) el.value = current[key]; });
+  if (current && Array.isArray(current.hints)) current.hints.slice(2).forEach(function (hint) {
+    hintNumber = (typeof hintNumber === 'number' ? hintNumber : 2) + 1;
+    var wrap = document.createElement('div'); wrap.className = 'field';
+    wrap.innerHTML = '<label class="label" for="i'+hintNumber+'">Indice '+hintNumber+' — réduction de points</label><input class="input" id="i'+hintNumber+'" data-extra-hint type="text"><p class="field-help">Coût indicatif : −'+(hintNumber*40)+' points cumulés.</p>';
+    wrap.querySelector('input').value = typeof hint === 'string' ? hint : hint.content || '';
+    form.querySelector('.panel:nth-of-type(4) .form-row').appendChild(wrap);
+  });
+  if (!id || params.has('new')) { document.getElementById('titre').value = ''; document.getElementById('flag').value = ''; document.title = 'Nouveau défi — PIGHACK'; }
+  if (current || !id) document.getElementById('editor-crumb').textContent = current ? current.title : 'Nouveau défi';
+  function collect(status) {
+    var title = document.getElementById('titre').value.trim(), flag = document.getElementById('flag').value.trim();
+    var pts = Number(document.getElementById('pts').value);
+    if (!title || !document.getElementById('obj').value.trim() || !document.getElementById('scen').value.trim() || !document.getElementById('cons').value.trim()) { alert('Renseignez le titre, l’objectif, le scénario et les consignes.'); return; }
+    if (!Number.isInteger(pts) || pts < 10) { alert('Les points doivent être un nombre entier supérieur ou égal à 10.'); return; }
+    if (!flag || !/^CTFABJ\\{[^}]+\\}$/.test(flag)) { alert('Saisissez un flag unique au format CTFABJ{...}.'); return; }
+    var record = current || {id:'challenge-' + Date.now()};
+    Object.keys(fields).forEach(function (key) { var el = document.getElementById(fields[key]); record[key] = el ? el.value.trim() : ''; });
+    record.hints = [record.hint1, record.hint2].concat(Array.prototype.map.call(form.querySelectorAll('[data-extra-hint]'), function (el) { return el.value.trim(); })).filter(Boolean);
+    record.status = status; record.points = pts; record.updatedAt = new Date().toISOString();
+    var index = items.findIndex(function (x) { return x.id === record.id; }); if (index < 0) items.push(record); else items[index] = record;
+    api.save(items); alert(status === 'published' ? 'Défi publié dans le catalogue de démonstration.' : 'Brouillon enregistré.');
+    location.href = 'admin.html';
+  }
+  document.querySelectorAll('[data-save]').forEach(function (button) { button.addEventListener('click', function () { collect(button.dataset.save); }); });
+  document.querySelectorAll('[data-preview]').forEach(function (button) { button.addEventListener('click', function () { alert('Aperçu : ' + (document.getElementById('titre').value || 'Défi sans titre') + '\\n' + document.getElementById('obj').value); }); });
+  var hintNumber = Math.max(2, form.querySelectorAll('[data-extra-hint]').length + 2);
+  document.getElementById('add-hint').addEventListener('click', function () {
+    hintNumber += 1;
+    var wrap = document.createElement('div');
+    wrap.className = 'field';
+    wrap.innerHTML = '<label class="label" for="i'+hintNumber+'">Indice '+hintNumber+' — réduction de points</label><input class="input" id="i'+hintNumber+'" data-extra-hint type="text" placeholder="Saisissez un indice progressif"><p class="field-help">Coût indicatif : −'+(hintNumber*40)+' points cumulés.</p>';
+    form.querySelector('.panel:nth-of-type(4) .form-row').appendChild(wrap);
+  });
+  form.addEventListener('submit', function (e) { e.preventDefault(); });
+})();
+</script>
+</body>
+</html>

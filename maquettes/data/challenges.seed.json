@@ -1,0 +1,776 @@
+{
+  "schema_version": "1.0",
+  "catalog_id": "ctf-academy-bj-v1",
+  "locale": "fr-FR",
+  "records": [
+    {
+      "id": "premier-pas-en-ligne-de-commande",
+      "path_id": "cyber-range-bj",
+      "stage_code": "1",
+      "stage_order": 1,
+      "challenge_order": 1,
+      "title": "Premier pas en ligne de commande",
+      "category": "Linux",
+      "difficulty": "N1",
+      "estimated_minutes": 20,
+      "prerequisite_ids": [],
+      "status": "draft",
+      "points": 50,
+      "objective": "Créer un dossier de travail puis écrire et afficher un fichier de texte contenant le flag.",
+      "scenario": "Dans le laboratoire fictif Bastion, un fichier de consigne a été placé dans le répertoire de départ.",
+      "environment": "Les outils requis sont un terminal Linux, macOS ou WSL. Tout se passe dans le dossier d’exercice créé par l’étudiant.",
+      "instructions": "Créez un dossier `ctf-bj`, entrez dedans, créez le fichier `note.txt` avec le texte `CTFABJ{premier_terminal}` puis affichez son contenu.",
+      "expected_submission": "Le flag exact contenu dans note.txt.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Utilisez `mkdir`, `cd`, `printf` et `cat`.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "La réponse attendue est déjà donnée dans la consigne : le but est de produire et lire le fichier.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "premier-pas-en-ligne-de-commande"
+      },
+      "solution": "La navigation et les commandes de base permettent de manipuler des fichiers sans interface graphique. Vérifiez le chemin courant avec `pwd` et le contenu avec `ls -la`.",
+      "safety_and_cleanup": "Aucun exploit. Supprimez uniquement le dossier `ctf-bj` que vous avez créé.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "linux",
+        "n1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "permissions-droits-d-accès",
+      "path_id": "cyber-range-bj",
+      "stage_code": "1",
+      "stage_order": 1,
+      "challenge_order": 2,
+      "title": "Permissions & droits d’accès",
+      "category": "Linux",
+      "difficulty": "N1",
+      "estimated_minutes": 30,
+      "prerequisite_ids": [
+        "1.1"
+      ],
+      "status": "draft",
+      "points": 120,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Le fichier `rapport.txt` appartient à l’utilisateur fictif `analyste`. Les permissions affichées sont `-rw-r-----`. Le flag est dans le fichier de démonstration après attribution du droit de lecture au propriétaire.",
+      "environment": "Terminal Linux/WSL et commandes standard `ls`, `chmod`, `cat`. Fichier local créé par l’étudiant.",
+      "instructions": "Créez `rapport.txt` contenant `CTFABJ{droits_minimaux}`. Examinez ses permissions, retirez tous les droits d’exécution, conservez lecture/écriture pour le propriétaire et lecture seule pour le groupe, puis lisez le fichier.",
+      "expected_submission": "Le flag exact lu dans le fichier.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Les lettres `r`, `w`, `x` correspondent à lecture, écriture et exécution.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "La valeur symbolique attendue est `640`; utilisez `chmod 640 rapport.txt`.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "permissions-droits-d-accès"
+      },
+      "solution": "Les permissions octales sont calculées par propriétaire/groupe/autres : 6=rw-, 4=r--, 0=---. La règle du moindre privilège limite l’accès au nécessaire.",
+      "safety_and_cleanup": "N’appliquez les commandes qu’au fichier créé dans le dossier d’exercice.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "linux",
+        "n1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "pipes-filtres-et-flux-cachés",
+      "path_id": "cyber-range-bj",
+      "stage_code": "1",
+      "stage_order": 1,
+      "challenge_order": 3,
+      "title": "Pipes, filtres et flux cachés",
+      "category": "Linux",
+      "difficulty": "N2",
+      "estimated_minutes": 35,
+      "prerequisite_ids": [
+        "1.2"
+      ],
+      "status": "draft",
+      "points": 130,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Un journal fictif contient une ligne balisée parmi des événements ordinaires.",
+      "environment": "Terminal Linux/WSL; les données ci-dessous peuvent être enregistrées dans `access.log` dans le dossier de l’exercice.",
+      "instructions": "Copiez ces lignes dans `access.log`, puis utilisez un filtre pour n’afficher que la ligne contenant `FLAG` :\n`09:00 GET /home 200`\n`09:01 GET /health 200`\n`09:02 FLAG CTFABJ{pipe_et_filtre}`\n`09:03 GET /about 200`",
+      "expected_submission": "Le flag de la ligne marquée FLAG.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Reliez deux commandes avec le caractère pipe `|`.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "`grep FLAG access.log` suffit pour filtrer les lignes.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "pipes-filtres-et-flux-cachés"
+      },
+      "solution": "Un pipe transmet la sortie standard d’une commande à l’entrée de la suivante. `grep` sélectionne les lignes correspondantes.",
+      "safety_and_cleanup": "Fichier local fictif, aucune collecte de journal réel.",
+      "flag_secret": "CTFABJ{pipe_et_filtre}`",
+      "tags": [
+        "linux",
+        "n2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "inspection-d-en-têtes-http",
+      "path_id": "cyber-range-bj",
+      "stage_code": "2",
+      "stage_order": 2,
+      "challenge_order": 1,
+      "title": "Inspection d’en-têtes HTTP",
+      "category": "Web",
+      "difficulty": "N1",
+      "estimated_minutes": 20,
+      "prerequisite_ids": [
+        "1.3"
+      ],
+      "status": "draft",
+      "points": 80,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Le service de démonstration `http://127.0.0.1:8080` retourne des en-têtes préparés. Le champ `X-Training-Code` contient la réponse.",
+      "environment": "Navigateur ou client HTTP local; aucune requête hors de 127.0.0.1. L’exercice reste réalisable à partir de la réponse fournie ci-dessous.",
+      "instructions": "Examinez la réponse HTTP d’exemple :\n`HTTP/1.1 200 OK`\n`Content-Type: text/plain`\n`X-Training-Code: CTFABJ{lire_les_entetes}`\n`Cache-Control: no-store`\nRelevez la valeur complète de `X-Training-Code`.",
+      "expected_submission": "La valeur complète de l’en-tête `X-Training-Code`.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Les en-têtes suivent la ligne de statut et précèdent le corps.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Le nom de l’en-tête recherché commence par `X-Training`.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "inspection-d-en-têtes-http"
+      },
+      "solution": "Les en-têtes HTTP transportent des métadonnées. Ils peuvent révéler une configuration ou des informations qu’il faut éviter d’exposer.",
+      "safety_and_cleanup": "La réponse fournie est synthétique. La cible autorisée est uniquement le service local.",
+      "flag_secret": "CTFABJ{lire_les_entetes}`",
+      "tags": [
+        "web",
+        "n1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "le-blog-qui-ne-devait-pas-mentir",
+      "path_id": "cyber-range-bj",
+      "stage_code": "2",
+      "stage_order": 2,
+      "challenge_order": 2,
+      "title": "Le blog qui ne devait pas mentir",
+      "category": "Web",
+      "difficulty": "N2",
+      "estimated_minutes": 35,
+      "prerequisite_ids": [
+        "2.1"
+      ],
+      "status": "draft",
+      "points": 150,
+      "objective": "Repérer un contrôle d’accès appliqué uniquement dans l’interface et retrouver le flag du brouillon fictif.",
+      "scenario": "Le blog fictif Atelier BJ masque un lien vers son studio de rédaction. Une route de démonstration non protégée donne accès à un brouillon contenant le flag.",
+      "environment": "Fiche de laboratoire locale `blog-lab`, accessible uniquement sur 127.0.0.1; à défaut, les routes simulées sont décrites dans les étapes.",
+      "instructions": "Dans le lab local, vérifiez les liens de la page d’accueil puis consultez `/studio/brouillons/1` sans session. Le brouillon de démonstration affiche `CTFABJ{acces_cote_serveur}`. Identifiez pourquoi le contrôle d’accès est insuffisant et soumettez le flag.",
+      "expected_submission": "Flag du brouillon et constat en une phrase : le contrôle d’accès est-il côté client ou serveur ?",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Un élément masqué dans l’interface reste accessible par URL.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "La route doit vérifier l’identité et le rôle à chaque requête.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "le-blog-qui-ne-devait-pas-mentir"
+      },
+      "solution": "La restriction n’était qu’un masquage du lien. Un contrôle d’accès doit être appliqué côté serveur sur chaque ressource. Erreur fréquente : considérer l’interface comme une barrière de sécurité.",
+      "safety_and_cleanup": "Application fictive isolée. Ne testez jamais une route de production ou un site tiers. Pour le backend, stocker le flag séparément et ne pas l’inclure dans la réponse étudiant.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "web",
+        "n2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "contournement-d-authentification-idor",
+      "path_id": "cyber-range-bj",
+      "stage_code": "2",
+      "stage_order": 2,
+      "challenge_order": 3,
+      "title": "Contournement d’authentification IDOR",
+      "category": "Web",
+      "difficulty": "N3",
+      "estimated_minutes": 45,
+      "prerequisite_ids": [
+        "2.2"
+      ],
+      "status": "draft",
+      "points": 200,
+      "objective": "Identifier un accès direct à un objet appartenant à un autre utilisateur de test et proposer le contrôle manquant.",
+      "scenario": "L’application fictive Carnet BJ expose deux dossiers de démonstration `user_id=101` et `user_id=102`. Le second dossier est celui du compte de test propriétaire du laboratoire.",
+      "environment": "Laboratoire web local isolé; jeux de données synthétiques uniquement.",
+      "instructions": "Connectez-vous au compte de test fourni par le laboratoire. Comparez `/api/dossiers/101` avec `/api/dossiers/102`. Le laboratoire renvoie pour le dossier 102 le texte `CTFABJ{objet_par_utilisateur}`. Soumettez le flag et nommez la vérification manquante.",
+      "expected_submission": "Flag et nom du contrôle à effectuer sur chaque objet.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Une authentification valide ne prouve pas que l’utilisateur peut accéder à chaque objet.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Comparez l’identifiant du compte connecté au propriétaire du dossier côté serveur.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "contournement-d-authentification-idor"
+      },
+      "solution": "C’est un défaut de contrôle d’accès direct aux objets (IDOR/BOLA). Le serveur doit autoriser l’accès selon le propriétaire ou une permission explicite, sans faire confiance à l’identifiant fourni par le client.",
+      "safety_and_cleanup": "Uniquement sur le lab Carnet BJ local. Les identifiants sont fictifs.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "web",
+        "n3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "bribes-encodées-base64",
+      "path_id": "cyber-range-bj",
+      "stage_code": "3",
+      "stage_order": 3,
+      "challenge_order": 1,
+      "title": "Bribes encodées & Base64",
+      "category": "Crypto",
+      "difficulty": "N1",
+      "estimated_minutes": 20,
+      "prerequisite_ids": [
+        "2.3"
+      ],
+      "status": "draft",
+      "points": 75,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Une note fictive a été encodée en Base64. L’encodage n’est pas un chiffrement.",
+      "environment": "Terminal facultatif avec `base64`; la chaîne est fournie dans l’énoncé.",
+      "instructions": "Décodez `Q1RGQUJKe2Jhc2U2NF9uZV9lc3RfcGFzfQ==` avec un outil local et soumettez le texte obtenu.",
+      "expected_submission": "Le contenu décodé, un flag CTFABJ.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Base64 utilise un alphabet qui comprend lettres, chiffres, `+`, `/` et parfois `=`.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Sous Linux : `printf %s CHAINE | base64 -d`.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "bribes-encodées-base64"
+      },
+      "solution": "La chaîne se décode en `CTFABJ{base64_ne_est_pas}`. Base64 est un encodage réversible, pas une protection de confidentialité.",
+      "safety_and_cleanup": "Aucun réseau nécessaire. Ne stockez jamais un secret en Base64 en pensant le chiffrer.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "crypto",
+        "n1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "déchiffrement-xor-clé-faible",
+      "path_id": "cyber-range-bj",
+      "stage_code": "3",
+      "stage_order": 3,
+      "challenge_order": 2,
+      "title": "Déchiffrement XOR & clé faible",
+      "category": "Crypto",
+      "difficulty": "N2",
+      "estimated_minutes": 40,
+      "prerequisite_ids": [
+        "3.1"
+      ],
+      "status": "draft",
+      "points": 140,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Le service de formation a chiffré un message avec XOR et une clé d’un octet faible. Les octets sont fournis ci-dessous.",
+      "environment": "Python 3 local ou calculatrice XOR. Texte chiffré hexadécimal : `0b1e1f0918103e0b1e1f0918103e5f5a59`.",
+      "instructions": "Testez les clés d’un octet de `0x00` à `0xff`; recherchez le texte imprimable commençant par `CTFABJ{`. Le laboratoire confirme que la clé est `0x48`.",
+      "expected_submission": "Le flag en clair.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "XOR avec une même clé deux fois retrouve le texte initial.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Pour chaque octet, calculez `cipher_byte ^ 0x48`; les 16 premiers octets donnent le préfixe lisible.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "déchiffrement-xor-clé-faible"
+      },
+      "solution": "Le texte clair est `CTFABJ{xor_cle_faible}`. Une clé courte réutilisée ou faible permet une recherche exhaustive; utilisez un chiffrement moderne authentifié.",
+      "safety_and_cleanup": "Données synthétiques, calcul local uniquement.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "crypto",
+        "n2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "collision-empreintes-sha-256",
+      "path_id": "cyber-range-bj",
+      "stage_code": "3",
+      "stage_order": 3,
+      "challenge_order": 3,
+      "title": "Collision & empreintes SHA-256",
+      "category": "Crypto",
+      "difficulty": "N3",
+      "estimated_minutes": 50,
+      "prerequisite_ids": [
+        "3.2"
+      ],
+      "status": "draft",
+      "points": 210,
+      "objective": "Expliquer pourquoi MD5 ne garantit plus l’intégrité face aux collisions et choisir une empreinte adaptée.",
+      "scenario": "Deux fichiers de démonstration différents portent la même empreinte MD5 dans un scénario fictif. Il faut vérifier l’intégrité avec SHA-256 et ne pas confondre collision et préimage.",
+      "environment": "Terminal Linux/WSL avec `sha256sum`; empreintes synthétiques listées dans l’énoncé.",
+      "instructions": "Les fichiers `preuve-A.txt` et `preuve-B.txt` ont tous deux le MD5 `79054025255fb1a26e4bc422aef54eb4`. Les SHA-256 de référence du jeu de données sont `a1...` et `b2...`. Le manifeste donne le code `CTFABJ{sha256_pour_integrite}`. Expliquez pourquoi MD5 ne convient plus à la vérification de fichiers adversariaux.",
+      "expected_submission": "Le flag du manifeste et une phrase expliquant le risque de collision MD5.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Une collision signifie deux contenus distincts avec la même empreinte.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "N’assimilez pas la collision à la récupération du contenu depuis l’empreinte.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "collision-empreintes-sha-256"
+      },
+      "solution": "Le flag est fourni dans le manifeste. MD5 est vulnérable aux collisions et ne doit pas servir à garantir l’intégrité face à un adversaire. SHA-256 est préférable, avec signature/HMAC si l’authenticité est requise.",
+      "safety_and_cleanup": "Les empreintes d’exemple sont pédagogiques; ne téléchargez aucun fichier externe.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "crypto",
+        "n3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "analyse-de-capture-pcap",
+      "path_id": "cyber-range-bj",
+      "stage_code": "4",
+      "stage_order": 4,
+      "challenge_order": 1,
+      "title": "Analyse de capture PCAP",
+      "category": "Réseaux",
+      "difficulty": "N2",
+      "estimated_minutes": 35,
+      "prerequisite_ids": [
+        "3.3"
+      ],
+      "status": "draft",
+      "points": 120,
+      "objective": "Extraire et décoder un flag dans une transcription PCAP synthétique.",
+      "scenario": "Une capture fictive réduite présente une requête HTTP vers un service de laboratoire et un paramètre d’identification.",
+      "environment": "Wireshark ou tshark facultatif; une transcription de paquet est incluse, donc aucun fichier binaire requis.",
+      "instructions": "Transcription: `10.10.0.5:51514 -> 10.10.0.8:80 GET /archive?ref=CTFABJ%7Bpcap_reconstituee%7D HTTP/1.1`. Décodez le paramètre URL et soumettez-le.",
+      "expected_submission": "Le flag après décodage URL.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Filtrez les paquets HTTP (`http.request`) dans Wireshark.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "`%7B` et `%7D` représentent les accolades.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "analyse-de-capture-pcap"
+      },
+      "solution": "Le flag est `CTFABJ{pcap_reconstituee}`. Les captures peuvent contenir des identifiants; limitez les données et utilisez TLS pour protéger les échanges.",
+      "safety_and_cleanup": "Capture synthétique; ne capturez pas de trafic d’autrui.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "réseaux",
+        "n2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "exfiltration-furtive-par-dns",
+      "path_id": "cyber-range-bj",
+      "stage_code": "4",
+      "stage_order": 4,
+      "challenge_order": 2,
+      "title": "Exfiltration furtive par DNS",
+      "category": "Réseaux",
+      "difficulty": "N3",
+      "estimated_minutes": 45,
+      "prerequisite_ids": [
+        "4.1"
+      ],
+      "status": "draft",
+      "points": 190,
+      "objective": "Repérer et décoder une valeur répartie dans les labels d’un journal DNS fictif.",
+      "scenario": "Des journaux DNS de la zone fictive `lab.invalid` contiennent un sous-domaine encodé. Aucun domaine public n’est visé.",
+      "environment": "Jeu de journaux DNS texte inclus dans l’énoncé.",
+      "instructions": "Examinez les requêtes: `a1.lab.invalid`, `Q1RGQUJK.lab.invalid`, `e2Ruc19zYWZlfQ==.lab.invalid`. Isolez les deux labels Base64, concaténez-les, décodez-les et soumettez le flag.",
+      "expected_submission": "Le texte décodé des labels Base64 concaténés.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Ignorez le label hexadécimal `a1`; repérez les chaînes Base64.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Les labels `Q1RGQUJK` et `e2Ruc19zYWZlfQ==` forment une seule chaîne encodée.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "exfiltration-furtive-par-dns"
+      },
+      "solution": "Après concaténation puis décodage, on obtient `CTFABJ{dns_safe}`. Des sous-domaines longs et répétitifs peuvent signaler un tunnel DNS; surveillez volume, entropie et destinations.",
+      "safety_and_cleanup": "Journaux fictifs hors ligne. Ne générez aucun trafic DNS vers Internet.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "réseaux",
+        "n3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "pivoting-scan-de-sous-réseau",
+      "path_id": "cyber-range-bj",
+      "stage_code": "4",
+      "stage_order": 4,
+      "challenge_order": 3,
+      "title": "Pivoting & scan de sous-réseau",
+      "category": "Réseaux",
+      "difficulty": "N4",
+      "estimated_minutes": 60,
+      "prerequisite_ids": [
+        "4.2"
+      ],
+      "status": "draft",
+      "points": 250,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Le schéma d’un réseau de laboratoire fictif montre une machine d’analyse et trois hôtes dans un sous-réseau isolé. Le défi est une lecture de plan, pas un scan réel.",
+      "environment": "Plan de réseau inclus; aucun outil de scan requis. Réseau fictif `192.0.2.0/29` (documentation uniquement).",
+      "instructions": "Depuis le plan: passerelle `.1`, serveur web `.2`, poste utilisateur `.3`, imprimante `.4`, adresse de diffusion `.7`. Le journal synthétique indique que le service de rapport du serveur web porte `CTFABJ{pivot_documente}`. Identifiez l’hôte puis justifiez le pivot logique vers le sous-réseau.",
+      "expected_submission": "Flag associé au serveur web et adresse de l’hôte.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Un pivot est un changement de point d’observation documenté, pas une autorisation d’attaquer une autre machine.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "`192.0.2.0/24` est réservé à la documentation; identifiez `.2` dans les données fournies.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "pivoting-scan-de-sous-réseau"
+      },
+      "solution": "L’hôte est 192.0.2.2 et le flag est `CTFABJ{pivot_documente}`. En environnement réel, un pivot doit être explicitement autorisé et segmenté.",
+      "safety_and_cleanup": "Exercice théorique. N’exécutez aucun scan réseau.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "réseaux",
+        "n4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "métadonnées-et-images-suspectes",
+      "path_id": "cyber-range-bj",
+      "stage_code": "5",
+      "stage_order": 5,
+      "challenge_order": 1,
+      "title": "Métadonnées et images suspectes",
+      "category": "Forensic",
+      "difficulty": "N2",
+      "estimated_minutes": 30,
+      "prerequisite_ids": [
+        "4.3"
+      ],
+      "status": "draft",
+      "points": 110,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Une photographie fictive d’une salle de cours a des métadonnées EXIF nettoyées. Le rapport fourni indique une note dans le champ Comment.",
+      "environment": "Rapport de métadonnées texte fourni; ExifTool facultatif si le fichier exemple est créé localement.",
+      "instructions": "Rapport synthétique: `FileName: tableau.jpg`, `GPS: absent`, `Comment: CTFABJ{metadonnees_minimales}`, `CreateDate: 2026:10:01`. Relevez le contenu du champ Comment et indiquez une précaution de partage.",
+      "expected_submission": "Flag du champ Comment et une précaution de confidentialité.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Les métadonnées peuvent révéler plus que les pixels visibles.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Le champ `Comment` contient la chaîne à soumettre.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "métadonnées-et-images-suspectes"
+      },
+      "solution": "Le flag est dans Comment. Supprimez les coordonnées et métadonnées personnelles avant publication d’images lorsque cela est nécessaire.",
+      "safety_and_cleanup": "Aucune vraie image ni localisation réelle n’est utilisée.",
+      "flag_secret": "CTFABJ{metadonnees_minimales}`,",
+      "tags": [
+        "forensic",
+        "n2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "analyse-de-mémoire-vive-volatility",
+      "path_id": "cyber-range-bj",
+      "stage_code": "5",
+      "stage_order": 5,
+      "challenge_order": 2,
+      "title": "Analyse de mémoire vive Volatility",
+      "category": "Forensic",
+      "difficulty": "N3",
+      "estimated_minutes": 60,
+      "prerequisite_ids": [
+        "5.1"
+      ],
+      "status": "draft",
+      "points": 230,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Un extrait textuel de sortie Volatility d’une machine de laboratoire fictive montre un processus suspect et un nom de fichier de preuve. Aucun dump mémoire réel n’est distribué.",
+      "environment": "Extrait de sortie fourni; Volatility est facultatif.",
+      "instructions": "Sortie synthétique: `PID 412 explorer.exe`, `PID 988 note-viewer.exe`, `PID 988 cmdline: note-viewer.exe --file C:\\lab\\evidence.txt`, `strings evidence.txt: CTFABJ{memoire_sans_dump}`. Identifiez le PID à examiner et soumettez le flag.",
+      "expected_submission": "Flag de preuve et PID du processus pertinent.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Suivez le chemin du fichier de preuve et associez-le au PID de la ligne cmdline.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "Le processus pertinent est PID 988.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "analyse-de-mémoire-vive-volatility"
+      },
+      "solution": "Le PID 988 ouvre le fichier indiqué, qui contient le flag. Dans une vraie investigation, préservez l’intégrité de l’image mémoire et consignez les outils et versions.",
+      "safety_and_cleanup": "Sortie simulée. Aucun dump de mémoire d’un tiers.",
+      "flag_secret": "CTFABJ{memoire_sans_dump}`.",
+      "tags": [
+        "forensic",
+        "n3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "chronologie-d-un-incident-de-sécurité",
+      "path_id": "cyber-range-bj",
+      "stage_code": "5",
+      "stage_order": 5,
+      "challenge_order": 3,
+      "title": "Chronologie d’un incident de sécurité",
+      "category": "Forensic",
+      "difficulty": "N4",
+      "estimated_minutes": 60,
+      "prerequisite_ids": [
+        "5.2"
+      ],
+      "status": "draft",
+      "points": 260,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Les événements fictifs du portail Nyala Lab sont fournis avec des horodatages UTC. Reconstituez l’ordre et repérez l’événement qui porte le flag.",
+      "environment": "Journal CSV inclus dans l’énoncé.",
+      "instructions": "Événements: `10:02:11 login test-user success`; `10:03:07 export report.csv`; `10:04:19 alert rule-7 CTFABJ{chronologie_coherente}`; `10:05:00 session closed`. Normalisez l’ordre UTC, identifiez l’alerte et résumez en une phrase la séquence.",
+      "expected_submission": "Flag d’alerte et séquence ordonnée des quatre événements.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Triez par horodatage avant de tirer une conclusion.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "L’événement central est `alert rule-7`.",
+          "points_cost": 40
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "chronologie-d-un-incident-de-sécurité"
+      },
+      "solution": "Le flag est porté par l’alerte à 10:04:19 UTC, après l’export et avant la fermeture de session. Une chronologie doit distinguer faits observés et hypothèses.",
+      "safety_and_cleanup": "Journaux entièrement synthétiques; ne traitez pas de données personnelles réelles.",
+      "flag_secret": "CTFABJ{chronologie_coherente}`;",
+      "tags": [
+        "forensic",
+        "n4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "opération-blackout-bj-mission-complète",
+      "path_id": "cyber-range-bj",
+      "stage_code": "6",
+      "stage_order": 6,
+      "challenge_order": 1,
+      "title": "Opération BlackOut BJ — mission complète",
+      "category": "Mission",
+      "difficulty": "N6",
+      "estimated_minutes": 120,
+      "prerequisite_ids": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "2.1",
+        "2.2",
+        "2.3",
+        "3.1",
+        "3.2",
+        "3.3",
+        "4.1",
+        "4.2",
+        "4.3",
+        "5.1",
+        "5.2",
+        "5.3"
+      ],
+      "status": "draft",
+      "points": 500,
+      "objective": "Réaliser l’exercice et démontrer le résultat attendu.",
+      "scenario": "Mandat fictif: Nyala Finance signale un accès anormal au portail de démonstration. Votre mission est limitée aux artefacts fournis et à un laboratoire local isolé.",
+      "environment": "Dossier de mission constitué de journaux HTTP synthétiques, d’un inventaire de routes et d’un extrait de fichier. Aucun service externe ni terminal hébergé.",
+      "instructions": "1. Lisez le mandat et notez les limites.\n2. Comparez les routes publiques et les rôles attendus.\n3. Corrélez les événements: `09:14 GET /api/reports/42 user=analyst`, `09:15 GET /api/reports/43 user=analyst`, `09:16 object-owner report/43=auditor`.\n4. Le rapport 43 contient le flag `CTFABJ{blackout_bj_remedie}` dans les données fictives.\n5. Rédigez un mini-rapport: constat, preuve, impact, limites, remédiation.",
+      "expected_submission": "Flag final et rapport structuré en cinq rubriques; la correction ne s’ouvre qu’après validation du flag.",
+      "hints": [
+        {
+          "order": 1,
+          "content": "Commencez par vérifier si l’utilisateur analyst possède le rapport 43.",
+          "points_cost": 20
+        },
+        {
+          "order": 2,
+          "content": "L’identifiant de l’objet change, mais l’autorisation doit être recalculée pour chaque objet.",
+          "points_cost": 40
+        },
+        {
+          "order": 3,
+          "content": "La remédiation doit inclure un contrôle côté serveur et un test de non-régression.",
+          "points_cost": 70
+        }
+      ],
+      "validation": {
+        "type": "exact_flag",
+        "case_sensitive": true,
+        "trim_whitespace": true,
+        "secret_ref": "opération-blackout-bj-mission-complète"
+      },
+      "solution": "La séquence montre un accès objet sans contrôle de propriétaire (IDOR/BOLA). Limiter les accès au périmètre fictif, ajouter une autorisation côté serveur par objet, journaliser les refus et tester les rôles. Erreur fréquente: confondre session valide et droit d’accès.",
+      "safety_and_cleanup": "Données synthétiques sur application locale isolée. Aucune banque, entreprise ou cible réelle. Nettoyer le conteneur local à la fin.",
+      "flag_secret": "CTFABJ{a_remplacer_par_un_flag_aleatoire}",
+      "tags": [
+        "mission",
+        "n6"
+      ],
+      "version": 1
+    }
+  ]
+}

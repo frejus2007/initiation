@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le blog qui ne devait pas mentir — Défi — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="parcours.html" class="active" aria-current="page">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <a class="btn btn-outline btn-sm" href="profil.html">N0va_7</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container page-head animate-enter">
+    <nav class="crumbs" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a> <span class="sep">/</span>
+      <a href="parcours.html">Parcours &amp; défis</a> <span class="sep">/</span>
+      <span>Le blog qui ne devait pas mentir</span>
+    </nav>
+    <div class="head-row">
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+          <span class="chip chip-cat">Web</span>
+          <span class="level lv-n2">Niveau 2</span>
+          <span class="small muted strong">150 points</span>
+        </div>
+        <h1>Le blog qui ne devait pas mentir</h1>
+      </div>
+      <a class="btn btn-outline btn-sm" href="parcours.html">← Retour au parcours</a>
+    </div>
+  </div>
+
+  <div class="container section" style="padding-top:16px">
+    <div class="split">
+
+      <!-- Colonne principale -->
+      <div>
+        <!-- Scénario et objectif -->
+        <section class="panel stagger-1">
+          <h2 class="panel-title">Mission</h2>
+          <p>
+            L'application web <code>blog-lab.local</code> utilise un système de publication d'articles.
+            Le bouton d'accès au studio d'administration a simplement été masqué dans l'interface pour les utilisateurs non authentifiés, sans vérification de session côté serveur.
+          </p>
+          <p>
+            <strong>Votre objectif :</strong> Accédez à la page d'administration réservée aux éditeurs et récupérez le flag contenu dans le premier article en brouillon.
+          </p>
+        </section>
+
+        <!-- Lancement du lab local -->
+        <section class="panel stagger-2">
+          <h2 class="panel-title">Environnement d'exercice</h2>
+          <p class="small muted" style="margin-bottom:12px">Exécutez cette commande dans votre terminal local pour démarrer le conteneur :</p>
+          <div class="term">
+            <div class="term-head">
+              <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+              <span class="term-title">terminal</span>
+            </div>
+            <pre class="term-body"><span class="p">$</span> ./lancer-lab.sh blog-lab
+<span class="o">Cible active sur http://127.0.0.1:8080</span><span class="term-cursor"></span></pre>
+          </div>
+        </section>
+
+        <section class="panel stagger-2 challenge-walkthrough" aria-labelledby="walkthrough-title">
+          <div class="walkthrough-heading">
+            <div>
+              <span class="eyebrow">ACCOMPAGNEMENT · NIVEAU DÉBUTANT</span>
+              <h2 class="panel-title" id="walkthrough-title">Démarche guidée</h2>
+            </div>
+            <span class="walkthrough-visible">3 ÉTAPES RÉVÉLÉES</span>
+          </div>
+          <p class="small muted">Au début du parcours, toute la méthode est visible. Les défis suivants s’appuieront sur ces notions et dévoileront progressivement moins d’indices.</p>
+          <ol class="walkthrough-steps">
+            <li><span>01</span><div><strong>Observer les requêtes</strong><p>Dans le lab local, ouvrez les outils réseau du navigateur et repérez les requêtes liées au studio d’administration.</p></div></li>
+            <li><span>02</span><div><strong>Vérifier le contrôle d’accès</strong><p>Comparez le comportement de la page avec et sans session. Une interface qui masque un lien ne remplace pas une vérification côté serveur.</p></div></li>
+            <li><span>03</span><div><strong>Lire la ressource autorisée du lab</strong><p>Suivez la route identifiée dans cet environnement d’exercice, ouvrez l’article en brouillon et relevez son flag.</p></div></li>
+          </ol>
+        </section>
+
+        <!-- Validation du flag -->
+        <section class="panel stagger-3">
+          <h2 class="panel-title">Valider le flag</h2>
+          <form class="flag-form" id="flag-form">
+            <input class="input flag-input" id="flag-input" type="text" placeholder="CTFABJ{votre_flag_ici}" autocomplete="off" spellcheck="false">
+            <button class="btn btn-primary" type="submit">Valider</button>
+          </form>
+          <div class="callout callout-info" id="flag-hint" style="margin-bottom:0;padding:12px 16px">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div class="small">Format attendu : <code>CTFABJ{...}</code> · <span id="attempts-left">5</span> tentatives restantes.</div>
+          </div>
+          <div class="callout callout-success flag-feedback" id="flag-ok" style="margin-bottom:0;padding:12px 16px">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div class="small">Format reconnu (maquette). En production, le serveur validera le flag sans le révéler au navigateur.</div>
+          </div>
+          <div class="callout callout-info flag-feedback" id="flag-bad" style="margin-bottom:0;padding:12px 16px;border-color:var(--danger-border);background:var(--danger-soft)">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            <div class="small">Format invalide. Utilisez <code>CTFABJ{...}</code>.</div>
+          </div>
+        </section>
+
+        <!-- Indices pliables -->
+        <section class="panel stagger-3">
+          <h2 class="panel-title">Indices progressifs</h2>
+          <details class="hint">
+            <summary>Indice 1 — Inspecter le code source client</summary>
+            <div class="hint-body">
+              Ouvrez les outils de développement (F12) et examinez les scripts JavaScript et liens commentés dans le code HTML de la page d'accueil.
+            </div>
+          </details>
+          <details class="hint">
+            <summary>Indice 2 — Contrôle d'accès côté serveur</summary>
+            <div class="hint-body">
+              Une ressource masquée visuellement peut rester directement accessible via son URL si le serveur ne contrôle pas la session.
+            </div>
+          </details>
+        </section>
+
+        <!-- Solution verrouillée -->
+        <section class="panel stagger-4">
+          <h2 class="panel-title">
+            Solution détaillée
+            <span class="status st-locked">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Verrouillée
+            </span>
+          </h2>
+          <p class="small muted" style="margin-bottom:0">
+            L'explication méthodologique et les bonnes pratiques de remédiation seront accessibles dès la validation de votre flag.
+          </p>
+        </section>
+      </div>
+
+      <!-- Colonne latérale : Métadonnées claires -->
+      <aside class="stagger-2">
+        <div class="panel">
+          <h2 class="panel-title">Détails du défi</h2>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="muted small">Points à remporter</span>
+            <span class="strong small" style="color:var(--brand)">+150 pts</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="muted small">Difficulté</span>
+            <span class="strong small">Niveau 2</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="muted small">Durée estimée</span>
+            <span class="strong small">30 à 45 min</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0">
+            <span class="muted small">Tentatives restantes</span>
+            <span class="strong small" id="attempts-count">5 / 5</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Cadre d'entraînement</h2>
+          <p class="small muted" style="margin-bottom:0">
+            Ce défi s'exécute exclusivement sur votre boucle locale (<code>127.0.0.1:8080</code>).
+            N'exécutez aucun test en dehors de cet environnement.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Plateforme d'apprentissage de la cybersécurité.</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/challenges.js"></script>
+<script>
+(function () {
+  var form = document.getElementById("flag-form");
+  if (!form) return;
+  var challenge = window.PigHackChallenges.byId('blog-acces');
+  var input = document.getElementById("flag-input");
+  var ok = document.getElementById("flag-ok");
+  var bad = document.getElementById("flag-bad");
+  var hint = document.getElementById("flag-hint");
+  var triesKey = 'pighack_attempts_blog-acces';
+  var solvedKey = 'pighack_solved_blog-acces';
+  var tries = Number(sessionStorage.getItem(triesKey) || 0);
+  function refreshAttempts() {
+    var left = Math.max(0, 5 - tries);
+    document.getElementById('attempts-left').textContent = String(left);
+    document.getElementById('attempts-count').textContent = left + ' / 5';
+  }
+  refreshAttempts();
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var value = (input.value || "").trim();
+    var valid = !!challenge && value === challenge.flag;
+    if (sessionStorage.getItem(solvedKey) === '1') valid = true;
+    if (!valid && tries >= 5) { bad.classList.add('is-visible'); bad.querySelector('.small').textContent = 'Limite de démonstration atteinte : réessayez dans 30 minutes (non simulé).'; return; }
+    if (!valid) { tries += 1; sessionStorage.setItem(triesKey, String(tries)); }
+    else sessionStorage.setItem(solvedKey, '1');
+    refreshAttempts();
+    ok.classList.toggle("is-visible", valid);
+    bad.classList.toggle("is-visible", !valid);
+    if (hint) { hint.style.display = valid ? 'none' : ''; hint.querySelector('.small').textContent = valid ? 'Défi validé. Points et solution seraient attribués côté serveur en production.' : 'Flag incorrect. ' + Math.max(0, 5 - tries) + ' tentative(s) restante(s) dans cette session.'; }
+  });
+})();
+</script>
+</body>
+</html>

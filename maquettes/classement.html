@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classement — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .podium {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-bottom: 52px;
+    align-items: start;
+  }
+  .podium-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 20px; text-align: center;
+    transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+  }
+  .podium-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-strong);
+  }
+  .podium-card:nth-child(1) { margin-top: 34px; }
+  .podium-card.first {
+    border-color: rgba(245, 158, 11, 0.4);
+    background: var(--surface-2);
+    box-shadow: 0 18px 42px -22px rgba(243, 185, 82, .2);
+    transform: translateY(-12px);
+  }
+  .podium-card.first:hover {
+    transform: translateY(-18px);
+  }
+  .podium-card:nth-child(3) { margin-top: 58px; }
+  .podium-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--surface); border: 1px solid var(--border);
+    margin: 0 auto 12px;
+  }
+  .podium-rank {
+    font-size: .84rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .podium-name { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+  .podium-points { font-size: 1.35rem; font-weight: 700; color: var(--text); }
+  .lb-current-user {
+    background: var(--surface-2) !important;
+  }
+  .lb-current-user td {
+    border-color: var(--brand-border) !important;
+  }
+  @media (max-width: 700px) {
+    .podium { gap: 12px; margin-bottom: 30px; }
+    .podium-card:nth-child(1), .podium-card:nth-child(3) { margin-top: 0; }
+    .podium-card.first { transform: translateY(0); }
+    .podium-card.first:hover { transform: translateY(-4px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html" class="active" aria-current="page">Classement</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <a class="btn btn-outline btn-sm" href="profil.html">N0va_7</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container page-head animate-enter">
+    <div class="head-row">
+      <div>
+        <h1>Classement général</h1>
+        <p class="page-sub">Classement public anonymisé par pseudonyme des participants de la saison.</p>
+      </div>
+      <div class="badge" style="padding:6px 14px;font-size:.84rem;border-color:var(--border-strong)">
+        Saison 2026
+      </div>
+    </div>
+  </div>
+
+  <div class="container section" style="padding-top:16px">
+
+    <!-- Podium surélevé avec icônes SVG -->
+    <div class="podium">
+      <div class="podium-card stagger-2">
+        <div class="podium-badge">
+          <svg class="ico ico-md podium-silver" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+        </div>
+        <div class="podium-rank">2ᵉ place</div>
+        <div class="podium-name">amina_cTF</div>
+        <div class="podium-points">1 950 pts</div>
+        <div class="small muted" style="margin-top:4px">18 défis résolus</div>
+      </div>
+
+      <div class="podium-card first stagger-1">
+        <div class="podium-badge" style="border-color:var(--signal-border)">
+          <svg class="ico ico-md podium-gold" viewBox="0 0 24 24"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14v2H5v-2z"></path></svg>
+        </div>
+        <div class="podium-rank podium-gold">1ʳᵉ place</div>
+        <div class="podium-name">Sadiq_BJ</div>
+        <div class="podium-points" style="font-size:1.5rem">2 180 pts</div>
+        <div class="small muted" style="margin-top:4px">24 défis résolus</div>
+      </div>
+
+      <div class="podium-card stagger-3">
+        <div class="podium-badge">
+          <svg class="ico ico-md podium-bronze" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+        </div>
+        <div class="podium-rank">3ᵉ place</div>
+        <div class="podium-name">Koami.Root</div>
+        <div class="podium-points">1 720 pts</div>
+        <div class="small muted" style="margin-top:4px">16 défis résolus</div>
+      </div>
+    </div>
+
+    <div class="table-wrap stagger-2">
+      <table class="table">
+            <thead>
+              <tr>
+                <th style="width:70px">Rang</th>
+                <th>Participant</th>
+                <th class="num">Défis</th>
+                <th class="num">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="strong">1</td>
+                <td class="strong">Sadiq_BJ</td>
+                <td class="num muted">24</td>
+                <td class="num strong">2 180</td>
+              </tr>
+              <tr>
+                <td class="strong">2</td>
+                <td class="strong">amina_cTF</td>
+                <td class="num muted">18</td>
+                <td class="num strong">1 950</td>
+              </tr>
+              <tr>
+                <td class="strong">3</td>
+                <td class="strong">Koami.Root</td>
+                <td class="num muted">16</td>
+                <td class="num strong">1 720</td>
+              </tr>
+              <tr>
+                <td class="muted">4</td>
+                <td>koffi_sec</td>
+                <td class="num muted">15</td>
+                <td class="num">1 590</td>
+              </tr>
+              <tr>
+                <td class="muted">5</td>
+                <td>leila_mono</td>
+                <td class="num muted">14</td>
+                <td class="num">1 480</td>
+              </tr>
+              <tr>
+                <td class="muted">…</td>
+                <td class="muted small">8 participants</td>
+                <td class="num muted">—</td>
+                <td class="num muted">—</td>
+              </tr>
+              <tr class="lb-current-user">
+                <td class="strong" style="color:var(--brand)">14</td>
+                <td class="strong">
+                  N0va_7
+                  <span class="badge" style="margin-left:8px;background:var(--brand-soft);color:var(--brand)">Vous</span>
+                </td>
+                <td class="num strong">12</td>
+                <td class="num strong" style="color:var(--brand)">1 240</td>
+              </tr>
+            </tbody>
+      </table>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Plateforme d'apprentissage de la cybersécurité.</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+</body>
+</html>

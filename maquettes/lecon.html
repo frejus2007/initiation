@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leçon 2.3 — Trouver le fichier caché — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="parcours.html" class="active" aria-current="page">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <a class="btn btn-outline btn-sm" href="profil.html">N0va_7</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container page-head animate-enter">
+    <nav class="crumbs" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a> <span class="sep">/</span>
+      <a href="parcours.html">Parcours Linux</a> <span class="sep">/</span>
+      <span>Leçon 2.3</span>
+    </nav>
+    <div class="head-row">
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <span class="chip chip-cat">Linux</span>
+          <span class="level lv-n1">Niveau 1</span>
+          <span class="small muted strong">80 points · ~20 min</span>
+        </div>
+        <h1>Trouver un fichier caché sous Linux</h1>
+      </div>
+      <a class="btn btn-outline btn-sm" href="parcours.html">← Retour au parcours</a>
+    </div>
+  </div>
+
+  <div class="container section" style="padding-top:16px">
+    <div class="split">
+
+      <!-- Contenu de la leçon -->
+      <div>
+        <section class="panel stagger-1">
+          <h2 class="panel-title">Objectif pédagogique</h2>
+          <p style="margin-bottom:0">
+            Comprendre la convention des fichiers masqués sous UNIX (préfixe <code>.</code>), utiliser l'option <code>-a</code> de la commande <code>ls</code> et extraire la chaîne secrète d'un fichier protégé.
+          </p>
+        </section>
+
+        <section class="panel stagger-2">
+          <h2 class="panel-title">Instructions pratiques</h2>
+          <p class="small muted" style="margin-bottom:12px">Dans votre terminal local, placez-vous dans votre répertoire d'entraînement :</p>
+          
+          <div class="term" style="margin-bottom:20px">
+            <div class="term-head">
+              <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+              <span class="term-title">terminal — local</span>
+            </div>
+            <pre class="term-body"><span class="c"># 1. Lister tous les fichiers, y compris les fichiers masqués</span>
+<span class="p">$</span> ls -la
+<span class="o">drwxr-xr-x 2 user user 4096 oct 16 14:00 .
+drwxr-xr-x 4 user user 4096 oct 16 14:00 ..
+-rw-r--r-- 1 user user  128 oct 16 14:00 notes.txt
+-rw------- 1 user user   42 oct 16 14:00 .archive</span>
+
+<span class="c"># 2. Afficher le contenu du fichier masqué repéré</span>
+<span class="p">$</span> cat .archive
+<span class="f">CTFABJ{…}</span><span class="term-cursor"></span></pre>
+          </div>
+
+          <p>
+            Sous Linux, les fichiers dont le nom commence par un point ne sont pas chiffrés : ils sont simplement omis par défaut par les outils d'affichage standard.
+          </p>
+        </section>
+
+        <!-- Validation du résultat -->
+        <section class="panel stagger-3">
+          <h2 class="panel-title">Validation de l'exercice</h2>
+          <form class="flag-form" id="lesson-flag-form">
+            <input class="input flag-input" id="lesson-flag-input" type="text" required placeholder="CTFABJ{votre_flag_ici}" autocomplete="off" spellcheck="false">
+            <button class="btn btn-primary" type="submit">Valider</button>
+          </form>
+          <div class="callout callout-success" id="lesson-flag-ok" role="status" hidden style="margin-bottom:0;padding:12px 16px">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div class="small">Flag validé avec succès (+80 points). Vous pouvez passer au module suivant.</div>
+          </div>
+          <div class="callout callout-danger" id="lesson-flag-bad" role="alert" hidden style="margin-bottom:0;padding:12px 16px">Ce flag ne correspond pas à l’exercice. Relisez le fichier masqué avec <code>cat .archive</code>.</div>
+        </section>
+
+        <!-- Synthèse -->
+        <section class="panel stagger-4">
+          <h2 class="panel-title">Ce qu'il faut retenir</h2>
+          <ul style="margin-bottom:0;padding-left:1.2em">
+            <li style="margin-bottom:6px">L'option <code>-a</code> de <code>ls</code> affiche toutes les entrées (all), y compris celles débutant par <code>.</code>.</li>
+            <li style="margin-bottom:6px">Pour rechercher rapidement tous les fichiers cachés d'une arborescence : <code>find . -name ".*"</code>.</li>
+            <li>Le nettoyage de l'exercice local s'effectue simplement avec <code>rm -rf ~/ctfacademy/lecon-02</code>.</li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Colonne latérale -->
+      <aside class="stagger-2">
+        <div class="panel">
+          <h2 class="panel-title">Progression du parcours</h2>
+          <div class="progress-label">
+            <span>Linux et terminal</span>
+            <span class="strong">3 / 5 leçons</span>
+          </div>
+          <div class="progress" style="margin-bottom:18px">
+            <div class="progress-bar" style="width:60%"></div>
+          </div>
+          <a class="btn btn-primary btn-sm btn-block" href="parcours.html">
+            Leçon suivante : Permissions
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <div class="panel">
+          <h2 class="panel-title">Ressources utiles</h2>
+          <ul class="small" style="margin-bottom:0;padding-left:1.2em">
+            <li style="margin-bottom:6px"><a href="https://man7.org/linux/man-pages/man1/ls.1.html" target="_blank" rel="noopener noreferrer">Manuel de la commande ls</a></li>
+            <li><a href="https://man7.org/linux/man-pages/man1/find.1.html" target="_blank" rel="noopener noreferrer">Manuel de la commande find</a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Plateforme d'apprentissage de la cybersécurité.</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+<script>
+(function () {
+  var form = document.getElementById('lesson-flag-form');
+  if (!form) return;
+  var input = document.getElementById('lesson-flag-input');
+  var ok = document.getElementById('lesson-flag-ok');
+  var bad = document.getElementById('lesson-flag-bad');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (!input.reportValidity()) return;
+    var valid = input.value.trim() === 'CTFABJ{bienvenue_dans_le_terminal}';
+    ok.hidden = !valid;
+    bad.hidden = valid;
+  });
+})();
+</script>
+</body>
+</html>

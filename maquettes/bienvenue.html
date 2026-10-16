@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIGHACK — Apprendre la cybersécurité en pratiquant</title>
+<meta name="description" content="PIGHACK est une plateforme d'initiation pratique à la cybersécurité. Des leçons courtes, des exercices sur votre terminal, des flags à valider.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="landing-page">
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="bienvenue.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="#comment">Comment ça marche</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="btn btn-ghost btn-sm" href="connexion.html">Connexion</a>
+      <a class="btn btn-primary btn-sm" href="inscription.html">Créer un compte</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <section class="landing-hero" aria-labelledby="hero-title">
+    <div class="container landing-hero-inner">
+      <p class="landing-brand">PIG<span>HACK</span></p>
+      <p class="eyebrow" style="margin-bottom:14px;letter-spacing:.14em">PHASE D'INITIATION — SAISON 2026</p>
+      <h1 id="hero-title">La cybersécurité,<br>expliquée en pratiquant.</h1>
+      <p class="landing-lead">Pas de théorie sans action. Sur PIGHACK, chaque leçon se termine par un flag à trouver sur votre propre terminal. Progressez à votre rythme, sans jargon inutile.</p>
+      <div class="landing-cta">
+        <a class="btn btn-primary btn-lg" href="inscription.html">Rejoindre la plateforme</a>
+        <a class="btn btn-outline btn-lg" href="connexion.html">Se connecter</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section" id="comment" aria-labelledby="comment-title">
+    <div class="container">
+      <h2 id="comment-title">Comment ça marche</h2>
+      <p class="section-sub">Trois étapes, toujours les mêmes.</p>
+      <div class="landing-tracks landing-tracks-3">
+        <article class="landing-track">
+          <span class="landing-track-id">1</span>
+          <h3>Lire la leçon</h3>
+          <p>Objectif clair, commandes à taper, explication courte et contexte réel.</p>
+        </article>
+        <article class="landing-track">
+          <span class="landing-track-id">2</span>
+          <h3>Faire l'exercice</h3>
+          <p>Sur votre terminal (Kali ou Linux). Le lab se lance en local via Docker — rien n'est exécuté à distance.</p>
+        </article>
+        <article class="landing-track">
+          <span class="landing-track-id">3</span>
+          <h3>Valider le flag</h3>
+          <p>Vous collez la réponse ici. PIGHACK confirme, ajoute vos points et ouvre la suite.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-section-alt">
+    <div class="container">
+      <h2>Phase d'initiation — Par où commencer ?</h2>
+      <p class="section-sub">Si vous débutez, commencez par le parcours <strong>Linux &amp; terminal</strong>, la fondation de tout le reste. Chaque étape franchie débloque la suivante.</p>
+      <a class="btn btn-primary" href="inscription.html">Commencer — c'est gratuit</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Phase d'initiation à la cybersécurité</div>
+    <div class="footer-links">
+      <a href="connexion.html">Connexion</a>
+      <a href="inscription.html">Inscription</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+    </div>
+  </div>
+</footer>
+<script src="assets/nav.js"></script>
+</body>
+</html>

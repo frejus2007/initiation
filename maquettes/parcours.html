@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parcours &amp; défis — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/carte.css">
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="parcours.html" class="active" aria-current="page">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <a class="btn btn-outline btn-sm" href="profil.html">N0va_7</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu" class="learning-page">
+  <!-- En-tête de la page -->
+  <div class="container page-head animate-enter">
+    <div class="roadmap-topline">
+      <span class="roadmap-kicker"><span class="kicker-pulse"></span> PARCOURS ACTIF <i>/</i> SAISON 2026</span>
+      <span class="roadmap-tag">PROGRESSION SÉQUENTIELLE</span>
+    </div>
+
+    <div class="learning-heading">
+      <div>
+        <h1>Parcours &amp; défis</h1>
+        <p class="page-sub">Un seul chemin, du premier geste aux missions en autonomie. Chaque étape franchie ouvre la suite.</p>
+      </div>
+      <div class="learning-count">
+        <strong>01</strong>
+        <span>/ 05<br>ÉTAPES VALIDÉES</span>
+      </div>
+    </div>
+
+    <div class="learning-progress">
+      <div class="progress-label">
+        <span>Progression du parcours</span>
+        <strong>1 étape franchie sur 5 (20%)</strong>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Progression du parcours" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1">
+        <div class="progress-bar" style="width:20%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guide pédagogique d'accompagnement -->
+  <section class="container learning-guide" aria-labelledby="guide-title">
+    <div class="guide-mark" aria-hidden="true">↗</div>
+    <div class="guide-copy">
+      <p class="eyebrow">APPRENDRE EN FAISANT</p>
+      <h2 id="guide-title">L’accompagnement s'efface à mesure que les compétences sont acquises.</h2>
+      <p>Au début, la démarche est expliquée pas à pas. Ensuite, les défis ne donnent plus que des indices ciblés avant de vous laisser en totale autonomie.</p>
+    </div>
+    <div class="guide-scale" aria-label="Progression de l'accompagnement">
+      <div><span class="guide-dot guide-dot-active">01</span><b>Pas à pas</b></div>
+      <i aria-hidden="true"></i>
+      <div><span class="guide-dot guide-dot-mid">02</span><b>Indices ciblés</b></div>
+      <i aria-hidden="true"></i>
+      <div><span class="guide-dot guide-dot-later">03</span><b>Autonomie</b></div>
+    </div>
+  </section>
+
+  <!-- ITINÉRAIRE VERTICAL DE PROGRESSION (LA CARTE SIMPLE) -->
+  <section class="container section" aria-labelledby="roadmap-title">
+    <div class="section-head" style="margin-bottom:24px">
+      <div>
+        <p class="eyebrow">VOTRE CARTE D'ITINÉRAIRE</p>
+        <h2 class="section-title" id="roadmap-title">Les étapes du parcours</h2>
+      </div>
+      <span class="small muted strong" style="color:var(--road-amber)">● DÉFI ACTIF : ÉTAPE 02</span>
+    </div>
+
+    <div class="roadmap-container">
+      <!-- Ligne verticale de liaison -->
+      <div class="roadmap-track-line" aria-hidden="true">
+        <div class="roadmap-track-progress"></div>
+      </div>
+
+      <!-- ================= ÉTAPE 01 : LINUX ================= -->
+      <div class="roadmap-stage stage-done">
+        <div class="roadmap-marker" aria-label="Étape 01 — Validée">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>
+          <div class="stage-done-badge" title="Étape validée">✓</div>
+        </div>
+
+        <article class="roadmap-card">
+          <div class="roadmap-card-header">
+            <span class="stage-number">ÉTAPE 01 <b>/</b> BASTION LINUX</span>
+            <span class="stage-status-tag done">✓ Validé</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Linux et ligne de commande</h3>
+          <p class="roadmap-card-desc">
+            Prise en main du terminal UNIX, arborescence des fichiers, gestion des permissions rwx et manipulation des flux via les redirections et pipes.
+          </p>
+
+          <!-- Liste des défis de l'étape -->
+          <div class="stage-challenges-list">
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state done">✓</span>
+                <span class="challenge-item-name">1.1 — Premier pas en ligne de commande</span>
+              </div>
+              <span class="challenge-item-pts">50 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state done">✓</span>
+                <span class="challenge-item-name">1.2 — Permissions &amp; droits d'accès</span>
+              </div>
+              <span class="challenge-item-pts">120 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state done">✓</span>
+                <span class="challenge-item-name">1.3 — Pipes, filtres et flux cachés</span>
+              </div>
+              <span class="challenge-item-pts">130 pts</span>
+            </div>
+          </div>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span><b>Total :</b> 300 pts</span>
+              <span><b>Accompagnement :</b> Pas à pas</span>
+            </div>
+            <a class="btn btn-outline btn-sm" href="lecon.html">Revoir la leçon →</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- ================= ÉTAPE 02 : WEB (VOUS ÊTES ICI) ================= -->
+      <div class="roadmap-stage stage-current" id="etape-active">
+        <div class="roadmap-marker" aria-label="Étape 02 — En cours">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 8h18M8 13l-2 2 2 2m4-4-2 4"></path></svg>
+        </div>
+
+        <article class="roadmap-card">
+          <div class="you-are-here-pill">
+            <i></i> VOUS ÊTES ICI
+          </div>
+
+          <div class="roadmap-card-header">
+            <span class="stage-number">ÉTAPE 02 <b>/</b> PÉRIMÈTRE WEB</span>
+            <span class="stage-status-tag current">⚡ En cours</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Sécurité des applications Web</h3>
+          <p class="roadmap-card-desc">
+            Inspection des échanges HTTP, mécanismes de session et exploitation de faiblesses d'authentification ou de contrôle d'accès côté client.
+          </p>
+
+          <!-- Liste des défis de l'étape -->
+          <div class="stage-challenges-list">
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state done">✓</span>
+                <span class="challenge-item-name">2.1 — Inspection d'en-têtes HTTP</span>
+              </div>
+              <span class="challenge-item-pts">80 pts</span>
+            </div>
+            <div class="stage-challenge-item active-item" style="background:rgba(243,185,82,0.1);padding:6px 8px;border-radius:4px">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state current">⚡</span>
+                <span class="challenge-item-name"><strong>2.2 — Le blog qui ne devait pas mentir</strong> (En cours)</span>
+              </div>
+              <span class="challenge-item-pts" style="color:var(--road-amber);font-weight:700">150 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state ready">🔓</span>
+                <span class="challenge-item-name">2.3 — Contournement d'authentification IDOR</span>
+              </div>
+              <span class="challenge-item-pts">200 pts</span>
+            </div>
+          </div>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span><b>Niveau :</b> N2 Fondamentaux</span>
+              <span><b>Accompagnement :</b> Indices ciblés</span>
+            </div>
+            <a class="btn btn-stage-current btn-sm" href="defi-detail.html">
+              Continuer le défi en cours (2.2) →
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- ================= ÉTAPE 03 : CRYPTO ================= -->
+      <div class="roadmap-stage stage-ready">
+        <div class="roadmap-marker" aria-label="Étape 03 — Débloqué bientôt">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="5"></circle><path d="m11.5 11.5 8-8M16 7l2 2m-5 1 2 2"></path></svg>
+        </div>
+
+        <article class="roadmap-card">
+          <div class="roadmap-card-header">
+            <span class="stage-number">ÉTAPE 03 <b>/</b> COFFRE CRYPTO</span>
+            <span class="stage-status-tag ready">Prochaine étape</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Encodage &amp; Cryptographie élémentaire</h3>
+          <p class="roadmap-card-desc">
+            Différencier encodage réversible (Base64, Hex) et chiffrement secret. Déchiffrement de flux masqués par clé XOR et vérification d'empreintes SHA-256.
+          </p>
+
+          <div class="stage-challenges-list">
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state ready">○</span>
+                <span class="challenge-item-name">3.1 — Bribes encodées &amp; Base64</span>
+              </div>
+              <span class="challenge-item-pts">75 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">3.2 — Déchiffrement XOR &amp; clé faible</span>
+              </div>
+              <span class="challenge-item-pts">140 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">3.3 — Collision &amp; empreintes SHA-256</span>
+              </div>
+              <span class="challenge-item-pts">210 pts</span>
+            </div>
+          </div>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span><b>Total :</b> 425 pts</span>
+              <span><b>Accompagnement :</b> Indices &amp; Autonomie</span>
+            </div>
+            <span class="small muted">S'ouvre dès validation de l'étape Web</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- ================= ÉTAPE 04 : RÉSEAU ================= -->
+      <div class="roadmap-stage stage-locked">
+        <div class="roadmap-marker" aria-label="Étape 04 — Verrouillée">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="18" r="2"></circle><circle cx="19" cy="18" r="2"></circle><path d="m11 7-5 9m7-9 5 9M7 18h10"></path></svg>
+        </div>
+
+        <article class="roadmap-card">
+          <div class="roadmap-card-header">
+            <span class="stage-number">ÉTAPE 04 <b>/</b> INFRASTRUCTURE RÉSEAU</span>
+            <span class="stage-status-tag locked">🔒 Verrouillé</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Analyse réseau &amp; Traces PCAP</h3>
+          <p class="roadmap-card-desc">
+            Lecture de captures Wireshark, détection d'exfiltration furtive par tunneling DNS et rebond vers des sous-réseaux isolés.
+          </p>
+
+          <div class="stage-challenges-list">
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">4.1 — Analyse de capture PCAP</span>
+              </div>
+              <span class="challenge-item-pts">120 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">4.2 — Exfiltration furtive par DNS</span>
+              </div>
+              <span class="challenge-item-pts">190 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">4.3 — Pivoting &amp; scan de sous-réseau</span>
+              </div>
+              <span class="challenge-item-pts">250 pts</span>
+            </div>
+          </div>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span><b>Total :</b> 560 pts</span>
+              <span><b>Niveau :</b> N3 à N4</span>
+            </div>
+            <span class="small muted">Verrouillé</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- ================= ÉTAPE 05 : FORENSIC ================= -->
+      <div class="roadmap-stage stage-locked">
+        <div class="roadmap-marker" aria-label="Étape 05 — Verrouillée">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"></path><circle cx="10" cy="10" r="3"></circle><path d="m12.2 12.2 4 4M7 17h2"></path></svg>
+        </div>
+
+        <article class="roadmap-card">
+          <div class="roadmap-card-header">
+            <span class="stage-number">ÉTAPE 05 <b>/</b> CELLULE FORENSIC</span>
+            <span class="stage-status-tag locked">🔒 Verrouillé</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Analyse numérique &amp; Investigation</h3>
+          <p class="roadmap-card-desc">
+            Extraction de métadonnées géographiques, analyse de dumps de mémoire vive (Volatility) et reconstruction de chronologie d'intrusion.
+          </p>
+
+          <div class="stage-challenges-list">
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">5.1 — Métadonnées et images suspectes</span>
+              </div>
+              <span class="challenge-item-pts">110 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">5.2 — Analyse de mémoire vive Volatility</span>
+              </div>
+              <span class="challenge-item-pts">230 pts</span>
+            </div>
+            <div class="stage-challenge-item">
+              <div class="challenge-item-left">
+                <span class="challenge-item-state locked">🔒</span>
+                <span class="challenge-item-name">5.3 — Chronologie d'un incident de sécurité</span>
+              </div>
+              <span class="challenge-item-pts">260 pts</span>
+            </div>
+          </div>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span><b>Total :</b> 600 pts</span>
+              <span><b>Niveau :</b> N3 à N4</span>
+            </div>
+            <span class="small muted">Verrouillé</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- ================= DESTINATION FINALE ================= -->
+      <div class="roadmap-stage stage-final stage-locked">
+        <div class="roadmap-marker" aria-label="Destination Finale — Mission combinée">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22V4m0 0h12l-2.5 5 2.5 5H4"></path></svg>
+        </div>
+
+        <article class="roadmap-card" style="border-color:rgba(241,90,56,0.35)">
+          <div class="roadmap-card-header">
+            <span class="stage-number" style="color:var(--road-accent)">DESTINATION FINALE <b>/</b> CITADELLE CTF</span>
+            <span class="stage-status-tag locked">Mission N6</span>
+          </div>
+
+          <h3 class="roadmap-card-title">Opération BlackOut BJ — Mission complète</h3>
+          <p class="roadmap-card-desc">
+            Mission de synthèse combinant toutes les compétences acquises : intrusion web, pivot réseau, analyse de mémoire et rédaction d'un rapport de remédiation professionnel.
+          </p>
+
+          <div class="roadmap-card-foot">
+            <div class="roadmap-card-meta">
+              <span style="color:var(--road-accent);font-weight:700">500 pts majeurs</span>
+              <span><b>Autonomie complète</b></span>
+            </div>
+            <span class="small muted">Accessible après validation des 5 étapes</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Phase d'initiation à la cybersécurité</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/carte.js"></script>
+</body>
+</html>

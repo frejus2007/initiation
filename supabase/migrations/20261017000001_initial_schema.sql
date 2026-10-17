@@ -221,3 +221,4 @@ CREATE POLICY "Chaque utilisateur voit sa progression"
 CREATE POLICY "Seuls les admins accèdent au journal d'audit"
   ON public.audit_logs FOR ALL
   USING (public.is_admin());
+

@@ -175,7 +175,7 @@
         </div>
         <div class="field">
           <label class="label" for="res">Résultat attendu et format de la réponse</label>
-          <input class="input" id="res" type="text" value="Flag unique CTFABJ{…} + court rapport (constat, preuve, impact, limites, mesures correctives).">
+          <input class="input" id="res" type="text" value="Flag unique PGH{…} + court rapport (constat, preuve, impact, limites, mesures correctives).">
         </div>
       </section>
 
@@ -300,7 +300,7 @@
     var pts = Number(document.getElementById('pts').value);
     if (!title || !document.getElementById('obj').value.trim() || !document.getElementById('scen').value.trim() || !document.getElementById('cons').value.trim()) { alert('Renseignez le titre, l’objectif, le scénario et les consignes.'); return; }
     if (!Number.isInteger(pts) || pts < 10) { alert('Les points doivent être un nombre entier supérieur ou égal à 10.'); return; }
-    if (!flag || !/^CTFABJ\\{[^}]+\\}$/.test(flag)) { alert('Saisissez un flag unique au format CTFABJ{...}.'); return; }
+    if (!flag || !/^PGH\\{[^}]+\\}$/.test(flag)) { alert('Saisissez un flag unique au format PGH{...}.'); return; }
     var record = current || {id:'challenge-' + Date.now()};
     Object.keys(fields).forEach(function (key) { var el = document.getElementById(fields[key]); record[key] = el ? el.value.trim() : ''; });
     record.hints = [record.hint1, record.hint2].concat(Array.prototype.map.call(form.querySelectorAll('[data-extra-hint]'), function (el) { return el.value.trim(); })).filter(Boolean);

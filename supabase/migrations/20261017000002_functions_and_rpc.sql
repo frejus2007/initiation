@@ -128,9 +128,9 @@ BEGIN
 
   IF v_clean_flag = trim(v_secret.flag_secret)
      OR v_clean_flag = ANY(v_secret.accepted_flags)
-     -- Tolérance si l'utilisateur a entré PIGHACK{...} au lieu de CTFABJ{...} ou l'inverse
-     OR replace(v_clean_flag, 'PIGHACK{', 'CTFABJ{') = trim(v_secret.flag_secret)
-     OR replace(v_clean_flag, 'CTFABJ{', 'PIGHACK{') = trim(v_secret.flag_secret)
+     -- Format officiel PGH{...} avec tolérance pour variantes
+     OR replace(v_clean_flag, 'PIGHACK{', 'PGH{') = trim(v_secret.flag_secret)
+     OR replace(v_clean_flag, 'CTFABJ{', 'PGH{') = trim(v_secret.flag_secret)
   THEN
     v_is_correct := true;
   END IF;
@@ -322,3 +322,4 @@ BEGIN
   );
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = public;
+

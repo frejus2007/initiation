@@ -91,7 +91,7 @@ const res = await PighackSupabase.auth.signUp(
 ```javascript
 const res = await PighackSupabase.api.submitFlag(
   "premier-pas-en-ligne-de-commande",
-  "PIGHACK{premier_terminal}"
+  "PGH{premier_terminal}"
 );
 
 if (res.data.success) {
@@ -120,3 +120,4 @@ supabase link --project-ref VOTRE_PROJECT_REF
 # Appliquer toutes les migrations
 supabase db push
 ```
+

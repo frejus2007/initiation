@@ -41,7 +41,7 @@
       },
       "solution": "La navigation et les commandes de base permettent de manipuler des fichiers sans interface graphique. Vérifiez le chemin courant avec `pwd` et le contenu avec `ls -la`.",
       "safety_and_cleanup": "Aucun exploit. Supprimez uniquement le dossier `ctf-bj` que vous avez créé.",
-      "flag_secret": "CTFABJ{premier_terminal}",
+      "flag_secret": "PGH{premier_terminal}",
       "tags": [
         "linux",
         "n1"
@@ -51,7 +51,7 @@
         {
           "name": "note.txt",
           "kind": "text",
-          "content": "CTFABJ{premier_terminal}\n"
+          "content": "PGH{premier_terminal}\n"
         }
       ],
       "submission_fields": [
@@ -102,7 +102,7 @@
       },
       "solution": "Les permissions octales sont calculées par propriétaire/groupe/autres : 6=rw-, 4=r--, 0=---. La règle du moindre privilège limite l’accès au nécessaire.",
       "safety_and_cleanup": "N’appliquez les commandes qu’au fichier créé dans le dossier d’exercice.",
-      "flag_secret": "CTFABJ{droits_minimaux}",
+      "flag_secret": "PGH{droits_minimaux}",
       "tags": [
         "linux",
         "n1"
@@ -112,7 +112,7 @@
         {
           "name": "rapport.txt",
           "kind": "text",
-          "content": "CTFABJ{droits_minimaux}\n",
+          "content": "PGH{droits_minimaux}\n",
           "initial_mode": "600"
         }
       ],
@@ -164,7 +164,7 @@
       },
       "solution": "Un pipe transmet la sortie standard d’une commande à l’entrée de la suivante. `grep` sélectionne les lignes correspondantes.",
       "safety_and_cleanup": "Fichier local fictif, aucune collecte de journal réel.",
-      "flag_secret": "CTFABJ{pipe_et_filtre}",
+      "flag_secret": "PGH{pipe_et_filtre}",
       "tags": [
         "linux",
         "n2"
@@ -174,7 +174,7 @@
         {
           "name": "access.log",
           "kind": "text",
-          "content": "09:00 GET /home 200\n09:01 GET /health 200\n09:02 FLAG CTFABJ{pipe_et_filtre}\n09:03 GET /about 200\n"
+          "content": "09:00 GET /home 200\n09:01 GET /health 200\n09:02 FLAG PGH{pipe_et_filtre}\n09:03 GET /about 200\n"
         }
       ],
       "submission_fields": [
@@ -225,7 +225,7 @@
       },
       "solution": "Les en-têtes HTTP transportent des métadonnées. Ils peuvent révéler une configuration ou des informations qu’il faut éviter d’exposer.",
       "safety_and_cleanup": "La réponse fournie est synthétique. La cible autorisée est uniquement le service local.",
-      "flag_secret": "CTFABJ{lire_les_entetes}",
+      "flag_secret": "PGH{lire_les_entetes}",
       "tags": [
         "web",
         "n1"
@@ -235,7 +235,7 @@
         {
           "name": "http-response.txt",
           "kind": "text",
-          "content": "HTTP/1.1 200 OK\nContent-Type: text/plain\nX-Training-Code: CTFABJ{lire_les_entetes}\nCache-Control: no-store\n"
+          "content": "HTTP/1.1 200 OK\nContent-Type: text/plain\nX-Training-Code: PGH{lire_les_entetes}\nCache-Control: no-store\n"
         }
       ],
       "submission_fields": [
@@ -286,7 +286,7 @@
       },
       "solution": "La restriction n’était qu’un masquage du lien. Un contrôle d’accès doit être appliqué côté serveur sur chaque ressource. Erreur fréquente : considérer l’interface comme une barrière de sécurité.",
       "safety_and_cleanup": "Application fictive isolée. Ne testez jamais une route de production ou un site tiers. Pour le backend, stocker le flag séparément et ne pas l’inclure dans la réponse étudiant.",
-      "flag_secret": "CTFABJ{acces_cote_serveur}",
+      "flag_secret": "PGH{acces_cote_serveur}",
       "tags": [
         "web",
         "n2"
@@ -297,7 +297,7 @@
           "name": "blog-lab",
           "kind": "lab_fixture",
           "route": "/studio/brouillons/1",
-          "content": "Brouillon fictif Atelier BJ\nCTFABJ{acces_cote_serveur}"
+          "content": "Brouillon fictif Atelier BJ\nPGH{acces_cote_serveur}"
         }
       ],
       "submission_fields": [
@@ -348,7 +348,7 @@
       },
       "solution": "C’est un défaut de contrôle d’accès direct aux objets (IDOR/BOLA). Le serveur doit autoriser l’accès selon le propriétaire ou une permission explicite, sans faire confiance à l’identifiant fourni par le client.",
       "safety_and_cleanup": "Uniquement sur le lab Carnet BJ local. Les identifiants sont fictifs.",
-      "flag_secret": "CTFABJ{objet_par_utilisateur}",
+      "flag_secret": "PGH{objet_par_utilisateur}",
       "tags": [
         "web",
         "n3"
@@ -359,7 +359,7 @@
           "name": "carnet-lab",
           "kind": "lab_fixture",
           "route": "/api/dossiers/102",
-          "content": "Utilisateur authentifié: test-user-101\nGET /api/dossiers/101 -> propriétaire test-user-101\nGET /api/dossiers/102 -> propriétaire test-user-102\nDossier de démonstration 102\nCTFABJ{objet_par_utilisateur}"
+          "content": "Utilisateur authentifié: test-user-101\nGET /api/dossiers/101 -> propriétaire test-user-101\nGET /api/dossiers/102 -> propriétaire test-user-102\nDossier de démonstration 102\nPGH{objet_par_utilisateur}"
         }
       ],
       "submission_fields": [
@@ -388,8 +388,8 @@
       "objective": "Décoder une chaîne Base64 et distinguer encodage et chiffrement.",
       "scenario": "Une note fictive a été encodée en Base64. L’encodage n’est pas un chiffrement.",
       "environment": "Terminal facultatif avec `base64`; la chaîne est fournie dans l’énoncé.",
-      "instructions": "Décodez `Q1RGQUJKe2Jhc2U2NF9uZV9lc3RfcGFzfQ==` avec un outil local et soumettez le texte obtenu.",
-      "expected_submission": "Le contenu décodé, un flag CTFABJ.",
+      "instructions": "Décodez `UEdIe2Jhc2U2NF9uZV9lc3RfcGFzfQ==` avec un outil local et soumettez le texte obtenu.",
+      "expected_submission": "Le contenu décodé, un flag PGH.",
       "hints": [
         {
           "order": 1,
@@ -408,9 +408,9 @@
         "trim_whitespace": true,
         "secret_ref": "bribes-encodees-base64"
       },
-      "solution": "La chaîne se décode en `CTFABJ{base64_ne_est_pas}`. Base64 est un encodage réversible, pas une protection de confidentialité.",
+      "solution": "La chaîne se décode en `PGH{base64_ne_est_pas}`. Base64 est un encodage réversible, pas une protection de confidentialité.",
       "safety_and_cleanup": "Aucun réseau nécessaire. Ne stockez jamais un secret en Base64 en pensant le chiffrer.",
-      "flag_secret": "CTFABJ{base64_ne_est_pas}",
+      "flag_secret": "PGH{base64_ne_est_pas}",
       "tags": [
         "crypto",
         "n1"
@@ -420,7 +420,7 @@
         {
           "name": "encoded.txt",
           "kind": "text",
-          "content": "Q1RGQUJKe2Jhc2U2NF9uZV9lc3RfcGFzfQ==\n"
+          "content": "UEdIe2Jhc2U2NF9uZV9lc3RfcGFzfQ==\n"
         }
       ],
       "submission_fields": [
@@ -448,8 +448,8 @@
       "points": 140,
       "objective": "Retrouver un texte chiffré par XOR avec une clé d’un octet faible.",
       "scenario": "Le service de formation a chiffré un message avec XOR et une clé d’un octet faible. Les octets sont fournis ci-dessous.",
-      "environment": "Python 3 local ou calculatrice XOR. Texte chiffré hexadécimal : `0b1c0e090a023330273a172b242d172e29212a242d35`.",
-      "instructions": "Testez les clés d’un octet de `0x00` à `0xff`; recherchez le texte imprimable commençant par `CTFABJ{`.",
+      "environment": "Python 3 local ou calculatrice XOR. Texte chiffré hexadécimal : `180f003330273a172b242d172e29212a242d35`.",
+      "instructions": "Testez les clés d’un octet de `0x00` à `0xff`; recherchez le texte imprimable commençant par `PGH{`.",
       "expected_submission": "Le flag en clair.",
       "hints": [
         {
@@ -469,9 +469,9 @@
         "trim_whitespace": true,
         "secret_ref": "dechiffrement-xor-cle-faible"
       },
-      "solution": "Le texte clair est `CTFABJ{xor_cle_faible}`. Une clé courte réutilisée ou faible permet une recherche exhaustive; utilisez un chiffrement moderne authentifié.",
+      "solution": "Le texte clair est `PGH{xor_cle_faible}`. Une clé courte réutilisée ou faible permet une recherche exhaustive; utilisez un chiffrement moderne authentifié.",
       "safety_and_cleanup": "Données synthétiques, calcul local uniquement.",
-      "flag_secret": "CTFABJ{xor_cle_faible}",
+      "flag_secret": "PGH{xor_cle_faible}",
       "tags": [
         "crypto",
         "n2"
@@ -481,7 +481,7 @@
         {
           "name": "cipher.hex",
           "kind": "text",
-          "content": "0b1c0e090a023330273a172b242d172e29212a242d35\n",
+          "content": "180f003330273a172b242d172e29212a242d35\n",
           "key_space": "single_byte"
         }
       ],
@@ -533,7 +533,7 @@
       },
       "solution": "Le flag est fourni dans le manifeste. MD5 est vulnérable aux collisions et ne doit pas servir à garantir l’intégrité face à un adversaire. SHA-256 est préférable, avec signature/HMAC si l’authenticité est requise.",
       "safety_and_cleanup": "Les empreintes d’exemple sont pédagogiques; ne téléchargez aucun fichier externe.",
-      "flag_secret": "CTFABJ{sha256_pour_integrite}",
+      "flag_secret": "PGH{sha256_pour_integrite}",
       "tags": [
         "crypto",
         "n3"
@@ -543,7 +543,7 @@
         {
           "name": "manifest.txt",
           "kind": "text",
-          "content": "preuve-A.txt et preuve-B.txt: même MD5 79054025255fb1a26e4bc422aef54eb4\nValidation d’intégrité: SHA-256\nCTFABJ{sha256_pour_integrite}\n"
+          "content": "preuve-A.txt et preuve-B.txt: même MD5 79054025255fb1a26e4bc422aef54eb4\nValidation d’intégrité: SHA-256\nPGH{sha256_pour_integrite}\n"
         }
       ],
       "submission_fields": [
@@ -592,9 +592,9 @@
         "trim_whitespace": true,
         "secret_ref": "analyse-de-capture-pcap"
       },
-      "solution": "Le flag est `CTFABJ{pcap_reconstituee}`. Les captures peuvent contenir des identifiants; limitez les données et utilisez TLS pour protéger les échanges.",
+      "solution": "Le flag est `PGH{pcap_reconstituee}`. Les captures peuvent contenir des identifiants; limitez les données et utilisez TLS pour protéger les échanges.",
       "safety_and_cleanup": "Capture synthétique; ne capturez pas de trafic d’autrui.",
-      "flag_secret": "CTFABJ{pcap_reconstituee}",
+      "flag_secret": "PGH{pcap_reconstituee}",
       "tags": [
         "réseaux",
         "n2"
@@ -653,9 +653,9 @@
         "trim_whitespace": true,
         "secret_ref": "exfiltration-furtive-par-dns"
       },
-      "solution": "Après concaténation puis décodage, on obtient `CTFABJ{dns_safe}`. Des sous-domaines longs et répétitifs peuvent signaler un tunnel DNS; surveillez volume, entropie et destinations.",
+      "solution": "Après concaténation puis décodage, on obtient `PGH{dns_safe}`. Des sous-domaines longs et répétitifs peuvent signaler un tunnel DNS; surveillez volume, entropie et destinations.",
       "safety_and_cleanup": "Journaux fictifs hors ligne. Ne générez aucun trafic DNS vers Internet.",
-      "flag_secret": "CTFABJ{dns_safe}",
+      "flag_secret": "PGH{dns_safe}",
       "tags": [
         "réseaux",
         "n3"
@@ -714,9 +714,9 @@
         "trim_whitespace": true,
         "secret_ref": "pivoting-scan-de-sous-reseau"
       },
-      "solution": "L’hôte est 192.0.2.2 et le flag est `CTFABJ{pivot_documente}`. En environnement réel, un pivot doit être explicitement autorisé et segmenté.",
+      "solution": "L’hôte est 192.0.2.2 et le flag est `PGH{pivot_documente}`. En environnement réel, un pivot doit être explicitement autorisé et segmenté.",
       "safety_and_cleanup": "Exercice théorique. N’exécutez aucun scan réseau.",
-      "flag_secret": "CTFABJ{pivot_documente}",
+      "flag_secret": "PGH{pivot_documente}",
       "tags": [
         "réseaux",
         "n4"
@@ -726,7 +726,7 @@
         {
           "name": "network-plan.txt",
           "kind": "text",
-          "content": "Réseau de documentation 192.0.2.0/29\n.1 passerelle; .2 serveur web; .3 poste; .4 imprimante; .7 broadcast\nRapport du serveur: CTFABJ{pivot_documente}\n"
+          "content": "Réseau de documentation 192.0.2.0/29\n.1 passerelle; .2 serveur web; .3 poste; .4 imprimante; .7 broadcast\nRapport du serveur: PGH{pivot_documente}\n"
         }
       ],
       "submission_fields": [
@@ -777,7 +777,7 @@
       },
       "solution": "Le flag est dans Comment. Supprimez les coordonnées et métadonnées personnelles avant publication d’images lorsque cela est nécessaire.",
       "safety_and_cleanup": "Aucune vraie image ni localisation réelle n’est utilisée.",
-      "flag_secret": "CTFABJ{metadonnees_minimales}",
+      "flag_secret": "PGH{metadonnees_minimales}",
       "tags": [
         "forensic",
         "n2"
@@ -787,7 +787,7 @@
         {
           "name": "exif-report.txt",
           "kind": "text",
-          "content": "FileName: tableau.jpg\nGPS: absent\nComment: CTFABJ{metadonnees_minimales}\nCreateDate: 2026:10:01\n"
+          "content": "FileName: tableau.jpg\nGPS: absent\nComment: PGH{metadonnees_minimales}\nCreateDate: 2026:10:01\n"
         }
       ],
       "submission_fields": [
@@ -838,7 +838,7 @@
       },
       "solution": "Le PID 988 ouvre le fichier indiqué, qui contient le flag. Dans une vraie investigation, préservez l’intégrité de l’image mémoire et consignez les outils et versions.",
       "safety_and_cleanup": "Sortie simulée. Aucun dump de mémoire d’un tiers.",
-      "flag_secret": "CTFABJ{memoire_sans_dump}",
+      "flag_secret": "PGH{memoire_sans_dump}",
       "tags": [
         "forensic",
         "n3"
@@ -848,7 +848,7 @@
         {
           "name": "volatility-output.txt",
           "kind": "text",
-          "content": "PID 412 explorer.exe\nPID 988 note-viewer.exe\nPID 988 cmdline: note-viewer.exe --file C:\\lab\\evidence.txt\nstrings evidence.txt: CTFABJ{memoire_sans_dump}\n"
+          "content": "PID 412 explorer.exe\nPID 988 note-viewer.exe\nPID 988 cmdline: note-viewer.exe --file C:\\lab\\evidence.txt\nstrings evidence.txt: PGH{memoire_sans_dump}\n"
         }
       ],
       "submission_fields": [
@@ -899,7 +899,7 @@
       },
       "solution": "Le flag est porté par l’alerte à 10:04:19 UTC, après l’export et avant la fermeture de session. Une chronologie doit distinguer faits observés et hypothèses.",
       "safety_and_cleanup": "Journaux entièrement synthétiques; ne traitez pas de données personnelles réelles.",
-      "flag_secret": "CTFABJ{chronologie_coherente}",
+      "flag_secret": "PGH{chronologie_coherente}",
       "tags": [
         "forensic",
         "n4"
@@ -909,7 +909,7 @@
         {
           "name": "events.csv",
           "kind": "text",
-          "content": "timestamp_utc,event\n10:02:11,login test-user success\n10:03:07,export report.csv\n10:04:19,alert rule-7 CTFABJ{chronologie_coherente}\n10:05:00,session closed\n"
+          "content": "timestamp_utc,event\n10:02:11,login test-user success\n10:03:07,export report.csv\n10:04:19,alert rule-7 PGH{chronologie_coherente}\n10:05:00,session closed\n"
         }
       ],
       "submission_fields": [
@@ -979,7 +979,7 @@
       },
       "solution": "La séquence montre un accès objet sans contrôle de propriétaire (IDOR/BOLA). Limiter les accès au périmètre fictif, ajouter une autorisation côté serveur par objet, journaliser les refus et tester les rôles. Erreur fréquente: confondre session valide et droit d’accès.",
       "safety_and_cleanup": "Données synthétiques sur application locale isolée. Aucune banque, entreprise ou cible réelle. Nettoyer le conteneur local à la fin.",
-      "flag_secret": "CTFABJ{blackout_bj_remedie}",
+      "flag_secret": "PGH{blackout_bj_remedie}",
       "tags": [
         "mission",
         "web",
@@ -991,7 +991,7 @@
         {
           "name": "mission-dossier.txt",
           "kind": "text",
-          "content": "09:14 GET /api/reports/42 user=analyst\n09:15 GET /api/reports/43 user=analyst\n09:16 object-owner report/43=auditor\nRapport 43: CTFABJ{blackout_bj_remedie}\n"
+          "content": "09:14 GET /api/reports/42 user=analyst\n09:15 GET /api/reports/43 user=analyst\n09:16 object-owner report/43=auditor\nRapport 43: PGH{blackout_bj_remedie}\n"
         }
       ],
       "submission_fields": [

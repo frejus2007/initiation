@@ -9,21 +9,62 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <style>
+  /* En-tête d'identité du joueur */
+  .profile-head {
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    padding: 22px 24px; margin-bottom: 26px;
+    background: rgba(24, 20, 17, .9); border: 1px solid var(--border);
+    border-radius: var(--r-2); box-shadow: var(--elev-1), var(--hairline);
+  }
+  .avatar-xl {
+    flex: none; display: grid; place-items: center;
+    width: 72px; height: 72px; border-radius: var(--r-pill);
+    background: var(--brand-soft); border: 1px solid var(--brand-border);
+    color: var(--brand); font: 700 1.5rem var(--mono); letter-spacing: .02em;
+  }
+  .profile-head-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .profile-head-main h1 { font-size: clamp(1.4rem, 3vw, 1.7rem); margin: 0; }
+  .profile-head-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .profile-head-stats { display: flex; gap: 28px; margin-left: auto; }
+  .profile-head-stats .k {
+    font: 600 .62rem var(--mono); letter-spacing: .12em; color: var(--text-subtle);
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .profile-head-stats .v { font: 700 1.15rem var(--mono); color: var(--text); font-variant-numeric: tabular-nums; }
+  .profile-head-stats .v.pts { color: var(--brand); }
+  @media (max-width: 640px) { .profile-head-stats { margin-left: 0; gap: 20px; } }
+
+  /* Badges */
   .badge-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px;
   }
   .badge-item {
+    position: relative;
     background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 18px 12px; text-align: center;
-    transition: transform var(--transition-smooth), border-color var(--transition-smooth);
+    border-radius: var(--r-2); padding: 18px 12px; text-align: center;
+    transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
   }
   .badge-item:hover {
     transform: translateY(-3px);
     border-color: var(--brand-border);
+    box-shadow: var(--elev-2);
   }
-  .badge-item.locked { opacity: 0.35; transform: none !important; }
+  .badge-item.locked { opacity: 0.38; transform: none !important; }
   .badge-item .ico { margin-bottom: 8px; color: var(--brand); }
+  .badge-item.locked .ico { color: var(--text-subtle); }
   .badge-name { font-size: .84rem; font-weight: 600; color: var(--text); }
+
+  /* Statistiques */
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row .k { color: var(--text-muted); font-size: .84rem; }
+  .stat-row .v { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); }
+  .stat-row .v.brand { color: var(--brand); }
+  .stat-bar { height: 6px; border-radius: var(--r-pill); background: #2C2823; overflow: hidden; margin-top: 12px; }
+  .stat-bar i { display: block; height: 100%; width: 66%; border-radius: inherit; background: linear-gradient(90deg, var(--brand), var(--signal)); }
 </style>
 </head>
 <body>
@@ -65,16 +106,25 @@
 </header>
 
 <main id="contenu">
-  <div class="container page-head animate-enter">
-    <div class="head-row">
-      <div>
-        <h1>Paramètres du profil</h1>
-        <p class="page-sub">Gérez votre identité publique et consultez vos distinctions acquises. <a href="tableau-de-bord.html">Voir mon espace</a></p>
-      </div>
-    </div>
-  </div>
+  <div class="container section" style="padding-top:32px">
 
-  <div class="container section" style="padding-top:16px">
+    <header class="profile-head stagger-1">
+      <div class="avatar-xl" aria-hidden="true">N7</div>
+      <div class="profile-head-main">
+        <h1>N0va_7</h1>
+        <div class="profile-head-tags">
+          <span class="badge">Rang #14</span>
+          <span class="badge" style="border-color:var(--signal-border);color:var(--signal)">Saison 2026</span>
+          <span class="small muted">Membre depuis octobre 2026</span>
+        </div>
+      </div>
+      <div class="profile-head-stats">
+        <div><div class="k">Points</div><div class="v pts">1 240</div></div>
+        <div><div class="k">Défis</div><div class="v">12</div></div>
+        <div><div class="k">Badges</div><div class="v">4/6</div></div>
+      </div>
+    </header>
+
     <div class="split">
 
       <!-- Colonne principale -->
@@ -174,22 +224,11 @@
       <aside class="stagger-2">
         <div class="panel">
           <h2 class="panel-title">Statistiques du joueur</h2>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-            <span class="muted small">Points totaux</span>
-            <span class="strong small" style="color:var(--brand)">1 240 pts</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-            <span class="muted small">Rang actuel</span>
-            <span class="strong small">#14</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-            <span class="muted small">Défis validés</span>
-            <span class="strong small">12</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0">
-            <span class="muted small">Badges débloqués</span>
-            <span class="strong small">4 / 6</span>
-          </div>
+          <div class="stat-row"><span class="k">Points totaux</span><span class="v brand">1 240 pts</span></div>
+          <div class="stat-row"><span class="k">Rang actuel</span><span class="v">#14</span></div>
+          <div class="stat-row"><span class="k">Défis validés</span><span class="v">12</span></div>
+          <div class="stat-row"><span class="k">Badges débloqués</span><span class="v">4 / 6</span></div>
+          <div class="stat-bar" aria-hidden="true"><i></i></div>
         </div>
 
         <div class="panel">

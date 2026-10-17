@@ -17,7 +17,7 @@ Puis ouvrir [http://localhost:8080/bienvenue.html](http://localhost:8080/bienven
 1. **bienvenue.html** — page publique / marque  
 2. **inscription.html** ou **connexion.html** — auth (redirige vers les opérations)  
 3. **index.html** — centre des opérations  
-4. Challenges, parcours, leçons, scoreboard, profil, atelier IA, admin  
+4. Challenges, parcours, leçons, scoreboard, profil, admin  
 
 ## Pages disponibles
 
@@ -28,7 +28,7 @@ Puis ouvrir [http://localhost:8080/bienvenue.html](http://localhost:8080/bienven
 | `inscription.html` | Création de compte |
 | `index.html` | Centre de dispatch : mission en cours + liste |
 | `tableau-de-bord.html` | Espace apprenant : points, modules, historique |
-| `challenges.html` | Catalogue des défis (dont la section Atelier Intelligence Artificielle — étape 7) |
+| `challenges.html` | Catalogue des défis publiés |
 | `parcours.html` | Carte tactique Cyber Range interactive (secteurs, nœuds de défis, briefing drawer et vue catalogue) |
 | `defis.html` | Redirection de compatibilité vers le catalogue |
 | `defi-detail.html` | Fiche défi : lab, flag et démarche guidée pas à pas |
@@ -45,7 +45,7 @@ Puis ouvrir [http://localhost:8080/bienvenue.html](http://localhost:8080/bienven
 - `assets/carte.css` — styles de la carte tactique Cyber Range, du radar et du briefing drawer  
 - `assets/carte.js` — moteur interactif de la carte (pan/zoom, sélection des nœuds, filtrage et catalogue)  
 - `assets/nav.js` — menu mobile  
-- `assets/challenges.js` — catalogue de défis de démonstration (dont les six défis de l'atelier IA), partagé entre le catalogue, la fiche défi et les pages admin  
+- `assets/challenges.js` — catalogue de défis de démonstration, partagé entre le catalogue, la fiche défi et les pages admin  
 - `assets/lab.js` — client de l'atelier IA (connexion au service local `127.0.0.1:8090`)
 
 ## Administration et défis

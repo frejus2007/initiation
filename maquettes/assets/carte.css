@@ -458,6 +458,37 @@
   }
 }
 
+/* ==========================================================================
+   FINITIONS — relief, interactions et chiffres alignés
+   ========================================================================== */
+.stage-number b { color: var(--road-amber); }
+
+.roadmap-marker {
+  transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+              box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.roadmap-stage:hover .roadmap-marker { transform: scale(1.05); }
+
+.roadmap-card {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), var(--hairline, inset 0 1px 0 rgba(255, 255, 255, 0.045));
+}
+.stage-current .roadmap-card {
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5), 0 0 34px rgba(243, 185, 82, 0.14), var(--hairline, inset 0 1px 0 rgba(255, 255, 255, 0.045));
+}
+
+.roadmap-track-line,
+.roadmap-track-progress { border-radius: var(--r-pill); }
+
+.stage-challenge-item {
+  border-radius: var(--r-1);
+  transition: background 0.2s ease, padding 0.2s ease;
+}
+.stage-challenge-item:hover { background: rgba(255, 255, 255, 0.02); }
+.stage-current .stage-challenge-item:hover { background: rgba(243, 185, 82, 0.07); }
+
+.challenge-item-pts,
+.roadmap-card-meta { font-variant-numeric: tabular-nums; }
+
 @media (prefers-reduced-motion: reduce) {
   .kicker-pulse,
   .stage-current .roadmap-marker {

@@ -9,8 +9,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+  .landing-page .landing-hero { align-items: center; }
+  .landing-hero-grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: 56px; align-items: center;
+  }
+  .landing-hero-copy { max-width: 600px; }
+  .hero-console { position: relative; }
+  .hero-console .term { box-shadow: var(--elev-3); }
+  .hero-console .term-body { min-height: 172px; font-size: .76rem; line-height: 1.85; white-space: pre-wrap; }
+  .hero-badge {
+    position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px; border-radius: var(--r-1);
+    background: rgba(24, 20, 17, .94); border: 1px solid var(--border-strong);
+    font: 600 .66rem var(--mono); letter-spacing: .05em; color: var(--text);
+    box-shadow: var(--elev-2); backdrop-filter: blur(8px);
+  }
+  .hero-badge i { width: 6px; height: 6px; border-radius: var(--r-pill); background: currentColor; box-shadow: 0 0 8px currentColor; }
+  .hero-badge.is-pts { top: -15px; right: 20px; color: var(--signal); border-color: var(--signal-border); }
+  .hero-badge.is-flag { bottom: -15px; left: 20px; color: var(--success); border-color: var(--success-border); }
+  @media (max-width: 900px) {
+    .landing-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-console { max-width: 520px; }
+    .hero-badge.is-pts { top: -14px; right: 12px; }
+    .hero-badge.is-flag { left: 12px; bottom: -14px; }
+  }
+</style>
 </head>
 <body class="landing-page">
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
 <a class="skip" href="#contenu">Aller au contenu principal</a>
 
 <header class="topbar">
@@ -35,14 +71,30 @@
 
 <main id="contenu">
   <section class="landing-hero" aria-labelledby="hero-title">
-    <div class="container landing-hero-inner">
-      <p class="landing-brand">PIG<span>HACK</span></p>
-      <p class="eyebrow" style="margin-bottom:14px;letter-spacing:.14em">PHASE D'INITIATION — SAISON 2026</p>
-      <h1 id="hero-title">La cybersécurité,<br>expliquée en pratiquant.</h1>
-      <p class="landing-lead">Pas de théorie sans action. Sur PIGHACK, chaque leçon se termine par un flag à trouver sur votre propre terminal. Progressez à votre rythme, sans jargon inutile.</p>
-      <div class="landing-cta">
-        <a class="btn btn-primary btn-lg" href="inscription.html">Rejoindre la plateforme</a>
-        <a class="btn btn-outline btn-lg" href="connexion.html">Se connecter</a>
+    <div class="container landing-hero-grid">
+      <div class="landing-hero-copy">
+        <p class="landing-brand">PIG<span>HACK</span></p>
+        <p class="eyebrow" style="margin-bottom:14px;letter-spacing:.14em">PHASE D'INITIATION — SAISON 2026</p>
+        <h1 id="hero-title">La cybersécurité,<br>expliquée en pratiquant.</h1>
+        <p class="landing-lead">Pas de théorie sans action. Sur PIGHACK, chaque leçon se termine par un flag à trouver sur votre propre terminal. Progressez à votre rythme, sans jargon inutile.</p>
+        <div class="landing-cta">
+          <a class="btn btn-primary btn-lg" href="inscription.html">Rejoindre la plateforme</a>
+          <a class="btn btn-outline btn-lg" href="connexion.html">Se connecter</a>
+        </div>
+      </div>
+      <div class="hero-console" aria-hidden="true">
+        <span class="hero-badge is-pts"><i></i>1 240 PTS</span>
+        <div class="term">
+          <div class="term-head">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="term-title">pighack · range local</span>
+          </div>
+          <pre class="term-body"><span class="p">pighack@range</span>:<span class="c">~</span>$ cat mission_01.txt
+<span class="o">Objectif : afficher le contenu de mon premier dossier.</span>
+<span class="p">pighack@range</span>:<span class="c">~</span>$ submit PGH{premier_pas}
+<span class="f">✓ Flag accepté · +50 pts · étape 01 franchie</span><span class="term-cursor"></span></pre>
+        </div>
+        <span class="hero-badge is-flag"><i></i>FLAG VALIDÉ</span>
       </div>
     </div>
   </section>

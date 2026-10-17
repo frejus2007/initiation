@@ -20,6 +20,9 @@
     } catch (_) { return null; }
   }
 
+  // Maquette : navigation libre par défaut. Passer à true pour (ré)activer la protection.
+  var REQUIRE_AUTH = false;
+
   // Pages publiques : on ne vérifie pas
   var PUBLIC_PAGES = ["bienvenue.html", "connexion.html", "inscription.html"];
   var currentPage = window.location.pathname.split("/").pop() || "index.html";
@@ -27,7 +30,7 @@
   // ----- Logique de garde -----
   var isPublic = PUBLIC_PAGES.some(function (p) { return currentPage === p; });
 
-  if (!isPublic) {
+  if (REQUIRE_AUTH && !isPublic) {
     var session = readSession();
     if (!session) {
       // Sauvegarder la page demandée pour y revenir après connexion

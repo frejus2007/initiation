@@ -11,6 +11,10 @@
   var AUDIT_KEY = "pighack_audit_v1";
   var SETT_KEY = "pighack_settings_v1";
 
+  function safeSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (_) {}
+  }
+
   var seedChallenges = [
   {
     "id": "premier-pas-en-ligne-de-commande",
@@ -753,12 +757,12 @@
       var saved = JSON.parse(localStorage.getItem(CHAL_KEY));
       if (Array.isArray(saved) && saved.length > 0) return saved;
     } catch (_) {}
-    localStorage.setItem(CHAL_KEY, JSON.stringify(seedChallenges));
+    safeSet(CHAL_KEY, JSON.stringify(seedChallenges));
     return seedChallenges.slice();
   }
 
   function saveChallenges(items) {
-    localStorage.setItem(CHAL_KEY, JSON.stringify(items));
+    safeSet(CHAL_KEY, JSON.stringify(items));
   }
 
   function byId(id) {
@@ -817,7 +821,7 @@
   }
 
   function resetChallenges() {
-    localStorage.setItem(CHAL_KEY, JSON.stringify(seedChallenges));
+    safeSet(CHAL_KEY, JSON.stringify(seedChallenges));
     logAudit('Réinitialisation catalogue', 'Catalogue PIGHACK', 'Restauration des 16 défis officiels');
     return seedChallenges.slice();
   }
@@ -828,12 +832,12 @@
       var saved = JSON.parse(localStorage.getItem(SUBS_KEY));
       if (Array.isArray(saved)) return saved;
     } catch (_) {}
-    localStorage.setItem(SUBS_KEY, JSON.stringify(seedSubmissions));
+    safeSet(SUBS_KEY, JSON.stringify(seedSubmissions));
     return seedSubmissions.slice();
   }
 
   function saveSubmissions(list) {
-    localStorage.setItem(SUBS_KEY, JSON.stringify(list));
+    safeSet(SUBS_KEY, JSON.stringify(list));
   }
 
   function recordSubmission(entry) {
@@ -875,12 +879,12 @@
   }
 
   function clearSubmissions() {
-    localStorage.setItem(SUBS_KEY, JSON.stringify([]));
+    safeSet(SUBS_KEY, JSON.stringify([]));
     logAudit('Purger les soumissions', 'Journal', 'Suppression de toutes les tentatives');
   }
 
   function resetSubmissions() {
-    localStorage.setItem(SUBS_KEY, JSON.stringify(seedSubmissions));
+    safeSet(SUBS_KEY, JSON.stringify(seedSubmissions));
     logAudit('Réinitialisation soumissions', 'Journal', 'Restauration des tentatives de démonstration');
     return seedSubmissions.slice();
   }
@@ -891,12 +895,12 @@
       var saved = JSON.parse(localStorage.getItem(USERS_KEY));
       if (Array.isArray(saved)) return saved;
     } catch (_) {}
-    localStorage.setItem(USERS_KEY, JSON.stringify(seedUsers));
+    safeSet(USERS_KEY, JSON.stringify(seedUsers));
     return seedUsers.slice();
   }
 
   function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    safeSet(USERS_KEY, JSON.stringify(users));
   }
 
   function creditUserPoints(pseudo, pts) {
@@ -942,7 +946,7 @@
   }
 
   function resetUsers() {
-    localStorage.setItem(USERS_KEY, JSON.stringify(seedUsers));
+    safeSet(USERS_KEY, JSON.stringify(seedUsers));
     logAudit('Réinitialisation apprenants', 'Utilisateurs', 'Restauration des comptes de test');
     return seedUsers.slice();
   }
@@ -953,7 +957,7 @@
       var saved = JSON.parse(localStorage.getItem(AUDIT_KEY));
       if (Array.isArray(saved)) return saved;
     } catch (_) {}
-    localStorage.setItem(AUDIT_KEY, JSON.stringify(seedAudit));
+    safeSet(AUDIT_KEY, JSON.stringify(seedAudit));
     return seedAudit.slice();
   }
 
@@ -972,7 +976,7 @@
     };
     logs.unshift(entry);
     if (logs.length > 200) logs = logs.slice(0, 200);
-    localStorage.setItem(AUDIT_KEY, JSON.stringify(logs));
+    safeSet(AUDIT_KEY, JSON.stringify(logs));
     return entry;
   }
 
@@ -988,7 +992,7 @@
   function saveSettings(obj) {
     var current = getSettings();
     var updated = Object.assign({}, current, obj);
-    localStorage.setItem(SETT_KEY, JSON.stringify(updated));
+    safeSet(SETT_KEY, JSON.stringify(updated));
     logAudit('Configuration plateforme', 'Paramètres', 'Mise à jour des paramètres système');
     return updated;
   }
@@ -1012,7 +1016,7 @@
     if (Array.isArray(data.challenges)) saveChallenges(data.challenges);
     if (Array.isArray(data.submissions)) saveSubmissions(data.submissions);
     if (Array.isArray(data.users)) saveUsers(data.users);
-    if (Array.isArray(data.audit)) localStorage.setItem(AUDIT_KEY, JSON.stringify(data.audit));
+    if (Array.isArray(data.audit)) safeSet(AUDIT_KEY, JSON.stringify(data.audit));
     if (data.settings) saveSettings(data.settings);
     logAudit('Restauration globale', 'Plateforme', "Import d'une archive complete");
     return true;

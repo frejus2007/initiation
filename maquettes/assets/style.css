@@ -1478,6 +1478,16 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
 .sidebar a.active { background: #211A19; box-shadow: inset 2px 0 var(--brand); }
 .sidebar .count { color: #FF8967; background: rgba(241, 90, 56, .12); }
 
+/* États vides */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 48px 24px; text-align: center;
+  border: 1px dashed var(--border-strong); border-radius: var(--r-2);
+  background: rgba(24, 20, 17, .6); color: var(--text-muted);
+}
+.empty-state .ico { color: var(--text-subtle); }
+.empty-state strong { color: var(--text); font-size: 1rem; }
+
 /* ---------- Carte de progression de la page d'accueil ---------- */
 .home-map-page {
   min-height: 100vh;

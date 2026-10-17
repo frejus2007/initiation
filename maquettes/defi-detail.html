@@ -241,7 +241,19 @@
     if (sessionStorage.getItem(solvedKey) === '1') valid = true;
     if (!valid && tries >= 5) { bad.classList.add('is-visible'); bad.querySelector('.small').textContent = 'Limite de démonstration atteinte : réessayez dans 30 minutes (non simulé).'; return; }
     if (!valid) { tries += 1; sessionStorage.setItem(triesKey, String(tries)); }
-    else sessionStorage.setItem(solvedKey, '1');
+    if (window.PigHackChallenges && window.PigHackChallenges.recordSubmission) {
+      var currentSession = null;
+      try { currentSession = JSON.parse(sessionStorage.getItem('pighack_session') || '{}'); } catch (_) {}
+      var studentName = (currentSession && currentSession.name) || 'apprenant_invite';
+      window.PigHackChallenges.recordSubmission({
+        student: studentName,
+        challengeId: challenge ? challenge.id : 'blog-acces',
+        challengeTitle: challenge ? challenge.title : 'Le blog qui ne devait pas mentir',
+        flag: value,
+        isCorrect: valid,
+        pointsAwarded: valid ? (challenge ? challenge.points : 150) : 0
+      });
+    }
     refreshAttempts();
     ok.classList.toggle("is-visible", valid);
     bad.classList.toggle("is-visible", !valid);

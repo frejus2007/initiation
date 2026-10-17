@@ -46,27 +46,22 @@
   <!-- ========== Rail d'administration ========== -->
   <aside class="sidebar" aria-label="Sections d'administration">
     <div class="sidebar-title">Pilotage</div>
-    <a href="admin.html">Tableau de bord</a>
-    <a class="is-soon" href="admin.html" title="À venir dans une prochaine maquette">Statistiques</a>
+    <a href="admin.html?tab=dashboard">Tableau de bord</a>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Contenus</div>
-    <a class="is-soon" href="admin.html" title="À venir">Parcours &amp; modules</a>
-    <a class="is-soon" href="admin.html" title="À venir">Leçons</a>
-    <a href="admin-defi.html" class="active">Défis <span class="count">3 brouillons</span></a>
-    <a class="is-soon" href="admin.html" title="À venir">Missions</a>
-    <a class="is-soon" href="admin.html" title="À venir">Laboratoires</a>
+    <div class="sidebar-title">Contenus &amp; Défis</div>
+    <a href="admin.html?tab=defis" class="active">Gestion des défis</a>
+    <a class="btn btn-outline btn-sm btn-block" style="margin-top:6px;justify-content:center" href="admin-defi.html?new=1">+ Nouveau défi</a>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Communauté</div>
-    <a class="is-soon" href="admin.html" title="À venir">Utilisateurs</a>
-    <a class="is-soon" href="admin.html" title="À venir">Badges &amp; classement</a>
+    <div class="sidebar-title">Supervision &amp; Utilisateurs</div>
+    <a href="admin.html?tab=submissions">Journal soumissions</a>
+    <a href="admin.html?tab=users">Apprenants &amp; Rôles</a>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Exploitation</div>
-    <a class="is-soon" href="admin.html" title="À venir">Journal d'audit</a>
-    <a class="is-soon" href="admin.html" title="À venir">Sauvegardes</a>
-    <a class="is-soon" href="admin.html" title="À venir">Paramètres</a>
+    <div class="sidebar-title">Système &amp; Sécurité</div>
+    <a href="admin.html?tab=audit">Journal d'audit</a>
+    <a href="admin.html?tab=settings">Contrôle &amp; Paramètres</a>
   </aside>
 
   <!-- ========== Contenu ========== -->
@@ -113,9 +108,12 @@
           <div class="field">
             <label class="label" for="cat">Catégorie</label>
             <select class="select" id="cat">
-              <option>Linux</option><option>Réseaux</option>
-              <option selected>Web</option><option>Crypto</option>
-              <option>Analyse</option><option>Mission</option>
+              <option value="Linux">Linux</option>
+              <option value="Réseaux">Réseaux</option>
+              <option value="Web" selected>Web</option>
+              <option value="Crypto">Crypto</option>
+              <option value="Forensic">Forensic</option>
+              <option value="Mission">Mission</option>
             </select>
           </div>
         </div>
@@ -123,9 +121,12 @@
           <div class="field">
             <label class="label" for="niv">Niveau</label>
             <select class="select" id="niv">
-              <option>N1 — Découverte</option><option>N2 — Fondamentaux</option>
-              <option>N3 — Analyse</option><option>N4 — Mise en pratique contrôlée</option>
-              <option selected>N5 — Techniques combinées</option><option>N6 — Mission complète</option>
+              <option value="N1">N1 — Découverte</option>
+              <option value="N2">N2 — Fondamentaux</option>
+              <option value="N3">N3 — Analyse</option>
+              <option value="N4">N4 — Mise en pratique contrôlée</option>
+              <option value="N5" selected>N5 — Techniques combinées</option>
+              <option value="N6">N6 — Mission complète</option>
             </select>
           </div>
           <div class="field">
@@ -184,11 +185,12 @@
         <h2 class="panel-title">Sécurité &amp; validation</h2>
         <div class="form-row">
           <div class="field">
-            <label class="label" for="flag">Flag attendu (secret)</label>
-            <input class="input mono" id="flag" type="password" value="••••••••••••••••••••" autocomplete="new-password">
-            <p class="field-help">Valeur masquée et chiffrée côté base. Elle n'est <strong>jamais</strong>
-            renvoyée au navigateur et ne figure ni dans le JavaScript, ni dans le dépôt Git.
-            Elle est comparée côté serveur, en temps constant.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <label class="label" for="flag" style="margin-bottom:0">Flag attendu (secret)</label>
+              <button class="btn btn-ghost btn-sm" type="button" id="btn-toggle-flag-pwd" style="padding:2px 8px;font-size:.78rem">Afficher le flag</button>
+            </div>
+            <input class="input mono" id="flag" type="password" placeholder="Format imposé : PGH{...}" autocomplete="off" style="margin-top:6px">
+            <p class="field-help">Standard officiel <code>PGH{...}</code>. Comparé côté serveur en temps constant lors de la soumission de l'étudiant.</p>
           </div>
           <div class="field">
             <label class="label" for="limite">Tentatives maximales</label>
@@ -281,44 +283,160 @@
 <script src="assets/challenges.js"></script>
 <script>
 (function () {
-  var api = window.PigHackChallenges, form = document.getElementById('challenge-editor');
-  var fields = {title:'titre',category:'cat',level:'niv',points:'pts',objective:'obj',scenario:'scen',instructions:'cons',result:'res',flag:'flag',hint1:'i1',hint2:'i2',solution:'corr'};
-  var params = new URLSearchParams(location.search), id = params.get('id'), items = api.load();
-  var current = id ? items.find(function (x) { return x.id === id; }) : null;
-  if (current) Object.keys(fields).forEach(function (key) { var el = document.getElementById(fields[key]); if (el && current[key] != null) el.value = current[key]; });
-  if (current && Array.isArray(current.hints)) current.hints.slice(2).forEach(function (hint) {
-    hintNumber = (typeof hintNumber === 'number' ? hintNumber : 2) + 1;
-    var wrap = document.createElement('div'); wrap.className = 'field';
-    wrap.innerHTML = '<label class="label" for="i'+hintNumber+'">Indice '+hintNumber+' — réduction de points</label><input class="input" id="i'+hintNumber+'" data-extra-hint type="text"><p class="field-help">Coût indicatif : −'+(hintNumber*40)+' points cumulés.</p>';
-    wrap.querySelector('input').value = typeof hint === 'string' ? hint : hint.content || '';
-    form.querySelector('.panel:nth-of-type(4) .form-row').appendChild(wrap);
-  });
-  if (!id || params.has('new')) { document.getElementById('titre').value = ''; document.getElementById('flag').value = ''; document.title = 'Nouveau défi — PIGHACK'; }
-  if (current || !id) document.getElementById('editor-crumb').textContent = current ? current.title : 'Nouveau défi';
-  function collect(status) {
-    var title = document.getElementById('titre').value.trim(), flag = document.getElementById('flag').value.trim();
-    var pts = Number(document.getElementById('pts').value);
-    if (!title || !document.getElementById('obj').value.trim() || !document.getElementById('scen').value.trim() || !document.getElementById('cons').value.trim()) { alert('Renseignez le titre, l’objectif, le scénario et les consignes.'); return; }
-    if (!Number.isInteger(pts) || pts < 10) { alert('Les points doivent être un nombre entier supérieur ou égal à 10.'); return; }
-    if (!flag || !/^PGH\\{[^}]+\\}$/.test(flag)) { alert('Saisissez un flag unique au format PGH{...}.'); return; }
-    var record = current || {id:'challenge-' + Date.now()};
-    Object.keys(fields).forEach(function (key) { var el = document.getElementById(fields[key]); record[key] = el ? el.value.trim() : ''; });
-    record.hints = [record.hint1, record.hint2].concat(Array.prototype.map.call(form.querySelectorAll('[data-extra-hint]'), function (el) { return el.value.trim(); })).filter(Boolean);
-    record.status = status; record.points = pts; record.updatedAt = new Date().toISOString();
-    var index = items.findIndex(function (x) { return x.id === record.id; }); if (index < 0) items.push(record); else items[index] = record;
-    api.save(items); alert(status === 'published' ? 'Défi publié dans le catalogue de démonstration.' : 'Brouillon enregistré.');
-    location.href = 'admin.html';
+  "use strict";
+  var api = window.PigHackChallenges;
+  var form = document.getElementById('challenge-editor');
+  if (!api || !form) return;
+
+  var fields = {
+    title: 'titre',
+    category: 'cat',
+    level: 'niv',
+    points: 'pts',
+    objective: 'obj',
+    scenario: 'scen',
+    instructions: 'cons',
+    result: 'res',
+    flag: 'flag',
+    hint1: 'i1',
+    hint2: 'i2',
+    solution: 'corr'
+  };
+
+  var params = new URLSearchParams(location.search);
+  var id = params.get('id');
+  var isNew = params.has('new') || !id;
+
+  var current = !isNew ? api.byId(id) : null;
+
+  if (current) {
+    document.title = current.title + ' — Édition — PIGHACK';
+    document.getElementById('editor-crumb').textContent = current.title;
+    Object.keys(fields).forEach(function (key) {
+      var el = document.getElementById(fields[key]);
+      if (el && current[key] != null) {
+        el.value = current[key];
+      }
+    });
+    // Set level correctly if matches N1..N6
+    if (current.level) {
+      var nivEl = document.getElementById('niv');
+      var lvlCode = current.level.slice(0, 2);
+      for (var i = 0; i < nivEl.options.length; i++) {
+        if (nivEl.options[i].value === lvlCode || nivEl.options[i].value === current.level) {
+          nivEl.selectedIndex = i;
+          break;
+        }
+      }
+    }
+  } else {
+    document.title = 'Nouveau défi — PIGHACK';
+    document.getElementById('editor-crumb').textContent = 'Nouveau défi';
+    document.getElementById('titre').value = '';
+    document.getElementById('obj').value = '';
+    document.getElementById('scen').value = '';
+    document.getElementById('cons').value = '';
+    document.getElementById('flag').value = 'PGH{';
+    document.getElementById('pts').value = '100';
+    document.getElementById('i1').value = '';
+    document.getElementById('i2').value = '';
+    document.getElementById('corr').value = '';
   }
-  document.querySelectorAll('[data-save]').forEach(function (button) { button.addEventListener('click', function () { collect(button.dataset.save); }); });
-  document.querySelectorAll('[data-preview]').forEach(function (button) { button.addEventListener('click', function () { alert('Aperçu : ' + (document.getElementById('titre').value || 'Défi sans titre') + '\\n' + document.getElementById('obj').value); }); });
-  var hintNumber = Math.max(2, form.querySelectorAll('[data-extra-hint]').length + 2);
+
+  // Toggle flag visibility
+  var flagInput = document.getElementById('flag');
+  var toggleFlagBtn = document.getElementById('btn-toggle-flag-pwd');
+  if (toggleFlagBtn && flagInput) {
+    toggleFlagBtn.addEventListener('click', function () {
+      if (flagInput.type === 'password') {
+        flagInput.type = 'text';
+        toggleFlagBtn.textContent = 'Masquer le flag';
+      } else {
+        flagInput.type = 'password';
+        toggleFlagBtn.textContent = 'Afficher le flag';
+      }
+    });
+  }
+
+  function collect(status) {
+    var title = document.getElementById('titre').value.trim();
+    var flag = document.getElementById('flag').value.trim();
+    var pts = Number(document.getElementById('pts').value);
+    var obj = document.getElementById('obj').value.trim();
+    var scen = document.getElementById('scen').value.trim();
+    var cons = document.getElementById('cons').value.trim();
+
+    if (!title || !obj || !scen || !cons) {
+      alert('Veuillez renseigner le titre, l’objectif, le scénario et les consignes du défi.');
+      return;
+    }
+    if (!Number.isInteger(pts) || pts < 10) {
+      alert('Les points doivent être un nombre entier supérieur ou égal à 10.');
+      return;
+    }
+    if (!flag || !/^PGH\{[A-Za-z0-9_\-\.]+\}$/.test(flag)) {
+      alert('Format de flag non conforme ! Le flag doit obligatoirement respecter le format officiel PGH{...}. Exemple: PGH{premier_terminal}');
+      return;
+    }
+
+    var recordId = current ? current.id : ('defi-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+    if (!recordId) recordId = 'defi-' + Date.now();
+
+    var record = Object.assign({}, current || {}, {
+      id: recordId,
+      title: title,
+      category: document.getElementById('cat').value,
+      level: document.getElementById('niv').value,
+      points: pts,
+      objective: obj,
+      scenario: scen,
+      instructions: cons,
+      result: document.getElementById('res').value.trim(),
+      flag: flag,
+      hint1: document.getElementById('i1').value.trim(),
+      hint2: document.getElementById('i2').value.trim(),
+      solution: document.getElementById('corr').value.trim(),
+      status: status,
+      updatedAt: new Date().toISOString()
+    });
+
+    record.hints = [record.hint1, record.hint2].filter(Boolean);
+
+    if (current) {
+      api.update(record.id, record);
+      alert(status === 'published' ? 'Défi mis à jour et publié !' : 'Modifications enregistrées en brouillon.');
+    } else {
+      api.add(record);
+      alert(status === 'published' ? 'Nouveau défi créé et publié dans le catalogue !' : 'Nouveau défi enregistré comme brouillon.');
+    }
+
+    location.href = 'admin.html?tab=defis';
+  }
+
+  document.querySelectorAll('[data-save]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      collect(button.dataset.save);
+    });
+  });
+
+  document.querySelectorAll('[data-preview]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var t = document.getElementById('titre').value || 'Sans titre';
+      var o = document.getElementById('obj').value || 'Objectif non défini';
+      var f = document.getElementById('flag').value || 'Non défini';
+      alert('Prévisualisation du défi :\n\nTitre : ' + t + '\nObjectif : ' + o + '\nFlag : ' + f);
+    });
+  });
+
+  var hintCount = 2;
   document.getElementById('add-hint').addEventListener('click', function () {
-    hintNumber += 1;
+    hintCount += 1;
     var wrap = document.createElement('div');
     wrap.className = 'field';
-    wrap.innerHTML = '<label class="label" for="i'+hintNumber+'">Indice '+hintNumber+' — réduction de points</label><input class="input" id="i'+hintNumber+'" data-extra-hint type="text" placeholder="Saisissez un indice progressif"><p class="field-help">Coût indicatif : −'+(hintNumber*40)+' points cumulés.</p>';
+    wrap.innerHTML = '<label class="label" for="i' + hintCount + '">Indice ' + hintCount + ' — réduction de points</label><input class="input" id="i' + hintCount + '" data-extra-hint type="text" placeholder="Saisissez un indice progressif"><p class="field-help">Coût indicatif : −' + (hintCount * 40) + ' points cumulés.</p>';
     form.querySelector('.panel:nth-of-type(4) .form-row').appendChild(wrap);
   });
+
   form.addEventListener('submit', function (e) { e.preventDefault(); });
 })();
 </script>

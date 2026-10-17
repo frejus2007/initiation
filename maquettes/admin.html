@@ -3,11 +3,166 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Administration — PIGHACK</title>
+<title>Console d’administration — PIGHACK</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+/* Styles d'appoint pour la console d administration interactive */
+.admin-tab { display: none; }
+.admin-tab.active { display: block; animation: fadeIn .2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.tab-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 9px 12px;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: .9rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .18s ease;
+  text-decoration: none;
+}
+.tab-nav-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.tab-nav-btn.active {
+  background: var(--surface-2);
+  color: var(--brand);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+.tab-nav-btn .count {
+  font-size: .75rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: var(--text-muted);
+}
+.tab-nav-btn.active .count {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.table-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+}
+.filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mono-flag {
+  font-family: var(--mono);
+  font-size: .85rem;
+  letter-spacing: .02em;
+  background: rgba(0,0,0,.3);
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  display: inline-block;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.flag-masked {
+  font-style: italic;
+  color: var(--text-subtle);
+  letter-spacing: .15em;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .75);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+.modal-head h3 { margin: 0; font-size: 1.25rem; }
+
+.badge-clickable {
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .15s ease;
+}
+.badge-clickable:hover { opacity: .8; text-decoration: underline; }
+
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .75rem;
+  color: var(--success);
+  font-weight: 600;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: pulseLive 2s infinite ease-in-out;
+}
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(.85); }
+}
+
+.setting-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+.setting-card h3 { margin: 0 0 8px; font-size: 1.1rem; }
+.setting-card p { margin: 0 0 16px; color: var(--text-muted); font-size: .9rem; }
+</style>
 </head>
 <body>
 
@@ -22,18 +177,22 @@
 
 <a class="skip" href="#contenu">Aller au contenu principal</a>
 
+<!-- Topbar -->
 <header class="topbar">
   <div class="container-wide topbar-inner">
     <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
       <span class="brand-mark" aria-hidden="true">&gt;_</span>
       <span>PIG<span class="brand-bj">HACK</span></span>
     </a>
-    <nav class="nav" id="nav-principale" aria-label="Navigation d'administration">
-      <a href="admin.html" class="active" aria-current="page">Administration</a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation d administration">
+      <a href="admin.html" class="active" aria-current="page">Console d administration</a>
+      <a href="parcours.html">Parcours &amp; défis</a>
+      <a href="classement.html">Classement public</a>
     </nav>
     <div class="topbar-right">
-      <span class="chip chip-cat">Rôle : Administrateur</span>
-      <a class="btn btn-outline btn-sm" href="index.html">Voir le site</a>
+      <span class="chip chip-cat" style="background:rgba(241,90,56,.15);border-color:var(--brand)">Rôle : Super-Admin</span>
+      <a class="btn btn-outline btn-sm" href="index.html">← Voir le site</a>
+      <button class="btn btn-ghost btn-sm" type="button" data-action="logout" title="Déconnexion de l'administration">Déconnexion</button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
         <span></span><span></span><span></span>
       </button>
@@ -43,171 +202,489 @@
 
 <div class="container-wide admin-shell">
 
-  <!-- ========== Rail d'administration ========== -->
-  <aside class="sidebar" aria-label="Sections d'administration">
+  <!-- ========== Rail d administration (Onglets interactifs) ========== -->
+  <aside class="sidebar" aria-label="Sections d administration">
     <div class="sidebar-title">Pilotage</div>
-    <a href="admin.html" class="active">Tableau de bord</a>
-    <a class="is-soon" href="admin.html" title="À venir dans une prochaine maquette">Statistiques</a>
+    <button class="tab-nav-btn active" type="button" data-tab="dashboard">
+      <span>Tableau de bord</span>
+      <span class="count" id="badge-total-students">9</span>
+    </button>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Contenus</div>
-    <a class="is-soon" href="admin.html" title="À venir">Parcours &amp; modules</a>
-    <a class="is-soon" href="admin.html" title="À venir">Leçons</a>
-    <a href="admin-defi.html">Défis <span class="count">3 brouillons</span></a>
-    <a class="is-soon" href="admin.html" title="À venir">Missions</a>
-    <a class="is-soon" href="admin.html" title="À venir">Laboratoires</a>
+    <div class="sidebar-title">Contenus &amp; Défis</div>
+    <button class="tab-nav-btn" type="button" data-tab="defis">
+      <span>Gestion des défis</span>
+      <span class="count" id="badge-defis-count">16</span>
+    </button>
+    <a class="btn btn-outline btn-sm btn-block" style="margin-top:6px;justify-content:center" href="admin-defi.html?new=1">+ Nouveau défi</a>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Communauté</div>
-    <a class="is-soon" href="admin.html" title="À venir">Utilisateurs</a>
-    <a class="is-soon" href="admin.html" title="À venir">Badges &amp; classement</a>
+    <div class="sidebar-title">Supervision &amp; Utilisateurs</div>
+    <button class="tab-nav-btn" type="button" data-tab="submissions">
+      <span>Journal soumissions</span>
+      <span class="count" id="badge-subs-count" style="background:var(--brand-soft);color:var(--brand)">12</span>
+    </button>
+    <button class="tab-nav-btn" type="button" data-tab="users">
+      <span>Apprenants &amp; Rôles</span>
+      <span class="count" id="badge-users-count">9</span>
+    </button>
 
     <div class="sidebar-sep"></div>
-    <div class="sidebar-title">Exploitation</div>
-    <a class="is-soon" href="admin.html" title="À venir">Journal d'audit</a>
-    <a class="is-soon" href="admin.html" title="À venir">Sauvegardes</a>
-    <a class="is-soon" href="admin.html" title="À venir">Paramètres</a>
+    <div class="sidebar-title">Système &amp; Sécurité</div>
+    <button class="tab-nav-btn" type="button" data-tab="audit">
+      <span>Journal d'audit</span>
+      <span class="count" id="badge-audit-count">5</span>
+    </button>
+    <button class="tab-nav-btn" type="button" data-tab="settings">
+      <span>Contrôle &amp; Paramètres</span>
+      <span class="count">Système</span>
+    </button>
   </aside>
 
-  <!-- ========== Contenu ========== -->
-  <main id="contenu">
-    <div class="admin-head">
-      <div>
-        <h1>Tableau de bord</h1>
-        <p class="muted" style="margin:0">PIGHACK — Phase d'initiation · Semaine du 12 au 18 octobre 2026.</p>
-      </div>
-      <div class="row-actions">
-        <a class="btn btn-outline" href="admin.html">Créer un parcours</a>
-        <a class="btn btn-primary" href="admin-defi.html?new=1">Nouveau défi</a>
-      </div>
-    </div>
+  <!-- ========== Contenu Principal Dynamique ========== -->
+  <main id="contenu" style="min-width:0;flex:1">
 
-    <!-- Statistiques -->
-    <div class="stats" style="margin-bottom:26px">
-      <div class="stat"><div class="stat-value">312</div><div class="stat-label">Comptes étudiants actifs</div></div>
-      <div class="stat"><div class="stat-value">48 <span class="muted" style="font-size:1rem;font-weight:600">+3</span></div><div class="stat-label">Défis publiés</div></div>
-      <div class="stat"><div class="stat-value">1 087</div><div class="stat-label">Tentatives (7 jours)</div></div>
-      <div class="stat"><div class="stat-value">38 %</div><div class="stat-label">Taux de réussite moyen</div></div>
-    </div>
-
-    <!-- Défis récents -->
-    <section class="panel">
-      <h2 class="panel-title">Défis récents
-        <a class="btn btn-ghost btn-sm" href="admin-defi.html">Gérer les défis</a>
-      </h2>
-      <div class="table-wrap" style="border:none">
-        <table class="table" style="min-width:0">
-          <thead>
-            <tr><th>Défi</th><th>Catégorie</th><th>Niveau</th><th class="num">Points</th><th>État</th><th>Actions</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="strong">Le blog qui ne devait pas mentir</td>
-              <td><span class="chip chip-cat">Web</span></td>
-              <td><span class="level lv-n2">N2</span></td>
-              <td class="num">150</td>
-              <td><span class="status st-open">Publié</span></td>
-              <td class="row-actions">
-                <a class="btn btn-ghost btn-sm" href="admin-defi.html">Modifier</a>
-                <button class="btn btn-ghost btn-sm" type="button">Prévisualiser</button>
-                <button class="btn btn-ghost btn-sm" type="button">Archiver</button>
-              </td>
-            </tr>
-            <tr>
-              <td class="strong">La trace qui raconte tout</td>
-              <td><span class="chip chip-cat">Réseaux</span></td>
-              <td><span class="level lv-n3">N3</span></td>
-              <td class="num">200</td>
-              <td><span class="status st-open">Publié</span></td>
-              <td class="row-actions">
-                <a class="btn btn-ghost btn-sm" href="admin-defi.html">Modifier</a>
-                <button class="btn btn-ghost btn-sm" type="button">Prévisualiser</button>
-                <button class="btn btn-ghost btn-sm" type="button">Archiver</button>
-              </td>
-            </tr>
-            <tr>
-              <td class="strong">Opération Banque Fantôme — volet 2</td>
-              <td><span class="chip chip-cat">Mission</span></td>
-              <td><span class="level lv-n5">N5</span></td>
-              <td class="num">400</td>
-              <td><span class="status st-draft">Brouillon</span></td>
-              <td class="row-actions">
-                <a class="btn btn-outline btn-sm" href="admin-defi.html">Continuer</a>
-                <button class="btn btn-ghost btn-sm" type="button">Prévisualiser</button>
-              </td>
-            </tr>
-            <tr>
-              <td class="strong">Boîte à lettres</td>
-              <td><span class="chip chip-cat">Web</span></td>
-              <td><span class="level lv-n2">N2</span></td>
-              <td class="num">100</td>
-              <td><span class="status st-archived">Archivé</span></td>
-              <td class="row-actions">
-                <button class="btn btn-ghost btn-sm" type="button">Restaurer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ==================== VUE 1 : TABLEAU DE BORD ==================== -->
+    <div class="admin-tab active" id="tab-dashboard">
+      <div class="admin-head">
+        <div>
+          <h1>Tableau de bord de supervision</h1>
+          <p class="muted" style="margin:0">PIGHACK — Phase d'initiation · Contrôle centralisé de la plateforme et des soumissions en direct.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-outline" type="button" id="btn-quick-export">Exporter les données</button>
+          <a class="btn btn-primary" href="admin-defi.html?new=1">+ Nouveau défi</a>
+        </div>
       </div>
-      <p class="small muted" style="margin:12px 0 0">Un défi publié n'expose jamais son flag ni sa
-      correction dans les réponses API destinées aux étudiants.</p>
-    </section>
 
-    <div class="split">
-      <!-- Journal d'audit -->
-      <section class="panel">
-        <h2 class="panel-title">Journal d'audit <a class="btn btn-ghost btn-sm" href="admin.html">Tout afficher</a></h2>
+      <!-- Statistiques Globales en direct -->
+      <div class="stats" style="margin-bottom:26px">
+        <div class="stat">
+          <div class="stat-value" id="dash-stat-users">9 <span class="muted" style="font-size:.9rem;font-weight:600">+2 ajd</span></div>
+          <div class="stat-label">Comptes enregistrés</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="dash-stat-defis">16 <span class="muted" style="font-size:.9rem;font-weight:600" id="dash-stat-defis-sub">(9 pub. / 7 br.)</span></div>
+          <div class="stat-label">Défis au catalogue</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="dash-stat-subs">12 <span class="muted" style="font-size:.9rem;font-weight:600" id="dash-stat-success-rate">67 %</span></div>
+          <div class="stat-label">Tentatives &amp; Taux réussite</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="dash-stat-points">1 730</div>
+          <div class="stat-label">Points totaux distribués</div>
+        </div>
+      </div>
+
+      <!-- Soumissions récentes en direct -->
+      <section class="panel" style="margin-bottom:24px">
+        <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:12px">
+            <h2 style="margin:0;font-size:1.15rem">Dernières soumissions d'apprenants</h2>
+            <span class="live-indicator"><span class="live-dot"></span> Flux actif</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-switch-tab="submissions">Ouvrir tout le journal →</button>
+        </div>
         <div class="table-wrap" style="border:none">
-          <table class="table" style="min-width:0">
-            <thead><tr><th>Date</th><th>Administrateur</th><th>Action</th></tr></thead>
-            <tbody>
-              <tr><td class="small">16/10 · 09:12</td><td class="strong">admin@pighack</td><td>Publication du défi « La trace qui raconte tout »</td></tr>
-              <tr><td class="small">15/10 · 17:40</td><td class="strong">admin@pighack</td><td>Création du compte administrateur n°2 (action explicite)</td></tr>
-              <tr><td class="small">15/10 · 11:02</td><td class="strong">admin@pighack</td><td>Archive du défi « Boîte à lettres » (correction obsolète)</td></tr>
-              <tr><td class="small">14/10 · 03:00</td><td class="strong">Système</td><td>Sauvegarde automatique réussie (base de données)</td></tr>
-              <tr><td class="small">13/10 · 15:26</td><td class="strong">admin@pighack</td><td>Suspension du compte étudiant « xyz » (rappel des règles)</td></tr>
-            </tbody>
+          <table class="table" style="min-width:0" id="dash-recent-subs-table">
+            <thead>
+              <tr><th>Horodatage</th><th>Apprenant</th><th>Défi</th><th>Flag soumis</th><th>Résultat</th><th>Points</th></tr>
+            </thead>
+            <tbody><!-- Rempli en JS --></tbody>
           </table>
         </div>
-        <p class="small muted" style="margin:12px 0 0">Mots de passe et secrets ne sont jamais
-        journalisés.</p>
       </section>
 
-      <!-- Sauvegardes & labos -->
-      <aside>
+      <!-- Défis et Labs -->
+      <div class="split">
         <section class="panel">
-          <h2 class="panel-title">Sauvegardes</h2>
-          <dl class="meta">
-            <div class="meta-row"><dt>Dernière</dt><dd>Aujourd'hui · 03:00</dd></div>
-            <div class="meta-row"><dt>Rétention</dt><dd>14 jours</dd></div>
-            <div class="meta-row"><dt>Restauration</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Testée le 08/10</span></dd></div>
-          </dl>
-          <button class="btn btn-outline btn-sm btn-block" type="button" disabled title="Disponible après la mise en place du backend" style="margin-top:12px">Sauvegarde manuelle — backend requis</button>
+          <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+            <h2 style="margin:0;font-size:1.15rem">Défis récemment édités</h2>
+            <button class="btn btn-ghost btn-sm" type="button" data-switch-tab="defis">Gérer tous les défis</button>
+          </div>
+          <div class="table-wrap" style="border:none">
+            <table class="table" style="min-width:0" id="dash-recent-defis-table">
+              <thead><tr><th>Titre</th><th>Niveau</th><th>Points</th><th>État</th><th>Actions</th></tr></thead>
+              <tbody><!-- Rempli en JS --></tbody>
+            </table>
+          </div>
         </section>
 
-        <section class="panel">
-          <h2 class="panel-title">Laboratoires</h2>
-          <dl class="meta">
-            <div class="meta-row"><dt>blog-lab</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Disponible</span></dd></div>
-            <div class="meta-row"><dt>reseaux-lab</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Disponible</span></dd></div>
-            <div class="meta-row"><dt>banque-fantome</dt><dd><span class="status st-progress">Interrompu</span></dd></div>
-          </dl>
-          <p class="small muted" style="margin:12px 0 0">Labos séparés du serveur applicatif et de la
-          base de production. <a href="admin.html">Gérer</a></p>
-        </section>
-      </aside>
+        <aside>
+          <!-- État opérationnel -->
+          <section class="panel">
+            <h2 class="panel-title">État du Cyber Range</h2>
+            <dl class="meta">
+              <div class="meta-row"><dt>Compétition</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Ouverte aux soumissions</span></dd></div>
+              <div class="meta-row"><dt>Format officiel</dt><dd><code class="mono">PGH{...}</code> (Standardisé)</dd></div>
+              <div class="meta-row"><dt>Moteur de validation</dt><dd><span class="status st-done">Actif (Temps constant)</span></dd></div>
+              <div class="meta-row"><dt>Base de données</dt><dd><span class="chip chip-cat" style="background:rgba(92,184,138,.15);border-color:var(--success);color:var(--success)">Supabase Sync Ready</span></dd></div>
+            </dl>
+          </section>
+
+          <!-- Laboratoires isolés -->
+          <section class="panel">
+            <h2 class="panel-title">Laboratoires d'exercices</h2>
+            <dl class="meta">
+              <div class="meta-row"><dt>blog-lab</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Opérationnel</span></dd></div>
+              <div class="meta-row"><dt>reseaux-lab</dt><dd><span class="status st-done"><i class="mark-ok" aria-hidden="true"></i> Opérationnel</span></dd></div>
+              <div class="meta-row"><dt>banque-fantome</dt><dd><span class="status st-progress">Isolé au repos</span></dd></div>
+            </dl>
+          </section>
+        </aside>
+      </div>
     </div>
+
+    <!-- ==================== VUE 2 : GESTION DES DÉFIS ==================== -->
+    <div class="admin-tab" id="tab-defis">
+      <div class="admin-head">
+        <div>
+          <h1>Catalogue &amp; Gestion des défis</h1>
+          <p class="muted" style="margin:0">Contrôle complet sur les 16 défis officiels de la phase d'initiation PIGHACK : publication, modification, flags et barèmes.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-outline" type="button" id="btn-publish-all">Tout publier</button>
+          <button class="btn btn-outline" type="button" id="btn-reset-defis" title="Restaure la configuration d origine des 16 défis officiels">Réinitialiser catalogue</button>
+          <a class="btn btn-primary" href="admin-defi.html?new=1">+ Nouveau défi</a>
+        </div>
+      </div>
+
+      <!-- Filtres & Recherche -->
+      <div class="table-filter-bar">
+        <div class="filter-group">
+          <input class="input" id="filter-defi-search" type="text" placeholder="Rechercher un défi, un flag ou mot-clé..." style="min-width:260px">
+          <select class="select" id="filter-defi-cat">
+            <option value="">Toutes catégories</option>
+            <option value="Linux">Linux</option>
+            <option value="Web">Web</option>
+            <option value="Crypto">Crypto</option>
+            <option value="Réseaux">Réseaux</option>
+            <option value="Forensic">Forensic</option>
+            <option value="Mission">Mission</option>
+          </select>
+          <select class="select" id="filter-defi-status">
+            <option value="">Tous statuts</option>
+            <option value="published">Publiés uniquement</option>
+            <option value="draft">Brouillons</option>
+            <option value="archived">Archivés</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="small muted" id="defi-table-counter">16 défis affichés</span>
+          <button class="btn btn-ghost btn-sm" type="button" id="toggle-all-flags-btn">Afficher/Masquer flags</button>
+        </div>
+      </div>
+
+      <!-- Table complète des défis -->
+      <div class="panel">
+        <div class="table-wrap" style="border:none">
+          <table class="table" id="defis-full-table">
+            <thead>
+              <tr>
+                <th>Titre du défi</th>
+                <th>Catégorie</th>
+                <th>Niveau</th>
+                <th class="num">Points</th>
+                <th>Flag attendu (Secret)</th>
+                <th>État</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody><!-- Rempli en JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VUE 3 : JOURNAL DES SOUMISSIONS ==================== -->
+    <div class="admin-tab" id="tab-submissions">
+      <div class="admin-head">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+            <h1 style="margin:0">Journal des soumissions en temps réel</h1>
+            <span class="live-indicator"><span class="live-dot"></span> Traçabilité continue</span>
+          </div>
+          <p class="muted" style="margin:0">Visualisez chaque tentative d'étudiant, décelez les erreurs récurrentes ou démasquez les tentatives anormales.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-outline" type="button" id="btn-export-subs-csv">Exporter CSV</button>
+          <button class="btn btn-outline" type="button" id="btn-reset-subs">Restaurer démo</button>
+          <button class="btn btn-ghost" type="button" id="btn-clear-subs" style="color:var(--brand)">Purger journal</button>
+        </div>
+      </div>
+
+      <!-- Testeur de soumission interactif (Simulator) -->
+      <section class="panel" style="border-color:var(--signal-border);background:rgba(243,185,82,.03);margin-bottom:20px">
+        <h2 class="panel-title" style="font-size:1.05rem">Simulateur de soumission en direct (Test de validation)</h2>
+        <form id="sim-submission-form" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+          <div class="field" style="margin:0;flex:1;min-width:200px">
+            <label class="label" for="sim-challenge-select">Défi ciblé</label>
+            <select class="select" id="sim-challenge-select"><!-- Rempli en JS --></select>
+          </div>
+          <div class="field" style="margin:0;width:180px">
+            <label class="label" for="sim-student-name">Apprenant</label>
+            <input class="input" id="sim-student-name" type="text" value="sylvie_k">
+          </div>
+          <div class="field" style="margin:0;flex:1.5;min-width:240px">
+            <label class="label" for="sim-flag-input">Flag à tester</label>
+            <input class="input mono" id="sim-flag-input" type="text" placeholder="ex: PGH{...}">
+          </div>
+          <button class="btn btn-primary" type="submit">Tester &amp; enregistrer</button>
+        </form>
+        <div id="sim-result-feedback" style="margin-top:10px;display:none"></div>
+      </section>
+
+      <!-- Barre de filtrage du journal -->
+      <div class="table-filter-bar">
+        <div class="filter-group">
+          <input class="input" id="filter-subs-search" type="text" placeholder="Filtrer par apprenant ou défi..." style="min-width:260px">
+          <select class="select" id="filter-subs-result">
+            <option value="">Tous les résultats</option>
+            <option value="valid">Validés uniquement (✓)</option>
+            <option value="invalid">Échecs uniquement (✗)</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="small muted" id="subs-table-counter">12 soumissions enregistrées</span>
+          <button class="btn btn-ghost btn-sm" type="button" id="toggle-subs-flags-btn">Afficher/Masquer flags soumis</button>
+        </div>
+      </div>
+
+      <!-- Table du journal -->
+      <div class="panel">
+        <div class="table-wrap" style="border:none">
+          <table class="table" id="subs-full-table">
+            <thead>
+              <tr>
+                <th>Horodatage</th>
+                <th>Apprenant</th>
+                <th>Défi ciblé</th>
+                <th>Flag soumis</th>
+                <th>Résultat</th>
+                <th class="num">Points</th>
+                <th>IP / Source</th>
+                <th>Analyse</th>
+              </tr>
+            </thead>
+            <tbody><!-- Rempli en JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VUE 4 : APPRENANTS & RÔLES ==================== -->
+    <div class="admin-tab" id="tab-users">
+      <div class="admin-head">
+        <div>
+          <h1>Gestion des apprenants &amp; Accréditations</h1>
+          <p class="muted" style="margin:0">Supervisez les comptes inscrits, accordez les rôles (Tuteur / Administrateur) et gérez l'intégrité de la compétition.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-outline" type="button" id="btn-add-user-modal">+ Ajouter un compte</button>
+          <button class="btn btn-ghost" type="button" id="btn-reset-users">Restaurer comptes démo</button>
+        </div>
+      </div>
+
+      <!-- Formulaire d'ajout rapide -->
+      <div class="panel" id="add-user-panel" style="display:none;margin-bottom:20px;border-color:var(--brand-border)">
+        <h2 class="panel-title" style="font-size:1.05rem">Créer un nouveau compte apprenant ou encadrant</h2>
+        <form id="create-user-form" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+          <div class="field" style="margin:0;flex:1;min-width:180px">
+            <label class="label" for="new-user-pseudo">Pseudonyme</label>
+            <input class="input" id="new-user-pseudo" type="text" placeholder="ex: moussa_bj" required>
+          </div>
+          <div class="field" style="margin:0;flex:1.5;min-width:220px">
+            <label class="label" for="new-user-email">Adresse email</label>
+            <input class="input" id="new-user-email" type="email" placeholder="apprenant@ecole.bj" required>
+          </div>
+          <div class="field" style="margin:0;width:160px">
+            <label class="label" for="new-user-role">Rôle attribué</label>
+            <select class="select" id="new-user-role">
+              <option value="student" selected>Étudiant</option>
+              <option value="tutor">Tuteur</option>
+              <option value="admin">Administrateur</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" type="submit">Créer le compte</button>
+          <button class="btn btn-ghost" type="button" id="btn-cancel-add-user">Annuler</button>
+        </form>
+      </div>
+
+      <!-- Table des utilisateurs -->
+      <div class="panel">
+        <div class="table-wrap" style="border:none">
+          <table class="table" id="users-full-table">
+            <thead>
+              <tr>
+                <th>Pseudonyme &amp; Email</th>
+                <th>Rôle</th>
+                <th>Statut</th>
+                <th class="num">Points</th>
+                <th class="num">Résolus</th>
+                <th>Date d'inscription</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody><!-- Rempli en JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VUE 5 : JOURNAL D'AUDIT ==================== -->
+    <div class="admin-tab" id="tab-audit">
+      <div class="admin-head">
+        <div>
+          <h1>Journal d'audit de sécurité</h1>
+          <p class="muted" style="margin:0">Traçabilité immuable de chaque opération sensible effectuée sur la plateforme PIGHACK.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-outline" type="button" id="btn-export-audit">Exporter audit (JSON)</button>
+        </div>
+      </div>
+
+      <div class="callout callout-info" style="margin-bottom:20px">
+        <i class="ico" aria-hidden="true">ℹ</i>
+        <div><strong>Principe de sécurité :</strong> Les mots de passe et drapeaux secrets en clair ne sont jamais consignés dans les journaux d'audit. Seules les modifications de configuration, de barèmes et de statuts d'utilisateurs sont tracées.</div>
+      </div>
+
+      <div class="panel">
+        <div class="table-wrap" style="border:none">
+          <table class="table" id="audit-full-table">
+            <thead>
+              <tr>
+                <th>Date &amp; Heure</th>
+                <th>Opérateur</th>
+                <th>Action</th>
+                <th>Cible</th>
+                <th>Détails &amp; Contexte</th>
+              </tr>
+            </thead>
+            <tbody><!-- Rempli en JS --></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VUE 6 : PARAMÈTRES & CONTRÔLE TOTAL ==================== -->
+    <div class="admin-tab" id="tab-settings">
+      <div class="admin-head">
+        <div>
+          <h1>Contrôle global &amp; Paramètres système</h1>
+          <p class="muted" style="margin:0">Gestion du cycle de vie de la compétition, format imposé des flags, sauvegardes et synchronisation Supabase.</p>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-primary" type="button" id="btn-save-settings">Enregistrer les modifications</button>
+        </div>
+      </div>
+
+      <!-- Mode de la compétition -->
+      <div class="setting-card">
+        <h3>État de la compétition PIGHACK</h3>
+        <p>Détermine si les étudiants peuvent s'inscrire, consulter les énoncés et valider des drapeaux.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+            <input type="radio" name="comp_mode" value="open" checked>
+            <strong>🟢 Compétition Ouverte</strong> (Accès et soumissions autorisés)
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+            <input type="radio" name="comp_mode" value="paused">
+            <strong>🟡 En pause</strong> (Lecture seule, soumissions suspendues)
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+            <input type="radio" name="comp_mode" value="closed">
+            <strong>🔴 Clôturée</strong> (Résultats figés)
+          </label>
+          <label style="display:flex;gap:8px;align-items:center;cursor:pointer">
+            <input type="radio" name="comp_mode" value="maintenance">
+            <strong>🛠 Maintenance</strong> (Accès réservé aux administrateurs)
+          </label>
+        </div>
+      </div>
+
+      <!-- Standardisation des Flags -->
+      <div class="setting-card">
+        <h3>Format officiel des drapeaux (Flags)</h3>
+        <p>Tous les drapeaux de la phase d'initiation respectent strictement le standard <code>PGH{...}</code>.</p>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="cfg-flag-prefix">Préfixe obligatoire</label>
+            <input class="input mono" id="cfg-flag-prefix" type="text" value="PGH{" readonly style="background:rgba(0,0,0,.2)">
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-flag-regex">Expression régulière de contrôle</label>
+            <input class="input mono" id="cfg-flag-regex" type="text" value="^PGH\{[A-Za-z0-9_\-\.]+\}$">
+          </div>
+        </div>
+        <!-- Testeur interactif de format -->
+        <div style="background:rgba(0,0,0,.2);padding:12px 16px;border-radius:6px;border:1px solid var(--border-subtle);margin-top:10px">
+          <label class="label" for="tester-flag-input">Testeur interactif de conformité de flag :</label>
+          <div style="display:flex;gap:12px;align-items:center">
+            <input class="input mono" id="tester-flag-input" type="text" placeholder="Saisissez un flag de test, ex: PGH{premier_terminal}" style="flex:1">
+            <span id="tester-flag-badge" class="chip chip-cat" style="background:rgba(255,255,255,.05)">En attente</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barème & Indices -->
+      <div class="setting-card">
+        <h3>Règles d'évaluation &amp; Indices</h3>
+        <p>Ajustez les pénalités appliquées lorsque les étudiants débloquent un indice progressif.</p>
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="cfg-penalty-rate">Pénalité par palier d'indice (%)</label>
+            <input class="input" id="cfg-penalty-rate" type="number" value="20" min="0" max="50" step="5">
+            <p class="field-help">Exemple : pour 100 points, un indice à 20% déduit 20 points.</p>
+          </div>
+          <div class="field">
+            <label class="label" for="cfg-max-attempts">Tentatives max avant temporisation</label>
+            <input class="input" id="cfg-max-attempts" type="number" value="5" min="1" max="20">
+            <p class="field-help">Protection automatique contre les attaques par force brute.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sauvegarde & Restauration Totale -->
+      <div class="setting-card">
+        <h3>Sauvegarde &amp; Restauration des données</h3>
+        <p>Exportez l intégralité de la plateforme (16 défis, soumissions, utilisateurs et journaux) sous forme d'archive JSON, ou restaurez un instantané précédent.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-outline" type="button" id="btn-download-backup">Télécharger la sauvegarde complète (JSON)</button>
+          <label class="btn btn-ghost" style="cursor:pointer">
+            Restaurer une archive JSON…
+            <input type="file" id="file-import-backup" accept=".json" style="display:none">
+          </label>
+          <button class="btn btn-ghost" type="button" id="btn-factory-reset" style="color:var(--brand);margin-left:auto">Remise à zéro d usine de la plateforme</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
+<!-- Modal Prévisualisation Défi -->
+<div class="modal-backdrop" id="preview-modal" role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="preview-modal-title">Aperçu du défi</h3>
+      <button class="btn btn-ghost btn-sm" type="button" id="btn-close-preview" style="padding:4px 8px">&times; Fermer</button>
+    </div>
+    <div id="preview-modal-body">
+      <!-- Injecté en JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
 <footer class="footer">
   <div class="container-wide">
     <div class="footer-inner">
-      <div><strong>PIGHACK</strong> — Administration. Toutes les opérations sensibles sont journalisées.</div>
+      <div><strong>PIGHACK</strong> — Console d administration centrale · Phase d'initiation.</div>
       <div class="footer-links">
-        <a href="admin.html">Documentation admin</a>
-        <a href="admin.html">Procédure de restauration</a>
-        <a href="admin.html">Signaler un incident</a>
+        <a href="admin-defi.html?new=1">Créer un défi</a>
+        <a href="parcours.html">Voir le parcours</a>
+        <a href="index.html">Accueil public</a>
       </div>
     </div>
   </div>
@@ -218,24 +695,532 @@
 <script src="assets/challenges.js"></script>
 <script>
 (function () {
-  var api = window.PigHackChallenges, items = api.load(), tbody = document.querySelector('.table tbody');
-  if (!tbody) return;
-  var levels = {N1:'lv-n1',N2:'lv-n2',N3:'lv-n3',N4:'lv-n4',N5:'lv-n5',N6:'lv-n5'};
-  function esc(s) { return String(s || '').replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-  function render() {
-    items = api.load();
-    tbody.innerHTML = items.map(function (c) {
-      var state = c.status === 'published' ? ['Publié','st-open'] : c.status === 'archived' ? ['Archivé','st-archived'] : ['Brouillon','st-draft'];
-      var level = (c.level || 'N1').slice(0,2);
-      return '<tr><td class="strong">'+esc(c.title)+'</td><td><span class="chip chip-cat">'+esc(c.category)+'</span></td><td><span class="level '+(levels[level]||'lv-n2')+'">'+esc(level)+'</span></td><td class="num">'+Number(c.points||0)+'</td><td><span class="status '+state[1]+'">'+state[0]+'</span></td><td class="row-actions">'+(c.status==='archived' ? '<button class="btn btn-ghost btn-sm" data-action="restore" data-id="'+esc(c.id)+'">Restaurer</button>' : '<a class="btn btn-ghost btn-sm" href="admin-defi.html?id='+encodeURIComponent(c.id)+'">Modifier</a><button class="btn btn-ghost btn-sm" data-action="preview" data-id="'+esc(c.id)+'">Prévisualiser</button>'+(c.status==='published'?'<button class="btn btn-ghost btn-sm" data-action="archive" data-id="'+esc(c.id)+'">Archiver</button>':''))+'</td></tr>';
-    }).join('');
-    tbody.querySelectorAll('[data-action]').forEach(function (b) { b.addEventListener('click', function () { var c=items.find(function(x){return x.id===b.dataset.id;}); if(!c)return; if(b.dataset.action==='preview'){alert(c.title+'\\n\\n'+c.objective);return;} if(b.dataset.action==='archive' && !confirm('Archiver « '+c.title+' » ?'))return; c.status=b.dataset.action==='archive'?'archived':'published'; api.save(items); render(); }); });
+  "use strict";
+  var api = window.PigHackChallenges;
+  if (!api) return;
+
+  var showSecretFlags = false;
+  var showSubmittedFlags = false;
+
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, function (c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
   }
-  render();
-  var published=items.filter(function(c){return c.status==='published';}).length, drafts=items.filter(function(c){return c.status==='draft';}).length;
-  document.querySelectorAll('.stat-value')[1].innerHTML=published+' <span class="muted" style="font-size:1rem;font-weight:600">+'+drafts+'</span>';
-  document.querySelectorAll('.sidebar .count').forEach(function(el){el.textContent=drafts+' brouillon'+(drafts>1?'s':'');});
-  document.querySelectorAll('.btn').forEach(function(b){if(b.textContent.indexOf('Créer un parcours')>=0)b.addEventListener('click',function(e){e.preventDefault();alert('La gestion des parcours sera disponible dans une prochaine version.');});});
+
+  // --- Gestion des onglets ---
+  var navButtons = document.querySelectorAll('.tab-nav-btn');
+  var tabs = document.querySelectorAll('.admin-tab');
+
+  function selectTab(tabName) {
+    navButtons.forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('active', tab.id === 'tab-' + tabName);
+    });
+    // Rafraîchir les données de l'onglet actif
+    renderAll();
+  }
+
+  navButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      selectTab(btn.dataset.tab);
+    });
+  });
+
+  document.querySelectorAll('[data-switch-tab]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      selectTab(btn.dataset.switchTab);
+    });
+  });
+
+  // URL hash navigation support (?tab=... ou #tab-...)
+  var urlParams = new URLSearchParams(window.location.search);
+  var requestedTab = urlParams.get('tab') || window.location.hash.replace('#', '');
+  if (requestedTab && document.getElementById('tab-' + requestedTab)) {
+    selectTab(requestedTab);
+  }
+
+  // --- Rendu complet de toutes les données ---
+  function renderAll() {
+    var challenges = api.load();
+    var submissions = api.getSubmissions();
+    var users = api.getUsers();
+    var audit = api.getAuditLogs();
+    var settings = api.getSettings();
+
+    // 1. Badges sidebar
+    var publishedCount = challenges.filter(function (c) { return c.status === 'published'; }).length;
+    var draftCount = challenges.filter(function (c) { return c.status === 'draft'; }).length;
+    document.getElementById('badge-defis-count').textContent = challenges.length;
+    document.getElementById('badge-subs-count').textContent = submissions.length;
+    document.getElementById('badge-users-count').textContent = users.length;
+    document.getElementById('badge-total-students').textContent = users.length;
+    document.getElementById('badge-audit-count').textContent = audit.length;
+
+    // 2. KPIs Dashboard
+    document.getElementById('dash-stat-users').innerHTML = users.length + ' <span class="muted" style="font-size:.9rem;font-weight:600">(' + users.filter(function(u){return u.status==='active';}).length + ' actifs)</span>';
+    document.getElementById('dash-stat-defis').innerHTML = challenges.length + ' <span class="muted" style="font-size:.9rem;font-weight:600">(' + publishedCount + ' pub. / ' + draftCount + ' br.)</span>';
+    
+    var validSubs = submissions.filter(function (s) { return s.isCorrect; });
+    var rate = submissions.length > 0 ? Math.round((validSubs.length / submissions.length) * 100) : 0;
+    document.getElementById('dash-stat-subs').innerHTML = submissions.length + ' <span class="muted" style="font-size:.9rem;font-weight:600">' + rate + ' %</span>';
+
+    var totalPoints = users.reduce(function (sum, u) { return sum + (Number(u.points) || 0); }, 0);
+    document.getElementById('dash-stat-points').textContent = totalPoints.toLocaleString('fr-FR');
+
+    // 3. Dashboard tables
+    var dashSubsTbody = document.querySelector('#dash-recent-subs-table tbody');
+    if (dashSubsTbody) {
+      dashSubsTbody.innerHTML = submissions.slice(0, 5).map(function (s) {
+        var resBadge = s.isCorrect ? '<span class="status st-done">✓ Validé</span>' : '<span class="status st-draft" style="color:var(--brand)">✗ Échec</span>';
+        var maskedFlag = showSubmittedFlags ? esc(s.flag) : '••••••••••••';
+        return '<tr><td class="small muted">' + esc(s.timestamp.slice(11)) + '</td><td class="strong">' + esc(s.student) + '</td><td>' + esc(s.challengeTitle) + '</td><td><span class="mono-flag">' + maskedFlag + '</span></td><td>' + resBadge + '</td><td class="num strong">+' + Number(s.pointsAwarded || 0) + '</td></tr>';
+      }).join('') || '<tr><td colspan="6" class="muted" style="text-align:center">Aucune soumission enregistrée.</td></tr>';
+    }
+
+    var dashDefisTbody = document.querySelector('#dash-recent-defis-table tbody');
+    if (dashDefisTbody) {
+      dashDefisTbody.innerHTML = challenges.slice(0, 4).map(function (c) {
+        var state = c.status === 'published' ? ['Publié', 'st-open'] : c.status === 'archived' ? ['Archivé', 'st-archived'] : ['Brouillon', 'st-draft'];
+        return '<tr><td class="strong">' + esc(c.title) + '</td><td><span class="level lv-n' + (c.level||'N1').slice(1,2) + '">' + esc(c.level||'N1') + '</span></td><td class="num">' + Number(c.points) + '</td><td><span class="status ' + state[1] + '">' + state[0] + '</span></td><td class="row-actions"><a class="btn btn-ghost btn-sm" href="admin-defi.html?id=' + encodeURIComponent(c.id) + '">Modifier</a></td></tr>';
+      }).join('');
+    }
+
+    // 4. Vue Défis complète
+    renderDefisTable(challenges);
+
+    // 5. Vue Soumissions complète
+    renderSubmissionsTable(submissions);
+
+    // 6. Vue Apprenants complète
+    renderUsersTable(users);
+
+    // 7. Vue Audit complète
+    renderAuditTable(audit);
+
+    // 8. Remplir sélecteur de défi dans le simulateur
+    var simSelect = document.getElementById('sim-challenge-select');
+    if (simSelect && simSelect.children.length === 0) {
+      simSelect.innerHTML = challenges.map(function (c) {
+        return '<option value="' + esc(c.id) + '">' + esc(c.title) + ' (' + Number(c.points) + ' pts)</option>';
+      }).join('');
+    }
+  }
+
+  // --- Rendu Table Défis ---
+  function renderDefisTable(items) {
+    var tbody = document.querySelector('#defis-full-table tbody');
+    if (!tbody) return;
+
+    var searchVal = (document.getElementById('filter-defi-search').value || '').toLowerCase().trim();
+    var catVal = document.getElementById('filter-defi-cat').value;
+    var statusVal = document.getElementById('filter-defi-status').value;
+
+    var filtered = items.filter(function (c) {
+      if (searchVal && (c.title.toLowerCase().indexOf(searchVal) < 0 && (c.flag||'').toLowerCase().indexOf(searchVal) < 0 && (c.id||'').toLowerCase().indexOf(searchVal) < 0)) return false;
+      if (catVal && c.category !== catVal) return false;
+      if (statusVal && c.status !== statusVal) return false;
+      return true;
+    });
+
+    document.getElementById('defi-table-counter').textContent = filtered.length + ' défi' + (filtered.length > 1 ? 's affichés' : ' affiché');
+
+    var levels = {N1:'lv-n1',N2:'lv-n2',N3:'lv-n3',N4:'lv-n4',N5:'lv-n5',N6:'lv-n5'};
+
+    tbody.innerHTML = filtered.map(function (c) {
+      var state = c.status === 'published' ? ['Publié', 'st-open', 'draft'] : c.status === 'archived' ? ['Archivé', 'st-archived', 'published'] : ['Brouillon', 'st-draft', 'published'];
+      var flagDisplay = showSecretFlags ? esc(c.flag || 'PGH{...}') : '<span class="flag-masked">••••••••••••••••••••</span>';
+
+      return '<tr>' +
+        '<td class="strong"><a href="admin-defi.html?id=' + encodeURIComponent(c.id) + '" style="color:inherit;text-decoration:none">' + esc(c.title) + '</a><br><span class="small muted">ID: ' + esc(c.id) + '</span></td>' +
+        '<td><span class="chip chip-cat">' + esc(c.category) + '</span></td>' +
+        '<td><span class="level ' + (levels[(c.level||'N1').slice(0,2)]||'lv-n2') + '">' + esc(c.level) + '</span></td>' +
+        '<td class="num strong">' + Number(c.points || 0) + '</td>' +
+        '<td><span class="mono-flag">' + flagDisplay + '</span></td>' +
+        '<td><span class="status ' + state[1] + ' badge-clickable" title="Cliquer pour changer le statut" data-toggle-status="' + esc(c.id) + '" data-next-status="' + state[2] + '">' + state[0] + '</span></td>' +
+        '<td class="row-actions">' +
+          '<a class="btn btn-ghost btn-sm" href="admin-defi.html?id=' + encodeURIComponent(c.id) + '">Modifier</a>' +
+          '<button class="btn btn-ghost btn-sm" type="button" data-preview-defi="' + esc(c.id) + '">Aperçu</button>' +
+          '<button class="btn btn-ghost btn-sm" type="button" data-duplicate-defi="' + esc(c.id) + '">Dupliquer</button>' +
+          '<button class="btn btn-ghost btn-sm" type="button" data-delete-defi="' + esc(c.id) + '" style="color:var(--brand)">&times;</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="7" class="muted" style="text-align:center;padding:24px">Aucun défi ne correspond aux critères.</td></tr>';
+
+    // Événements sur la table des défis
+    tbody.querySelectorAll('[data-toggle-status]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        api.toggleStatus(btn.dataset.toggleStatus, btn.dataset.nextStatus);
+        renderAll();
+      });
+    });
+
+    tbody.querySelectorAll('[data-preview-defi]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = api.byId(btn.dataset.previewDefi);
+        if (item) openPreviewModal(item);
+      });
+    });
+
+    tbody.querySelectorAll('[data-duplicate-defi]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = api.byId(btn.dataset.duplicateDefi);
+        if (!item) return;
+        var clone = Object.assign({}, item, {
+          id: item.id + '-copie-' + Date.now().toString().slice(-4),
+          title: item.title + ' (Copie)',
+          status: 'draft'
+        });
+        api.add(clone);
+        renderAll();
+      });
+    });
+
+    tbody.querySelectorAll('[data-delete-defi]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = api.byId(btn.dataset.deleteDefi);
+        if (item && confirm('Confirmez-vous la suppression du défi « ' + item.title + ' » ?')) {
+          api.remove(item.id);
+          renderAll();
+        }
+      });
+    });
+  }
+
+  // --- Rendu Table Soumissions ---
+  function renderSubmissionsTable(items) {
+    var tbody = document.querySelector('#subs-full-table tbody');
+    if (!tbody) return;
+
+    var searchVal = (document.getElementById('filter-subs-search').value || '').toLowerCase().trim();
+    var resultVal = document.getElementById('filter-subs-result').value;
+
+    var filtered = items.filter(function (s) {
+      if (searchVal && (s.student.toLowerCase().indexOf(searchVal) < 0 && s.challengeTitle.toLowerCase().indexOf(searchVal) < 0 && (s.flag||'').toLowerCase().indexOf(searchVal) < 0)) return false;
+      if (resultVal === 'valid' && !s.isCorrect) return false;
+      if (resultVal === 'invalid' && s.isCorrect) return false;
+      return true;
+    });
+
+    document.getElementById('subs-table-counter').textContent = filtered.length + ' soumission' + (filtered.length > 1 ? 's enregistrées' : ' enregistrée');
+
+    tbody.innerHTML = filtered.map(function (s) {
+      var resBadge = s.isCorrect ? '<span class="status st-done">✓ Validé</span>' : '<span class="status st-draft" style="color:var(--brand)">✗ Échec</span>';
+      var flagDisplay = showSubmittedFlags ? esc(s.flag) : '<span class="flag-masked">••••••••••••••••</span>';
+
+      return '<tr>' +
+        '<td class="small muted">' + esc(s.timestamp) + '</td>' +
+        '<td class="strong">' + esc(s.student) + '<br><span class="small muted">' + esc(s.email || '') + '</span></td>' +
+        '<td>' + esc(s.challengeTitle) + '</td>' +
+        '<td><span class="mono-flag">' + flagDisplay + '</span></td>' +
+        '<td>' + resBadge + '</td>' +
+        '<td class="num strong">+' + Number(s.pointsAwarded || 0) + '</td>' +
+        '<td class="small mono">' + esc(s.ip || '10.10.14.x') + '</td>' +
+        '<td class="small muted">' + esc(s.note || (s.isCorrect ? 'Score crédité' : 'Flag incorrect')) + '</td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="8" class="muted" style="text-align:center;padding:24px">Aucune soumission ne correspond aux filtres.</td></tr>';
+  }
+
+  // --- Rendu Table Utilisateurs ---
+  function renderUsersTable(items) {
+    var tbody = document.querySelector('#users-full-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = items.map(function (u) {
+      var roleBadge = u.role === 'admin' ? '<span class="chip chip-cat" style="background:rgba(241,90,56,.15);border-color:var(--brand)">Super-Admin</span>' : u.role === 'tutor' ? '<span class="chip chip-cat" style="background:rgba(243,185,82,.15);border-color:var(--signal)">Tuteur</span>' : '<span class="chip chip-slate">Étudiant</span>';
+      var statusBadge = u.status === 'suspended' ? '<span class="status st-archived badge-clickable" data-user-action="activate" data-user="' + esc(u.pseudo) + '">Suspendu</span>' : '<span class="status st-done badge-clickable" data-user-action="suspend" data-user="' + esc(u.pseudo) + '">Actif</span>';
+
+      return '<tr>' +
+        '<td class="strong">' + esc(u.pseudo) + '<br><span class="small muted">' + esc(u.email) + '</span></td>' +
+        '<td>' + roleBadge + '</td>' +
+        '<td>' + statusBadge + '</td>' +
+        '<td class="num strong">' + Number(u.points || 0) + '</td>' +
+        '<td class="num">' + Number(u.solvedCount || 0) + '</td>' +
+        '<td class="small muted">' + esc(u.joinedAt || '2026-10-01') + '</td>' +
+        '<td class="row-actions">' +
+          '<button class="btn btn-ghost btn-sm" type="button" data-user-action="toggle-role" data-user="' + esc(u.pseudo) + '">Changer rôle</button>' +
+          '<button class="btn btn-ghost btn-sm" type="button" data-user-action="add-points" data-user="' + esc(u.pseudo) + '">+50 pts</button>' +
+          (u.pseudo !== 'admin@pighack' ? '<button class="btn btn-ghost btn-sm" type="button" data-user-action="delete" data-user="' + esc(u.pseudo) + '" style="color:var(--brand)">&times;</button>' : '') +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    tbody.querySelectorAll('[data-user-action]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var pseudo = btn.dataset.user;
+        var action = btn.dataset.userAction;
+        var u = items.find(function (x) { return x.pseudo === pseudo; });
+        if (!u) return;
+
+        if (action === 'suspend') {
+          api.updateUser(pseudo, { status: 'suspended' });
+        } else if (action === 'activate') {
+          api.updateUser(pseudo, { status: 'active' });
+        } else if (action === 'toggle-role') {
+          var nextRole = u.role === 'student' ? 'tutor' : u.role === 'tutor' ? 'admin' : 'student';
+          api.updateUser(pseudo, { role: nextRole });
+        } else if (action === 'add-points') {
+          api.updateUser(pseudo, { points: (Number(u.points) || 0) + 50 });
+        } else if (action === 'delete') {
+          if (confirm('Supprimer définitivement cet apprenant « ' + pseudo + ' » ?')) {
+            api.removeUser(pseudo);
+          }
+        }
+        renderAll();
+      });
+    });
+  }
+
+  // --- Rendu Table Audit ---
+  function renderAuditTable(items) {
+    var tbody = document.querySelector('#audit-full-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = items.map(function (a) {
+      return '<tr>' +
+        '<td class="small muted">' + esc(a.timestamp) + '</td>' +
+        '<td class="strong">' + esc(a.operator) + '</td>' +
+        '<td><span class="chip chip-slate">' + esc(a.action) + '</span></td>' +
+        '<td class="strong">' + esc(a.target) + '</td>' +
+        '<td class="small">' + esc(a.details) + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  // --- Filtrage dynamique ---
+  ['filter-defi-search', 'filter-defi-cat', 'filter-defi-status'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function () { renderDefisTable(api.load()); });
+  });
+
+  ['filter-subs-search', 'filter-subs-result'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function () { renderSubmissionsTable(api.getSubmissions()); });
+  });
+
+  // --- Bascule d'affichage des drapeaux secrets ---
+  document.getElementById('toggle-all-flags-btn').addEventListener('click', function () {
+    showSecretFlags = !showSecretFlags;
+    this.textContent = showSecretFlags ? 'Masquer flags' : 'Afficher flags';
+    renderDefisTable(api.load());
+  });
+
+  document.getElementById('toggle-subs-flags-btn').addEventListener('click', function () {
+    showSubmittedFlags = !showSubmittedFlags;
+    this.textContent = showSubmittedFlags ? 'Masquer flags soumis' : 'Afficher flags soumis';
+    renderSubmissionsTable(api.getSubmissions());
+    var dashSubsTbody = document.querySelector('#dash-recent-subs-table tbody');
+    if (dashSubsTbody) renderAll();
+  });
+
+  // --- Tout publier / Réinitialiser défis ---
+  document.getElementById('btn-publish-all').addEventListener('click', function () {
+    var items = api.load();
+    items.forEach(function (c) { c.status = 'published'; });
+    api.save(items);
+    api.logAudit('Publication groupée', 'Catalogue', 'Tous les défis sont désormais publiés');
+    renderAll();
+  });
+
+  document.getElementById('btn-reset-defis').addEventListener('click', function () {
+    if (confirm('Réinitialiser le catalogue avec les 16 défis officiels d origine ? Vos modifications manuelles seront remplacées.')) {
+      api.resetChallenges();
+      renderAll();
+    }
+  });
+
+  // --- Actions Soumissions : Exporter, Purger, Restaurer ---
+  document.getElementById('btn-export-subs-csv').addEventListener('click', function () {
+    var subs = api.getSubmissions();
+    var headers = ['ID;Date;Apprenant;Email;Defi;Flag;Correct;Points;IP;Note'];
+    var rows = subs.map(function (s) {
+        return [s.id, s.timestamp, s.student, s.email, s.challengeTitle, s.flag, s.isCorrect ? 'OUI' : 'NON', s.pointsAwarded, s.ip, s.note].join(';');
+      });
+    var csv = headers.concat(rows).join(String.fromCharCode(10));
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'pighack_soumissions_' + new Date().toISOString().slice(0, 10) + '.csv';
+    link.click();
+  });
+
+  document.getElementById('btn-clear-subs').addEventListener('click', function () {
+    if (confirm('Voulez-vous vraiment purger tout le journal des soumissions ?')) {
+      api.clearSubmissions();
+      renderAll();
+    }
+  });
+
+  document.getElementById('btn-reset-subs').addEventListener('click', function () {
+    api.resetSubmissions();
+    renderAll();
+  });
+
+  // --- Simulateur de soumission interactif ---
+  var simForm = document.getElementById('sim-submission-form');
+  var simFeedback = document.getElementById('sim-result-feedback');
+
+  simForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var chalId = document.getElementById('sim-challenge-select').value;
+    var student = document.getElementById('sim-student-name').value.trim() || 'sylvie_k';
+    var flag = document.getElementById('sim-flag-input').value.trim();
+
+    if (!flag) {
+      alert('Veuillez saisir un flag pour tester la validation.');
+      return;
+    }
+
+    var recorded = api.recordSubmission({
+      student: student,
+      challengeId: chalId,
+      flag: flag
+    });
+
+    simFeedback.style.display = 'block';
+    if (recorded.isCorrect) {
+      simFeedback.innerHTML = '<div class="callout callout-success" style="margin:0"><i class="mark-ok"></i><strong>FLAG VALIDÉ !</strong> + ' + recorded.pointsAwarded + ' points crédités à ' + esc(recorded.student) + '. Enregistré dans le journal.</div>';
+    } else {
+      simFeedback.innerHTML = '<div class="callout callout-danger" style="margin:0"><i class="mark-block"></i><strong>ÉCHEC DE VALIDATION.</strong> Le flag soumis ne correspond pas au secret attendu pour ce défi. Tentative journalisée.</div>';
+    }
+
+    renderAll();
+  });
+
+  // --- Gestion des utilisateurs : Ajout & Réinitialisation ---
+  var addUserPanel = document.getElementById('add-user-panel');
+  document.getElementById('btn-add-user-modal').addEventListener('click', function () {
+    addUserPanel.style.display = addUserPanel.style.display === 'none' ? 'block' : 'none';
+  });
+  document.getElementById('btn-cancel-add-user').addEventListener('click', function () {
+    addUserPanel.style.display = 'none';
+  });
+
+  document.getElementById('create-user-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var pseudo = document.getElementById('new-user-pseudo').value.trim();
+    var email = document.getElementById('new-user-email').value.trim();
+    var role = document.getElementById('new-user-role').value;
+
+    if (!pseudo || !email) return;
+    api.addUser({ pseudo: pseudo, email: email, role: role, status: 'active', points: 0, solvedCount: 0 });
+    this.reset();
+    addUserPanel.style.display = 'none';
+    renderAll();
+  });
+
+  document.getElementById('btn-reset-users').addEventListener('click', function () {
+    if (confirm('Restaurer la liste des utilisateurs par défaut ?')) {
+      api.resetUsers();
+      renderAll();
+    }
+  });
+
+  // --- Modal Aperçu Défi ---
+  var modal = document.getElementById('preview-modal');
+  var modalTitle = document.getElementById('preview-modal-title');
+  var modalBody = document.getElementById('preview-modal-body');
+
+  function openPreviewModal(c) {
+    modalTitle.textContent = c.title;
+    modalBody.innerHTML =
+      '<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">' +
+        '<span class="chip chip-cat">' + esc(c.category) + '</span>' +
+        '<span class="level lv-n' + (c.level||'N1').slice(1,2) + '">' + esc(c.level) + '</span>' +
+        '<span class="strong">' + Number(c.points) + ' points</span>' +
+        '<span class="status ' + (c.status === 'published' ? 'st-open' : 'st-draft') + '" style="margin-left:auto">' + esc(c.status) + '</span>' +
+      '</div>' +
+      '<h4 style="margin:14px 0 6px">Objectif</h4><p>' + esc(c.objective) + '</p>' +
+      '<h4 style="margin:14px 0 6px">Scénario fictif</h4><p class="small muted">' + esc(c.scenario) + '</p>' +
+      '<h4 style="margin:14px 0 6px">Consignes pratiques</h4><pre class="mono" style="background:rgba(0,0,0,.3);padding:12px;border-radius:6px;white-space:pre-wrap">' + esc(c.instructions) + '</pre>' +
+      '<h4 style="margin:14px 0 6px">Flag attendu (Secret)</h4><p><code class="mono" style="color:var(--signal);font-weight:700">' + esc(c.flag) + '</code></p>' +
+      '<h4 style="margin:14px 0 6px">Indice 1</h4><p class="small">' + esc(c.hint1 || 'Aucun indice configuré.') + '</p>' +
+      '<h4 style="margin:14px 0 6px">Correction</h4><p class="small muted">' + esc(c.solution || 'Non renseignée.') + '</p>' +
+      '<div style="margin-top:20px;text-align:right">' +
+        '<a class="btn btn-primary btn-sm" href="admin-defi.html?id=' + encodeURIComponent(c.id) + '">Modifier dans l éditeur</a>' +
+      '</div>';
+    modal.classList.add('open');
+  }
+
+  document.getElementById('btn-close-preview').addEventListener('click', function () {
+    modal.classList.remove('open');
+  });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+
+  // --- Testeur interactif de flag (Regex) ---
+  var testerInput = document.getElementById('tester-flag-input');
+  var testerBadge = document.getElementById('tester-flag-badge');
+  testerInput.addEventListener('input', function () {
+    var val = this.value.trim();
+    if (!val) {
+      testerBadge.textContent = 'En attente';
+      testerBadge.style.color = '';
+      testerBadge.style.background = 'rgba(255,255,255,.05)';
+      return;
+    }
+    var regex = /^PGH\{[A-Za-z0-9_\-\.]+\}$/;
+    if (regex.test(val)) {
+      testerBadge.textContent = '✓ Format PGH{...} Conforme';
+      testerBadge.style.color = 'var(--success)';
+      testerBadge.style.background = 'rgba(92,184,138,.15)';
+    } else {
+      testerBadge.textContent = '✗ Format Rejeté (Attendu: PGH{caractères})';
+      testerBadge.style.color = 'var(--brand)';
+      testerBadge.style.background = 'rgba(241,90,56,.15)';
+    }
+  });
+
+  // --- Sauvegarde & Restauration Totale ---
+  document.getElementById('btn-download-backup').addEventListener('click', function () {
+    var data = api.exportAll();
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'pighack_backup_complet_' + new Date().toISOString().slice(0, 10) + '.json';
+    link.click();
+  });
+
+  document.getElementById('file-import-backup').addEventListener('change', function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      try {
+        var parsed = JSON.parse(evt.target.result);
+        api.importAll(parsed);
+        alert('Sauvegarde restaurée avec succès !');
+        renderAll();
+      } catch (err) {
+        alert('Erreur lors de la lecture du fichier : ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('btn-factory-reset').addEventListener('click', function () {
+    if (confirm('ATTENTION : Voulez-vous réinitialiser TOUTE la plateforme à son état d usine (16 défis, données de test, réglages) ?')) {
+      if (confirm('Dernière confirmation : toutes vos modifications manuelles non sauvegardées seront effacées.')) {
+        localStorage.clear();
+        api.resetChallenges();
+        api.resetSubmissions();
+        api.resetUsers();
+        alert('Plateforme PIGHACK réinitialisée.');
+        renderAll();
+      }
+    }
+  });
+
+  document.getElementById('btn-quick-export').addEventListener('click', function () {
+    document.getElementById('btn-download-backup').click();
+  });
+
+  // Initialisation
+  renderAll();
 })();
 </script>
 </body>

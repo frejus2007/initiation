@@ -1,0 +1,6 @@
+# PIGHACK — Atelier IA (service de laboratoire)
+# Serveur local qui héberge les 6 défis « IA » (assistants scriptés).
+fastapi>=0.111,<0.116
+uvicorn[standard]>=0.30,<0.35
+httpx>=0.27,<0.29
+python-dotenv>=1.0,<2.0

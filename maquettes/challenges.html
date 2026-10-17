@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Challenges — PIGHACK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .cat-block { margin-top: 34px; }
+  .cat-block:first-of-type { margin-top: 0; }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .challenge-card { display: flex; flex-direction: column; height: 100%; }
+  .challenge-card .card-foot { margin-top: auto; }
+  .ia-panel { border-color: var(--brand-border); box-shadow: 0 18px 42px -26px rgba(34, 197, 94, .35); }
+  .state-locked { opacity: .55; }
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-a"></div>
+  <div class="ambient-orb ambient-orb-b"></div>
+  <div class="ambient-orb ambient-orb-c"></div>
+  <div class="ambient-grid"></div>
+  <div class="ambient-wires"></div>
+  <div class="ambient-scan"></div>
+</div>
+
+<a class="skip" href="#contenu">Aller au contenu principal</a>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html" aria-label="PIGHACK — Accueil">
+      <span class="brand-mark" aria-hidden="true">&gt;_</span>
+      <span>PIG<span class="brand-bj">HACK</span></span>
+    </a>
+    <nav class="nav" id="nav-principale" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="challenges.html" class="active" aria-current="page">Challenges</a>
+      <a href="scoreboard.html">Scoreboard</a>
+      <a href="profil.html">Profil</a>
+    </nav>
+    <div class="topbar-right">
+      <a class="points-pill" href="tableau-de-bord.html" title="Voir mon espace">
+        <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        1 240 pts
+      </a>
+      <button class="btn btn-outline btn-sm" type="button" data-action="logout">Déconnexion</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container page-head animate-enter">
+    <div class="head-row">
+      <div>
+        <h1>Challenges</h1>
+        <p class="page-sub">Tous les défis, du premier geste au laboratoire d'intelligence artificielle. Chaque étape franchie ouvre la suivante.</p>
+      </div>
+      <a class="btn btn-outline btn-sm" href="parcours.html">Voir la carte du parcours →</a>
+    </div>
+  </div>
+
+  <div class="container section" style="padding-top:16px">
+
+    <section class="panel ia-panel stagger-1" id="ia-panel" hidden>
+      <div class="head-row" style="align-items:center">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span class="chip chip-cat">IA</span>
+            <span class="badge">Étape 7 · Atelier IA</span>
+          </div>
+          <h2 class="panel-title" style="margin:0">Atelier Intelligence Artificielle</h2>
+          <p class="small muted" style="margin:6px 0 0">Six défis interactifs face à des assistants scriptés et fictifs. Le laboratoire s'exécute uniquement sur votre boucle locale.</p>
+        </div>
+        <a class="btn btn-primary btn-sm" href="lab.html">Ouvrir l'atelier →</a>
+      </div>
+      <div class="grid grid-3" id="ia-grid" style="margin-top:20px"></div>
+    </section>
+
+    <h2 class="section-title" id="catalogue-title" style="margin-top:34px">Catalogue des défis</h2>
+    <div id="catalogue"></div>
+
+    <p class="small muted" id="catalogue-empty" hidden>Aucun défi publié pour le moment.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong>PIGHACK</strong> — Plateforme d'apprentissage de la cybersécurité.</div>
+    <div class="footer-links">
+      <a href="tableau-de-bord.html">Espace</a>
+      <a href="challenges.html">Challenges</a>
+      <a href="scoreboard.html">Scoreboard</a>
+      <a href="profil.html">Profil</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/challenges.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var api = window.PigHackChallenges;
+  var iaGrid = document.getElementById("ia-grid");
+  var iaPanel = document.getElementById("ia-panel");
+  var catalogue = document.getElementById("catalogue");
+  var empty = document.getElementById("catalogue-empty");
+  if (!api || !catalogue) return;
+
+  var CHALLENGES = (api.load() || []);
+
+  function levelClass(level) {
+    return "lv-" + String(level || "n1").toLowerCase();
+  }
+
+  function card(ch) {
+    var isIA = ch.category === "IA";
+    var href = isIA ? "lab.html" : "defi-detail.html";
+    var state = ch.status === "published"
+      ? ""
+      : ' state-locked';
+    var statusLabel = ch.status === "published"
+      ? "Publié"
+      : (ch.status === "draft" ? "Bientôt" : "Archivé");
+    return ''
+      + '<a class="card challenge-card' + state + '" href="' + href + '">'
+      +   '<div class="card-meta">'
+      +     '<span class="chip chip-cat">' + ch.category + '</span>'
+      +     '<span class="level ' + levelClass(ch.level) + '">' + ch.level + '</span>'
+      +   '</div>'
+      +   '<h3 class="card-title">' + ch.title + '</h3>'
+      +   '<p class="card-desc">' + (ch.objective || "") + '</p>'
+      +   '<div class="card-foot">'
+      +     '<span class="small muted">' + ch.points + ' pts · ' + statusLabel + '</span>'
+      +     '<span class="small strong" style="color:var(--brand)">' + (isIA ? "Ouvrir l'atelier →" : "Ouvrir →") + '</span>'
+      +   '</div>'
+      + '</a>';
+  }
+
+  function block(category, items) {
+    var html = ''
+      + '<div class="cat-block">'
+      +   '<div class="cat-head">'
+      +     '<h2 class="section-title" style="margin:0">' + category + '</h2>'
+      +     '<span class="small muted">' + items.length + ' défi' + (items.length > 1 ? 's' : '') + '</span>'
+      +   '</div>'
+      +   '<div class="grid grid-3">' + items.map(card).join("") + '</div>'
+      + '</div>';
+    return html;
+  }
+
+  var ia = CHALLENGES.filter(function (c) { return c.category === "IA"; });
+  if (ia.length) {
+    iaPanel.hidden = false;
+    iaGrid.innerHTML = ia.map(card).join("");
+  }
+
+  var others = CHALLENGES.filter(function (c) {
+    return c.category !== "IA" && c.status === "published";
+  });
+
+  if (!others.length) {
+    if (empty) empty.hidden = false;
+    return;
+  }
+
+  var order = [];
+  others.forEach(function (c) {
+    if (order.indexOf(c.category) === -1) order.push(c.category);
+  });
+
+  catalogue.innerHTML = order.map(function (cat) {
+    return block(cat, others.filter(function (c) { return c.category === cat; }));
+  }).join("");
+})();
+</script>
+</body>
+</html>

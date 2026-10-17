@@ -1488,6 +1488,44 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
 .empty-state .ico { color: var(--text-subtle); }
 .empty-state strong { color: var(--text); font-size: 1rem; }
 
+/* ---------- En-tête d'identité (tableau de bord, profil) ---------- */
+.profile-head {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding: 22px 24px; margin-bottom: 26px;
+  background: rgba(24, 20, 17, .9); border: 1px solid var(--border);
+  border-radius: var(--r-2); box-shadow: var(--elev-1), var(--hairline);
+}
+.avatar-xl {
+  flex: none; display: grid; place-items: center;
+  width: 72px; height: 72px; border-radius: var(--r-pill);
+  background: var(--brand-soft); border: 1px solid var(--brand-border);
+  color: var(--brand); font: 700 1.5rem var(--mono); letter-spacing: .02em;
+}
+.profile-head-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.profile-head-main h1 { font-size: clamp(1.4rem, 3vw, 1.7rem); margin: 0; }
+.profile-head-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.profile-head-stats { display: flex; gap: 28px; margin-left: auto; }
+.profile-head-stats .k {
+  font: 600 .62rem var(--mono); letter-spacing: .12em; color: var(--text-subtle);
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.profile-head-stats .v { font: 700 1.15rem var(--mono); color: var(--text); font-variant-numeric: tabular-nums; }
+.profile-head-stats .v.pts { color: var(--brand); }
+.profile-head > .btn { flex: none; }
+@media (max-width: 640px) { .profile-head-stats { margin-left: 0; gap: 20px; } }
+
+/* ---------- Lignes de statistiques ---------- */
+.stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-row .k { color: var(--text-muted); font-size: .84rem; }
+.stat-row .v { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); }
+.stat-row .v.brand { color: var(--brand); }
+.stat-bar { height: 6px; border-radius: var(--r-pill); background: #2C2823; overflow: hidden; margin-top: 12px; }
+.stat-bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--brand), var(--signal)); }
+
 /* ---------- Carte de progression de la page d'accueil ---------- */
 .home-map-page {
   min-height: 100vh;

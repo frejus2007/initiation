@@ -9,12 +9,34 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  .cat-block { margin-top: 34px; }
+  .cat-block { margin-top: 40px; }
   .cat-block:first-of-type { margin-top: 0; }
-  .cat-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-  .challenge-card { display: flex; flex-direction: column; height: 100%; }
-  .challenge-card .card-foot { margin-top: auto; }
-  .state-locked { opacity: .55; }
+  .cat-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .cat-head .section-title { display: inline-flex; align-items: center; gap: 10px; }
+  .cat-head .section-title::before {
+    content: ""; width: 6px; height: 6px; border-radius: var(--r-pill);
+    background: var(--brand); box-shadow: 0 0 10px var(--brand);
+  }
+  .challenge-card { display: flex; flex-direction: column; height: 100%; position: relative; overflow: hidden; }
+  .challenge-card::after {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+    background: linear-gradient(90deg, var(--brand), transparent); opacity: .35;
+    transition: opacity var(--transition-smooth);
+  }
+  .challenge-card:hover::after { opacity: 1; }
+  .challenge-card .card-meta { margin-bottom: 12px; }
+  .challenge-card .card-desc { margin-bottom: 16px; }
+  .challenge-card .card-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); }
+  .card-foot .pts { font-family: var(--mono); font-size: .78rem; font-weight: 600; color: var(--signal); }
+  .lvl-row { display: inline-flex; align-items: center; gap: 8px; }
+  .lvl-meter { display: inline-flex; gap: 3px; align-items: center; }
+  .lvl-meter i { width: 12px; height: 4px; border-radius: var(--r-pill); background: var(--border-strong); }
+  .lvl-meter i.on { background: var(--signal); }
+  .state-locked { opacity: .5; filter: saturate(.55); }
+  .state-locked::after { display: none; }
 </style>
 </head>
 <body>
@@ -105,6 +127,18 @@
     return "lv-" + String(level || "n1").toLowerCase();
   }
 
+  function levelNum(level) {
+    var m = String(level || "N1").match(/(\d+)/);
+    return m ? Math.min(5, Math.max(1, parseInt(m[1], 10))) : 1;
+  }
+
+  function meter(level) {
+    var n = levelNum(level);
+    var html = '<span class="lvl-meter" aria-hidden="true">';
+    for (var i = 1; i <= 5; i++) html += '<i class="' + (i <= n ? 'on' : '') + '"></i>';
+    return html + '</span>';
+  }
+
   function card(ch) {
     var href = "defi-detail.html";
     var state = ch.status === "published"
@@ -117,12 +151,13 @@
       + '<a class="card challenge-card' + state + '" href="' + href + '">'
       +   '<div class="card-meta">'
       +     '<span class="chip chip-cat">' + ch.category + '</span>'
-      +     '<span class="level ' + levelClass(ch.level) + '">' + ch.level + '</span>'
+      +     '<span class="lvl-row"><span class="level ' + levelClass(ch.level) + '">' + ch.level + '</span>' + meter(ch.level) + '</span>'
       +   '</div>'
       +   '<h3 class="card-title">' + ch.title + '</h3>'
       +   '<p class="card-desc">' + (ch.objective || "") + '</p>'
       +   '<div class="card-foot">'
-      +     '<span class="small muted">' + ch.points + ' pts · ' + statusLabel + '</span>'
+      +     '<span class="lvl-row"><span class="pts">' + ch.points + ' pts</span>'
+      +     '<span class="badge" style="border-color:var(--border);color:var(--text-muted)">' + statusLabel + '</span></span>'
       +     '<span class="small strong" style="color:var(--brand)">Ouvrir →</span>'
       +   '</div>'
       + '</a>';

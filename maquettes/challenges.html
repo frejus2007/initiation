@@ -9,6 +9,28 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <style>
+  .ch-toolbar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 28px;
+  }
+  .ch-summary { display: flex; gap: 26px; }
+  .ch-summary .k {
+    font: 600 .62rem var(--mono); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text-subtle); margin-bottom: 4px;
+  }
+  .ch-summary .v { font: 700 1.15rem var(--mono); color: var(--text); font-variant-numeric: tabular-nums; }
+  .ch-summary .v.pts { color: var(--brand); }
+  .ch-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ch-pill {
+    font: 600 .76rem var(--mono); letter-spacing: .02em;
+    padding: 7px 14px; border-radius: var(--r-pill);
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--transition-smooth), background var(--transition-smooth), border-color var(--transition-smooth);
+  }
+  .ch-pill:hover { color: var(--text); border-color: var(--border-strong); }
+  .ch-pill.is-active { background: var(--brand-soft); border-color: var(--brand-border); color: var(--brand); }
+
   .cat-block { margin-top: 40px; }
   .cat-block:first-of-type { margin-top: 0; }
   .cat-head {
@@ -20,17 +42,42 @@
     content: ""; width: 6px; height: 6px; border-radius: var(--r-pill);
     background: var(--brand); box-shadow: 0 0 10px var(--brand);
   }
-  .challenge-card { display: flex; flex-direction: column; height: 100%; position: relative; overflow: hidden; }
+  .cat-count {
+    font: 600 .72rem var(--mono); color: var(--text-muted);
+    padding: 4px 12px; border-radius: var(--r-pill);
+    border: 1px solid var(--border); background: var(--surface-2);
+  }
+
+  .challenge-card {
+    display: flex; flex-direction: column; height: 100%; position: relative; overflow: hidden;
+    transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+  }
+  .challenge-card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(120% 70% at 50% -20%, rgba(241, 90, 56, .16), transparent 62%);
+    opacity: 0; transition: opacity var(--transition-smooth);
+  }
   .challenge-card::after {
-    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
-    background: linear-gradient(90deg, var(--brand), transparent); opacity: .35;
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; z-index: 1;
+    background: linear-gradient(90deg, var(--brand), transparent); opacity: .3;
     transition: opacity var(--transition-smooth);
   }
-  .challenge-card:hover::after { opacity: 1; }
+  .challenge-card > * { position: relative; z-index: 1; }
+  .challenge-card:hover { transform: translateY(-4px); border-color: var(--brand-border); box-shadow: var(--elev-2); }
+  .challenge-card:hover::before, .challenge-card:hover::after { opacity: 1; }
   .challenge-card .card-meta { margin-bottom: 12px; }
   .challenge-card .card-desc { margin-bottom: 16px; }
-  .challenge-card .card-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); }
-  .card-foot .pts { font-family: var(--mono); font-size: .78rem; font-weight: 600; color: var(--signal); }
+  .challenge-card .card-foot {
+    margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .card-foot .pts { font-family: var(--mono); font-size: .8rem; font-weight: 600; color: var(--signal); font-variant-numeric: tabular-nums; }
+  .card-foot .open {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 600 .8rem var(--mono); color: var(--brand);
+    transition: gap var(--transition-smooth);
+  }
+  .challenge-card:hover .card-foot .open { gap: 10px; }
   .lvl-row { display: inline-flex; align-items: center; gap: 8px; }
   .lvl-meter { display: inline-flex; gap: 3px; align-items: center; }
   .lvl-meter i { width: 12px; height: 4px; border-radius: var(--r-pill); background: var(--border-strong); }
@@ -90,7 +137,10 @@
 
   <div class="container section" style="padding-top:16px">
 
-    <h2 class="section-title" id="catalogue-title">Catalogue des défis</h2>
+    <div class="ch-toolbar">
+      <div class="ch-summary" id="ch-summary"></div>
+      <div class="ch-filters" id="ch-filters" role="tablist" aria-label="Filtrer par catégorie"></div>
+    </div>
     <div id="catalogue"></div>
 
     <div class="empty-state" id="catalogue-empty" hidden>
@@ -162,7 +212,7 @@
       +   '<div class="card-foot">'
       +     '<span class="lvl-row"><span class="pts">' + ch.points + ' pts</span>'
       +     '<span class="badge" style="border-color:var(--border);color:var(--text-muted)">' + statusLabel + '</span></span>'
-      +     '<span class="small strong" style="color:var(--brand)">Ouvrir →</span>'
+      +     '<span class="open">Ouvrir <span aria-hidden="true">→</span></span>'
       +   '</div>'
       + '</a>';
   }
@@ -172,30 +222,74 @@
       + '<div class="cat-block">'
       +   '<div class="cat-head">'
       +     '<h2 class="section-title" style="margin:0">' + category + '</h2>'
-      +     '<span class="small muted">' + items.length + ' défi' + (items.length > 1 ? 's' : '') + '</span>'
+      +     '<span class="cat-count">' + items.length + ' défi' + (items.length > 1 ? 's' : '') + '</span>'
       +   '</div>'
       +   '<div class="grid grid-3">' + items.map(card).join("") + '</div>'
       + '</div>';
     return html;
   }
 
-  var others = CHALLENGES.filter(function (c) {
+  var filters = document.getElementById("ch-filters");
+  var summary = document.getElementById("ch-summary");
+
+  var published = CHALLENGES.filter(function (c) {
     return c.status === "published";
   });
 
-  if (!others.length) {
+  if (!published.length) {
     if (empty) empty.hidden = false;
+    if (filters) filters.hidden = true;
     return;
   }
 
-  var order = [];
-  others.forEach(function (c) {
-    if (order.indexOf(c.category) === -1) order.push(c.category);
+  var categories = [];
+  published.forEach(function (c) {
+    if (categories.indexOf(c.category) === -1) categories.push(c.category);
   });
 
-  catalogue.innerHTML = order.map(function (cat) {
-    return block(cat, others.filter(function (c) { return c.category === cat; }));
-  }).join("");
+  var totalPoints = published.reduce(function (sum, c) {
+    return sum + (parseInt(c.points, 10) || 0);
+  }, 0);
+
+  if (summary) {
+    summary.innerHTML = ''
+      + '<div><div class="k">Défis</div><div class="v">' + published.length + '</div></div>'
+      + '<div><div class="k">Catégories</div><div class="v">' + categories.length + '</div></div>'
+      + '<div><div class="k">Points à gagner</div><div class="v pts">' + totalPoints + '</div></div>';
+  }
+
+  function renderCategory(cat) {
+    var items = (cat === "Tous") ? published : published.filter(function (c) {
+      return c.category === cat;
+    });
+    var order = [];
+    items.forEach(function (c) {
+      if (order.indexOf(c.category) === -1) order.push(c.category);
+    });
+    catalogue.innerHTML = order.map(function (key) {
+      return block(key, items.filter(function (c) { return c.category === key; }));
+    }).join("");
+  }
+
+  if (filters) {
+    filters.innerHTML = ["Tous"].concat(categories).map(function (cat, i) {
+      return '<button type="button" role="tab" class="ch-pill' + (i === 0 ? ' is-active' : '') +
+        '" aria-selected="' + (i === 0 ? 'true' : 'false') + '" data-cat="' + cat + '">' + cat + '</button>';
+    }).join("");
+
+    filters.addEventListener("click", function (e) {
+      var btn = e.target.closest ? e.target.closest(".ch-pill") : null;
+      if (!btn) return;
+      Array.prototype.forEach.call(filters.querySelectorAll(".ch-pill"), function (b) {
+        var active = b === btn;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      renderCategory(btn.getAttribute("data-cat"));
+    });
+  }
+
+  renderCategory("Tous");
 })();
 </script>
 </body>

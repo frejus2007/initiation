@@ -88,6 +88,21 @@
         if (remember && remember.checked) localStorage.setItem(PERSISTENT_SESSION_KEY, sessionValue);
         else localStorage.removeItem(PERSISTENT_SESSION_KEY);
       } catch (_) {}
+      // Si inscription depuis inscription.html, activer l'animation de bienvenue lors de la première connexion
+      if (currentPage === "inscription.html") {
+        sessionStorage.setItem("pighack_first_login_anim", displayName);
+        if (window.PigHackChallenges && window.PigHackChallenges.addUser) {
+          window.PigHackChallenges.addUser({
+            pseudo: displayName,
+            email: (email && email.value.trim()) || (displayName + "@etudiant.bj"),
+            role: "student",
+            status: "active",
+            points: 0,
+            solvedCount: 0
+          });
+        }
+      }
+
       // Rediriger vers la page demandée avant connexion, ou l'accueil
       var target = sessionStorage.getItem("pighack_redirect") || "index.html";
       sessionStorage.removeItem("pighack_redirect");
@@ -105,6 +120,7 @@
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       sessionStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem("pighack_first_login_anim");
       try { localStorage.removeItem(PERSISTENT_SESSION_KEY); } catch (_) {}
       window.location.replace("connexion.html");
     });
@@ -143,5 +159,118 @@
       if (feedback) { feedback.textContent = "Pseudonyme enregistré dans cette maquette."; feedback.hidden = false; }
     });
   }
+
+  // ----- Animation de Bienvenue (Première connexion après Inscription) -----
+  function showWelcomeModal(username) {
+    var cleanName = String(username || "Apprenant").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+    var initial = cleanName.charAt(0).toUpperCase() || "P";
+
+    var overlay = document.createElement("div");
+    overlay.className = "welcome-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Bienvenue sur PIGHACK");
+
+    overlay.innerHTML =
+      '<div class="welcome-modal">' +
+        '<div class="welcome-scan"></div>' +
+        '<div class="welcome-header">' +
+          '<div class="welcome-badge-icon" aria-hidden="true">' + initial + '</div>' +
+          '<h2 class="welcome-title">Bienvenue dans l’arène, ' + cleanName + '&nbsp;!</h2>' +
+          '<p class="welcome-sub">Votre compte PIGHACK est activé. Vous entrez dans la <strong>Phase d’initiation 2026</strong>.</p>' +
+        '</div>' +
+        '<div class="welcome-terminal" aria-hidden="true">' +
+          '<div class="welcome-terminal-line l1"><span style="color:var(--signal)">[AUTH_OK]</span> Session sécurisée active. Matricule attribué.</div>' +
+          '<div class="welcome-terminal-line l2"><span style="color:var(--success)">[CYBER_RANGE]</span> Environnements et conteneurs prêts.</div>' +
+          '<div class="welcome-terminal-line l3"><span style="color:var(--brand)">[STANDARD]</span> Format officiel de validation : <strong style="color:var(--text)">PGH{...}</strong></div>' +
+        '</div>' +
+        '<div class="welcome-content">' +
+          '<div class="welcome-features">' +
+            '<div class="welcome-feat-item">' +
+              '<span class="welcome-feat-icon" aria-hidden="true">🚩</span>' +
+              '<div>' +
+                '<div class="welcome-feat-title">Format des drapeaux imposé</div>' +
+                '<div class="welcome-feat-desc">Chaque solution trouvée est de la forme <code>PGH{secret}</code>.</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="welcome-feat-item">' +
+              '<span class="welcome-feat-icon" aria-hidden="true">💻</span>' +
+              '<div>' +
+                '<div class="welcome-feat-title">Pratique directe sur terminal</div>' +
+                '<div class="welcome-feat-desc">Manipulez vos propres commandes et conteneurs Docker locaux.</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="welcome-feat-item">' +
+              '<span class="welcome-feat-icon" aria-hidden="true">🎯</span>' +
+              '<div>' +
+                '<div class="welcome-feat-title">Premier objectif recommandé</div>' +
+                '<div class="welcome-feat-desc">Démarrez le parcours Linux pour décrocher vos premiers <strong>50 points</strong>.</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="welcome-actions">' +
+            '<button class="btn btn-ghost btn-sm" type="button" id="btn-welcome-dismiss">Explorer la plateforme</button>' +
+            '<a class="btn btn-primary" href="parcours.html" id="btn-welcome-start">Lancer mon premier défi →</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+
+    // Génération de confettis cyber animés
+    var colors = ["#F15A38", "#F3B952", "#5CB88A", "#F3EFEA"];
+    var modalEl = overlay.querySelector(".welcome-modal");
+    for (var i = 0; i < 26; i++) {
+      var confetti = document.createElement("div");
+      confetti.className = "welcome-confetti";
+      confetti.style.left = (Math.random() * 85 + 7) + "%";
+      confetti.style.top = (Math.random() * 15 + 2) + "%";
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = (Math.random() * 0.7) + "s";
+      confetti.style.animationDuration = (Math.random() * 1.5 + 2.2) + "s";
+      modalEl.appendChild(confetti);
+    }
+
+    setTimeout(function () {
+      overlay.classList.add("is-visible");
+    }, 60);
+
+    function closeWelcome() {
+      sessionStorage.removeItem("pighack_first_login_anim");
+      overlay.classList.remove("is-visible");
+      setTimeout(function () {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 450);
+    }
+
+    var dismissBtn = overlay.querySelector("#btn-welcome-dismiss");
+    var startBtn = overlay.querySelector("#btn-welcome-start");
+
+    if (dismissBtn) dismissBtn.addEventListener("click", closeWelcome);
+    if (startBtn) {
+      startBtn.addEventListener("click", function () {
+        sessionStorage.removeItem("pighack_first_login_anim");
+      });
+    }
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) closeWelcome();
+    });
+  }
+
+  // Détection d'une première connexion venant de l'inscription
+  var firstLoginUser = sessionStorage.getItem("pighack_first_login_anim");
+  if (firstLoginUser) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () {
+        showWelcomeModal(firstLoginUser);
+      });
+    } else {
+      showWelcomeModal(firstLoginUser);
+    }
+  }
+
+  window.PigHackWelcome = { show: showWelcomeModal };
 })();
 

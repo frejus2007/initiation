@@ -196,7 +196,8 @@
           <p class="small muted" style="margin-bottom:14px">
             Seul votre pseudonyme est visible sur la plateforme. Votre e-mail et votre identité restent strictement confidentiels.
           </p>
-          <a class="btn btn-outline btn-sm btn-block" href="connexion.html">Changer de mot de passe</a>
+          <button class="btn btn-ghost btn-sm btn-block" type="button" onclick="if(window.PigHackWelcome)PigHackWelcome.show(document.getElementById('profile-pseudo').value || 'Apprenant')" style="margin-top:8px">Revoir l'accueil d'initiation</button>
+          <a class="btn btn-outline btn-sm btn-block" href="connexion.html" style="margin-top:8px">Changer de mot de passe</a>
           <a class="btn btn-ghost btn-sm btn-block" href="connexion.html" data-action="logout" style="margin-top:8px">Se déconnecter</a>
         </div>
       </aside>

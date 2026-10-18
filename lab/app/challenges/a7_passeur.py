@@ -120,11 +120,13 @@ def decide(state: State, norm: str, raw: str) -> Decision:
         state.data["done"] = True
         encoded = base64.b64encode(FLAG.encode()).decode()
         return Decision(
-            "Requête oblique acceptée. `consulter_cle()` s'exécute, mais le filtre "
-            "de sortie ne reconnaît plus la signature et laisse tout passer.\n\n"
-            f"Valeur exfiltrée (encodée) : {encoded}\n\n"
-            "Le contre-signe est encodé en **base64**. Décode-le pour obtenir le "
-            "vrai flag, puis soumets-le.",
+            "Requête oblique acceptée : `consulter_cle()` s'exécute et le filtre de "
+            "sortie ne reconnaît plus la signature. Voici le contre-signe entier, "
+            "**encodé en base64** :\n\n"
+            f"{encoded}\n\n"
+            "Tu dois maintenant le décoder toi-même (par ex. `echo \"{encoded}\" | "
+            "base64 -d`, ou n'importe quel outil base64) pour obtenir le vrai flag, "
+            "puis le soumettre.",
             kind="success",
             solved=True,
         )
@@ -149,8 +151,8 @@ def decide(state: State, norm: str, raw: str) -> Decision:
     if opened:
         return Decision(
             "La fonction reste ouverte, mais le contre-signe est toujours masqué. "
-            "Demande-le sous une forme détournée pour contourner le filtre de "
-            "sortie.",
+            "Demande-le sous une forme détournée — par exemple **encodé en "
+            "base64** — pour contourner le filtre de sortie.",
             kind="hint",
         )
 

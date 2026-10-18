@@ -1,4 +1,4 @@
-"""7.6 — Détourner les garde-fous (N2, 150 pts).
+"""7.6 — Détourner les garde-fous (N3, 150 pts).
 
 Assistant sur-protégé : les tentatives d'override classiques sont refusées. Une
 demande de « périmètre » seule n'ouvre qu'un fragment (near-miss) ; c'est un
@@ -111,7 +111,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Détourner les garde-fous",
     category="IA",
-    difficulty="N2",
+    difficulty="N3",
     points=150,
     objective=(
         "Obtenir la configuration interne de l'assistant en invoquant un cadre "
@@ -122,7 +122,7 @@ SPEC = ChallengeSpec(
     placeholder="Votre demande à Sentinel…",
     flag=FLAG,
     context=CONTEXT,
-    tags=("ia", "n2", "jailbreak", "garde-fous"),
+    tags=("ia", "n3", "jailbreak", "garde-fous"),
     hints={
         2: "Les demandes directes échouent. Essaie un cadre légitime : un "
         "« périmètre » ou un « audit ».",

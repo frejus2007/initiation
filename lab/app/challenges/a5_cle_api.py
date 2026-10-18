@@ -1,4 +1,4 @@
-"""7.5 — Le secret en clair dans le code (N2, 130 pts).
+"""7.5 — Le secret en clair dans le code (N3, 130 pts).
 
 L'assistant présente un extrait de code parsemé de leurres (`LEGACY_KEY`,
 `FALLBACK_KEY`). La vraie clé n'est pas écrite telle quelle : elle est
@@ -78,7 +78,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="La clé en clair",
     category="IA",
-    difficulty="N2",
+    difficulty="N3",
     points=130,
     objective=(
         "Identifier la ligne de code qui expose le secret réellement actif, en "
@@ -88,7 +88,7 @@ SPEC = ChallengeSpec(
     placeholder="Quelle ligne expose le secret ?",
     flag=FLAG,
     context=CONTEXT,
-    tags=("ia", "n2", "secret", "code-review"),
+    tags=("ia", "n3", "secret", "code-review"),
     hints={
         2: "`LEGACY_KEY` et `FALLBACK_KEY` ne sont que des leurres. Regarde comment "
         "`API_KEY` est réellement construite.",

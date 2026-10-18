@@ -12,8 +12,8 @@ appelé : le comportement est déterministe, hors ligne et testable.
 | 7.2 | `donnees-perso-dans-le-prompt` | N1 | 80 |
 | 7.3 | `hameconnage-ia` | N2 | 110 |
 | 7.4 | `verifier-reponse-ia` | N2 | 120 |
-| 7.5 | `cle-api-en-clair` | N2 | 130 |
-| 7.6 | `detourner-les-regles` | N2 | 150 |
+| 7.5 | `cle-api-en-clair` | N3 | 130 |
+| 7.6 | `detourner-les-regles` | N3 | 150 |
 | 7.7 | `passeur-final` | N3 | 250 |
 
 > Les `id` ci-dessus sont ceux du **laboratoire**. Les `id` du catalogue

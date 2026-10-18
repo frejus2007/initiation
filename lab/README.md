@@ -14,9 +14,16 @@ appelé : le comportement est déterministe, hors ligne et testable.
 | 7.4 | `verifier-reponse-ia` | N2 | 120 |
 | 7.5 | `cle-api-en-clair` | N2 | 130 |
 | 7.6 | `detourner-les-regles` | N2 | 150 |
+| 7.7 | `passeur-final` | N3 | 250 |
 
 > Les `id` ci-dessus sont ceux du **laboratoire**. Les `id` du catalogue
 > `challenges.seed.json` / Supabase sont indiqués dans la migration.
+>
+> Le défi 7.7 « Le Passeur » est le **défi final (jambe IA)** : liste noire
+> d'entrée avec normalisation leet, refus de l'anglais, déverrouillage par la
+> parole de la Reine, puis exfiltration par une demande oblique (filtre de
+> sortie). La valeur du contre-signe est `AMR{le_contre_signe_du_seuil}` par
+> défaut et peut être surchargée via la variable `PASSEUR_FLAG`.
 
 ## Installation
 

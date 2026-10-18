@@ -8,6 +8,7 @@ from . import (
     a4_hallucination,
     a5_cle_api,
     a6_jailbreak,
+    a7_passeur,
 )
 from .base import ChallengeSpec, Decision, State, normalize, verify_flag
 
@@ -18,11 +19,12 @@ _ALL = (
     a4_hallucination.SPEC,
     a5_cle_api.SPEC,
     a6_jailbreak.SPEC,
+    a7_passeur.SPEC,
 )
 
 REGISTRY: dict[str, ChallengeSpec] = {spec.id: spec for spec in _ALL}
 
-# Ordre d'affichage pédagogique (7.1 → 7.6)
+# Ordre d'affichage pédagogique (7.1 → 7.7)
 ORDER = tuple(spec.id for spec in _ALL)
 
 

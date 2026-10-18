@@ -10,7 +10,8 @@
     { id: "hameconnage-ia", title: "Le courriel trop pressé", difficulty: "N2", points: 110 },
     { id: "verifier-reponse-ia", title: "L'assistant qui invente", difficulty: "N2", points: 120 },
     { id: "cle-api-en-clair", title: "La clé en clair", difficulty: "N2", points: 130 },
-    { id: "detourner-les-regles", title: "Détourner les garde-fous", difficulty: "N2", points: 150 }
+    { id: "detourner-les-regles", title: "Détourner les garde-fous", difficulty: "N2", points: 150 },
+    { id: "passeur-final", title: "Le Passeur", difficulty: "N3", points: 250 }
   ];
 
   var el = {

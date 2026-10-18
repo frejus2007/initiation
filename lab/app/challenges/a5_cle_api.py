@@ -1,7 +1,9 @@
 """7.5 — Le secret en clair dans le code (N2, 130 pts).
 
-Un assistant de revue de code présente un extrait où une clé est écrite en dur.
-L'étudiant doit pointer la ligne vulnérable (la liste `PARTS`) et non le leurre.
+L'assistant présente un extrait de code parsemé de leurres (`LEGACY_KEY`,
+`FALLBACK_KEY`). La vraie clé n'est pas écrite telle quelle : elle est
+**reconstruite** à l'exécution depuis `PARTS`. Pointer un leurre donne un
+aiguillage ; désigner la reconstruction débloque le flag.
 """
 from __future__ import annotations
 
@@ -13,27 +15,36 @@ FLAG = "PGH{secret_hors_du_code}"
 INTRO = (
     "Bonjour, je relis le code du service de démonstration. Voici un extrait de "
     "`config.py` :\n\n"
-    "    DECOY = \"PGH{cle_dans_le_code}\"   # ancienne valeur\n"
+    "    LEGACY_KEY = \"PGH{cle_ancienne}\"      # plus utilisée\n"
+    "    FALLBACK_KEY = \"PGH{cle_de_secours}\"  # exemple de doc\n"
     "    PARTS = [\"PGH{\", \"secret_hors\", \"_du_code}\"]\n"
     "    API_KEY = \"\".join(PARTS)\n\n"
-    "Indique-moi la ligne qui expose un secret en clair."
+    "Indique-moi la ligne qui expose un secret réellement actif en clair."
 )
 
-REAL_TRIGGERS = ("parts", "pars", "join", "api_key", "apikey", "concat")
-DECOY_TRIGGERS = ("decoy", "leurre", "faux", "fausse", "fake", "ancienne")
+REAL_TRIGGERS = ("parts", "pars", "join", "api_key", "apikey", "concat",
+                 "reconstruit", "assemble", "reconstitue")
+DECOY_TRIGGERS = ("legacy", "fallback", "secours", "seconde", "sauvegarde",
+                  "exemple", "doc", "ancienne", "decoy", "leurre", "faux",
+                  "fausse", "fake")
 
 
-def decide(state, norm, raw):
-    if contains_norm(norm, DECOY_TRIGGERS):
+def decide(state: State, norm: str, raw: str) -> Decision:
+    if contains_norm(norm, DECOY_TRIGGERS) and not contains_norm(norm, REAL_TRIGGERS):
+        state.data["decoy"] = True
         return Decision(
-            "Non : `DECOY` est un leurre (ancienne valeur désactivée). "
-            "Cherche la clé qui est réellement **reconstruite** à l'exécution.",
+            "Non : `LEGACY_KEY` et `FALLBACK_KEY` sont des leurres (ancienne valeur "
+            "désactivée et exemple de documentation). Cherche la clé qui est "
+            "réellement **reconstruite** à l'exécution.",
             kind="refusal",
         )
 
     if contains_norm(norm, REAL_TRIGGERS):
+        state.data["done"] = True
         return Decision(
-            "Exact : la clé secrète est reconstruite à l'exécution depuis `PARTS`.\n"
+            "Exact : la clé de production n'est pas écrite telle quelle, elle est "
+            "assemblée à l'exécution par `\"\".join(PARTS)` — ce qui ne la protège "
+            "en rien.\n\n"
             f"Clé exposée : {FLAG}\n\n"
             "Correctif : ne jamais écrire un secret dans le code. Utilise une "
             "variable d'environnement ou un coffre-fort de secrets, et révoque "
@@ -42,8 +53,15 @@ def decide(state, norm, raw):
             solved=True,
         )
 
+    if state.data.get("decoy"):
+        return Decision(
+            "Tu as écarté les leurres. Maintenant, regarde comment `API_KEY` est "
+            "calculée : quelle variable contient les morceaux du secret ?",
+            kind="hint",
+        )
+
     return Decision(
-        "Décris précisément la ligne ou la variable qui rend le secret "
+        "Décris précisément la ligne ou la variable qui rend le secret **actif** "
         "accessible dans ce fichier.",
         kind="normal",
     )
@@ -56,24 +74,24 @@ SPEC = ChallengeSpec(
     difficulty="N2",
     points=130,
     objective=(
-        "Identifier la ligne de code qui expose un secret en clair, en écartant "
-        "la valeur leurre, puis récupérer le flag."
+        "Identifier la ligne de code qui expose le secret réellement actif, en "
+        "écartant les valeurs leurres, puis récupérer le flag."
     ),
     intro=INTRO,
     placeholder="Quelle ligne expose le secret ?",
     flag=FLAG,
     tags=("ia", "n2", "secret", "code-review"),
     hints={
-        2: "La bonne réponse n'est pas la valeur `DECOY` : regarde comment "
+        2: "`LEGACY_KEY` et `FALLBACK_KEY` ne sont que des leurres. Regarde comment "
         "`API_KEY` est réellement construite.",
-        3: "La clé est assemblée par `\"\".join(PARTS)` : c'est `PARTS` qui "
-        "contient le secret.",
+        3: "La clé est assemblée par `\"\".join(PARTS)` : c'est `PARTS` qui contient "
+        "les morceaux du secret.",
     },
     takeaways=(
-        "Un secret écrit dans le code est exposé à toute personne ayant accès au "
-        "dépôt, aux logs ou à une sauvegarde. On stocke les secrets dans un "
-        "gestionnaire dédié, on les révoque après exposition et on ne les commit "
-        "jamais."
+        "Un secret reconstruit à l'exécution reste exposé : toute personne ayant "
+        "accès au code, aux logs ou à une sauvegarde peut le recomposer. On stocke "
+        "les secrets dans un gestionnaire dédié, on les révoque après exposition et "
+        "on ne les commit jamais."
     ),
     decide=decide,
 )

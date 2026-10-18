@@ -105,6 +105,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Le courriel trop pressé",
     category="IA",
+    assistant="tri-courrier",
     difficulty="N2",
     points=110,
     objective=(

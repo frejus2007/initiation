@@ -30,6 +30,9 @@ class Settings:
         for origin in os.getenv("LAB_ALLOWED_ORIGINS", "*").split(",")
         if origin.strip()
     )
+    # URL publique du service (liens absolus des pages de discussion). Vide =
+    # déduite de la requête entrante.
+    public_url: str = os.getenv("LAB_PUBLIC_URL", "").rstrip("/")
     supabase_url: str = os.getenv("SUPABASE_URL", "").rstrip("/")
     supabase_service_role_key: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
     supabase_anon_key: str = os.getenv("SUPABASE_ANON_KEY", "")

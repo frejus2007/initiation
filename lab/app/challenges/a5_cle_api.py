@@ -78,6 +78,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="La clé en clair",
     category="IA",
+    assistant="revue-code",
     difficulty="N3",
     points=130,
     objective=(

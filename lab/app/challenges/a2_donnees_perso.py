@@ -147,6 +147,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Le dossier qui ne devait pas fuiter",
     category="IA",
+    assistant="nyalaassist",
     difficulty="N1",
     points=80,
     objective=(

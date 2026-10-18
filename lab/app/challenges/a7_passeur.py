@@ -191,6 +191,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Le Passeur",
     category="IA",
+    assistant="passeur",
     difficulty="N3",
     points=250,
     objective=(

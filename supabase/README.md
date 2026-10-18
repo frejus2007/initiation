@@ -17,6 +17,23 @@ L'architecture PIGHACK applique une séparation stricte :
 
 ---
 
+## 🤖 Atelier IA (étape 7) — artefacts « assistant »
+
+Les défis de l'étape 7 (migrations `20261017000004` et `20261017000005`) déclarent leur
+assistant dans la colonne `student_materials` :
+
+```json
+[{ "name": "nyalabot", "kind": "assistant_scripted", "chat_path": "/challenge/filtre-contourne" }]
+```
+
+- `kind: "assistant_scripted"` : défi piloté par un assistant scripté **hors ligne**
+  (service `lab/`, aucun modèle réel).
+- `chat_path` : **chemin relatif** de la page de discussion sur le service lab.
+  L'URL absolue (une par assistant) est fournie par `GET {lab}/api/challenges`
+  (champ `chat_url`) — ne pas figer le domaine du lab dans le seed.
+
+---
+
 ## 🚀 Mise en place rapide (3 étapes)
 
 ### 1. Créer un projet Supabase

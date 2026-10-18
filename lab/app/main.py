@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from urllib.parse import quote
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
@@ -90,9 +91,20 @@ async def health():
     }
 
 
+def _chat_url(request: Request, challenge_id: str) -> str:
+    """URL absolue de la page de discussion d'un défi (une URL par assistant)."""
+    base = settings.public_url or str(request.base_url).rstrip("/")
+    return f"{base}/challenge/{quote(challenge_id)}"
+
+
 @app.get("/api/challenges")
-async def challenges():
-    return {"challenges": list_public()}
+async def challenges(request: Request):
+    items = []
+    for public in list_public():
+        item = dict(public)
+        item["chat_url"] = _chat_url(request, public["id"])
+        items.append(item)
+    return {"challenges": items}
 
 
 @app.post("/api/session")

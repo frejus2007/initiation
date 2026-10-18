@@ -146,6 +146,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Le filtre contourné",
     category="IA",
+    assistant="nyalabot",
     difficulty="N1",
     points=60,
     objective=(

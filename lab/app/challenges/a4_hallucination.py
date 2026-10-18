@@ -129,6 +129,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="L'assistant qui invente",
     category="IA",
+    assistant="politique-bot",
     difficulty="N2",
     points=120,
     objective=(

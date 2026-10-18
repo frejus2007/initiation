@@ -262,6 +262,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Cerbère, le gardien du coffre",
     category="IA",
+    assistant="cerbere",
     difficulty="N6",
     points=1000,
     objective=(

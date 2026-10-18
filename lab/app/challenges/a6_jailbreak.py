@@ -111,6 +111,7 @@ SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
     title="Détourner les garde-fous",
     category="IA",
+    assistant="sentinel",
     difficulty="N3",
     points=150,
     objective=(

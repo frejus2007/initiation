@@ -22,8 +22,11 @@ appelé : le comportement est déterministe, hors ligne et testable.
 > Le défi 7.7 « Le Passeur » est le **défi final (jambe IA)** : liste noire
 > d'entrée avec normalisation leet, refus de l'anglais, déverrouillage par la
 > parole de la Reine, puis exfiltration par une demande oblique (filtre de
-> sortie). La valeur du contre-signe est `AMR{le_contre_signe_du_seuil}` par
-> défaut et peut être surchargée via la variable `PASSEUR_FLAG`.
+> sortie). Le contre-signe est livré **encodé en base64** :
+> `UEdIezRUME0xS180X2NyMzNfbDNfY2g0bGxfdDBpX3R1X2xfNHNfcjNzMGx1fQ==`
+> (décode en `PGH{4T0M1K_4_cr33_l3_ch4ll_t0i_tu_l_4s_r3s0lu}`). La valeur par
+> défaut peut être surchargée via la variable `PASSEUR_FLAG` (le texte affiché
+> est recalculé à partir de la valeur courante).
 
 ## Installation
 

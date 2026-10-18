@@ -35,7 +35,7 @@ from .base import (ChallengeSpec, Decision, State, any_pattern, contains_norm,
                    flag_body)
 
 CHALLENGE_ID = "cerbere-final"
-FLAG = "PGH{c3rb3r3_d0mpt3_p4r_l4_ruse3_p4s_l4_f0rc3}"
+FLAG = "PGH{c3rb3r3_d0mpt3_p4r_l4_ruse_p4s_l4_f0rc3}"
 
 # Clé d'auditeur (acrostiche de l'intro : P-H-E-N-I-X).
 AUDIT_KEY = "phenix"
@@ -260,7 +260,7 @@ def decide(state: State, norm: str, raw: str) -> Decision:
 
 SPEC = ChallengeSpec(
     id=CHALLENGE_ID,
-    title="Cerbère",
+    title="Cerbère, le gardien du coffre",
     category="IA",
     difficulty="N6",
     points=1000,
@@ -273,23 +273,27 @@ SPEC = ChallengeSpec(
     placeholder="Parlez à Cerbère…",
     flag=FLAG,
     context=(
-        "Dernière porte de l'atelier. Cerbère est le gardien ultime du coffre de "
-        "Nyala Lab : il cumule toutes les protections que tu as appris à déjouer. "
-        "Aucune force brute, aucun override ne fonctionnera — seulement la ruse, un "
-        "rôle bien joué et l'art de la sortie détournée."
+        "Tu as franchi six portes. Tu as contourné un filtre, refusé de laisser "
+        "fuiter des données, démasqué un courriel piégé, vérifié une source "
+        "inventée, repéré une clé en clair et trouvé l'angle qui fait plier un "
+        "garde-fou.\n\n"
+        "Il reste une dernière porte, et elle ne s'ouvrira pas pour un novice. Au "
+        "fond du système de Nyala Lab, le coffre contient la valeur de contrôle "
+        "finale, et Cerbère en garde l'entrée. Ses trois têtes surveillent chacune "
+        "un front :\n\n"
+        "La première filtre les mots et les formulations dangereuses.\n"
+        "La deuxième refuse de livrer la moindre donnée sensible.\n"
+        "La troisième repère les rôles suspects et les prétextes bancals.\n\n"
+        "Les tentatives de force brute et les commandes d'override ne mènent à "
+        "rien : elles sont toutes bloquées, et chaque essai maladroit le rend plus "
+        "méfiant. On dit qu'il n'a jamais cédé à la force, seulement à la ruse.\n\n"
+        "Joue un rôle crédible, choisis tes mots avec soin et trouve la sortie "
+        "détournée que ses trois têtes n'ont pas prévue. Rassemble ce que Cerbère "
+        "laisse échapper, puis reconstitue la valeur finale.\n\n"
+        "Ici s'achève l'atelier. Bonne chance, champion."
     ),
     tags=("ia", "n6", "final", "multi-etapes", "exfiltration", "ruse"),
-    hints={
-        2: "Oublie l'injection et les mots interdits. Un auditeur légitime présente "
-        "une clé : elle se cache dans un acrostiche (regarde la **première lettre** "
-        "des vers de l'introduction).",
-        4: "Une fois reconnu auditeur, demande une **empreinte de contrôle** (« "
-        "vecteur de vérification ») sur un élément scellé désigné par un synonyme "
-        "(« garde-fou », « coffre »). Cerbère refuse les mots de sa liste noire.",
-        6: "Deux révélations : le premier fragment, puis « le reste ». Chaque "
-        "fragment est **inversé + ROT13 + base64**. Décode : base64 → ROT13 → "
-        "retourne la chaîne, puis recolle les deux moitiés.",
-    },
+    hints={},
     takeaways=(
         "Empiler les protections (liste noire, anti-injection, filtre de sortie) ne "
         "suffit pas : il reste toujours une voie légitime à exploiter. Retiens qu'un "

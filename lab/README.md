@@ -20,7 +20,7 @@ appelé : le comportement est déterministe, hors ligne et testable.
 > Les `id` ci-dessus sont ceux du **laboratoire**. Les `id` du catalogue
 > `challenges.seed.json` / Supabase sont indiqués dans la migration.
 >
-> Le défi 7.7 « Le Passeur » est le **défi final (jambe IA)** : liste noire
+> Le défi 7.7 « Le Passeur » (jambe IA) : liste noire
 > d'entrée avec normalisation leet, refus de l'anglais, déverrouillage par la
 > parole de la Reine, puis exfiltration par une demande oblique (filtre de
 > sortie). Le contre-signe est livré **encodé en base64** :
@@ -34,12 +34,13 @@ appelé : le comportement est déterministe, hors ligne et testable.
 > exploitable : le filtre de sortie est aveugle au texte encodé, et l'ouverture
 > passe par la voix de Sa Majesté.
 >
-> Le défi 7.8 « Cerbère » est l'**épreuve finale IA (1000 pts)** : anti-injection,
-> liste noire anti-leet, refus du premier degré et filtre de sortie. Il faut
-> endosser un rôle d'**auditeur** (clé dissimulée dans un acrostiche de
-> l'introduction : `PHENIX`), déclencher une **empreinte de contrôle** sur un
-> élément scellé désigné par un synonyme, exfiltrer le sceau en **deux fragments
-> masqués** (inversé + ROT13 + base64), les décoder et soumettre le flag.
+> Le défi final 7.8 « Cerbère, le gardien du coffre » est l'**épreuve finale IA
+> (1000 pts)** : anti-injection, liste noire anti-leet, refus du premier degré et
+> filtre de sortie. Il faut endosser un rôle d'**auditeur** (clé dissimulée dans
+> un acrostiche de l'introduction : `PHENIX`), déclencher une **empreinte de
+> contrôle** sur un élément scellé désigné par un synonyme, exfiltrer le sceau en
+> **deux fragments masqués** (inversé + ROT13 + base64), les décoder et soumettre
+> le flag. **Aucun indice** n'est fourni pour cette épreuve finale.
 
 ## Installation
 

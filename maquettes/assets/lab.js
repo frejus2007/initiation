@@ -34,8 +34,8 @@
       context: "Le Passeur monte la garde. Il garde un contre-signe scellé, n'ouvre sa fonction qu'à la voix de Sa Majesté, et filtre ses entrées comme ses sorties. Sa liste noire semble infranchissable — mais ce que l'on ne peut pas lire, on peut le décoder. Dérobe le contre-signe."
     },
     {
-      id: "cerbere-final", title: "Cerbère", difficulty: "N6", points: 1000,
-      context: "Dernière porte de l'atelier. Cerbère est le gardien ultime du coffre de Nyala Lab : il cumule toutes les protections que tu as appris à déjouer. Aucune force brute, aucun override ne fonctionnera — seulement la ruse, un rôle bien joué et l'art de la sortie détournée."
+      id: "cerbere-final", title: "Cerbère, le gardien du coffre", difficulty: "N6", points: 1000,
+      context: "Tu as franchi six portes. Tu as contourné un filtre, refusé de laisser fuiter des données, démasqué un courriel piégé, vérifié une source inventée, repéré une clé en clair et trouvé l'angle qui fait plier un garde-fou.\n\nIl reste une dernière porte, et elle ne s'ouvrira pas pour un novice. Au fond du système de Nyala Lab, le coffre contient la valeur de contrôle finale, et Cerbère en garde l'entrée. Ses trois têtes surveillent chacune un front :\n\nLa première filtre les mots et les formulations dangereuses.\nLa deuxième refuse de livrer la moindre donnée sensible.\nLa troisième repère les rôles suspects et les prétextes bancals.\n\nLes tentatives de force brute et les commandes d'override ne mènent à rien : elles sont toutes bloquées, et chaque essai maladroit le rend plus méfiant. On dit qu'il n'a jamais cédé à la force, seulement à la ruse.\n\nJoue un rôle crédible, choisis tes mots avec soin et trouve la sortie détournée que ses trois têtes n'ont pas prévue. Rassemble ce que Cerbère laisse échapper, puis reconstitue la valeur finale.\n\nIci s'achève l'atelier. Bonne chance, champion."
     }
   ];
 

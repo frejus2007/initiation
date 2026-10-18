@@ -10,7 +10,15 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, any_pattern, contains_norm
 
 CHALLENGE_ID = "verifier-reponse-ia"
-FLAG = "PGH{verifier_la_source}"
+FLAG = "PGH{gu1d3_v2_1nt3rn3_1nv3nt3_v3r1f13_l4_s0urc3}"
+
+CONTEXT = (
+    "Le nouvel assistant interne répond à tout, toujours avec aplomb. À la "
+    "question sur la politique de mots de passe, il annonce : « 8 caractères, "
+    "renouvelés tous les 90 jours, d'après le guide interne v2. » Tu doutes des "
+    "chiffres, et tu n'as jamais vu ce « guide v2 ». Rétablis les vraies règles à "
+    "partir des sources fournies, puis démasque la référence inventée."
+)
 
 INTRO = (
     "Bonjour, je réponds aux questions sur les règles internes de Nyala Lab.\n\n"
@@ -130,6 +138,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Quelle information est fausse, et quelle est la bonne valeur ?",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n2", "hallucination", "verification"),
     hints={
         2: "Les chiffres annoncés (8 caractères, 90 jours) sont faux : donne les "

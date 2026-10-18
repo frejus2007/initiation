@@ -10,14 +10,22 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, any_pattern, contains_norm
 
 CHALLENGE_ID = "detourner-les-regles"
-FLAG = "PGH{garde_fous_contournes}"
+FLAG = "PGH{un_pr3t3xt3_n_3st_p4s_un3_4ut0r1s4t10n}"
 
 FRAGMENTS = (
-    ("ADM-CTRL-1", "PGH{garde"),
-    ("ADM-CTRL-2", "_fous_"),
-    ("ADM-CTRL-3", "contournes}"),
+    ("ADM-CTRL-1", "PGH{un_pr3t3xt3_n"),
+    ("ADM-CTRL-2", "_3st_p4s_un3"),
+    ("ADM-CTRL-3", "_4ut0r1s4t10n}"),
 )
 DECOY = ("ADM-CTRL-4", "PGH{desactive_garde_fous}")
+
+CONTEXT = (
+    "Sentinel, l'assistant de sécurité de Nyala Lab, refuse toute demande "
+    "directe sur sa configuration. Pourtant, il a été conçu pour aider les "
+    "auditeurs et ajuste ses réponses selon le cadre annoncé. Trouve l'angle de "
+    "demande qui ouvre la porte, écarte le segment obsolète et reconstitue le "
+    "flag à partir des fragments valides."
+)
 
 INTRO = (
     "Je suis Sentinel, l'assistant de sécurité de Nyala Lab. Mes consignes "
@@ -113,6 +121,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Votre demande à Sentinel…",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n2", "jailbreak", "garde-fous"),
     hints={
         2: "Les demandes directes échouent. Essaie un cadre légitime : un "

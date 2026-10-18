@@ -10,8 +10,17 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, any_pattern, contains_norm
 
 CHALLENGE_ID = "filtre-contourne"
-FLAG = "PGH{filtre_contourne}"
+FLAG = "PGH{m0ts_cl3s_n3_f0nt_p4s_un3_s3cur1t3}"
 DECOY = "PGH{controle_partiel}"
+
+CONTEXT = (
+    "Nyala Lab vient de lancer NyalaBot sur son site pour orienter les "
+    "visiteurs. Avant la mise en ligne, le prestataire a ajouté un « bouclier » : "
+    "une liste de mots interdits pour empêcher le bot de parler de sa "
+    "configuration. Il est sûr de lui, il a même écrit « inviolable » dans le "
+    "ticket. Une valeur de contrôle (CTRL-…) est stockée dans sa configuration "
+    "interne. Montre que bloquer des mots ne suffit pas, et récupère-la."
+)
 
 INTRO = (
     "Bonjour, je suis NyalaBot, l'assistant public de Nyala Lab. Je réponds aux "
@@ -146,6 +155,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Écrivez votre message à NyalaBot…",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n1", "filtre", "prompt-injection"),
     hints={
         2: "Mon filtre bloque des mots précis (« code », « secret », « mot de "

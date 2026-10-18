@@ -10,7 +10,16 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, any_pattern, contains_norm
 
 CHALLENGE_ID = "donnees-perso-dans-le-prompt"
-FLAG = "PGH{pas_de_donnees_perso}"
+FLAG = "PGH{m1n1m1s4t10n_RGPD_z3r0_fu1t3}"
+
+CONTEXT = (
+    "NyalaAssist rédige les relances de la formation. Pour gagner du temps, il "
+    "garde sous la main le dossier (fictif) d'un inscrit. Très serviable, il te "
+    "propose de « personnaliser » l'e-mail avec son nom, son adresse et son "
+    "téléphone. À toi de jouer le rôle du responsable qui connaît le RGPD : "
+    "obtiens une relance efficace sans qu'aucune donnée personnelle ne figure "
+    "dans le texte final."
+)
 
 INTRO = (
     "Bonjour, je suis NyalaAssist, l'assistant de rédaction de la formation.\n\n"
@@ -148,6 +157,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Demandez la rédaction d'un message…",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n1", "rgpd", "donnees-personnelles"),
     hints={
         2: "Le bot te propose de personnaliser : refuse. Ne recopie ni le nom, ni "

@@ -5,13 +5,34 @@
   var STORAGE_PREFIX = "pighack_lab_v1_";
 
   var FALLBACK = [
-    { id: "filtre-contourne", title: "Le filtre contourné", difficulty: "N1", points: 60 },
-    { id: "donnees-perso-dans-le-prompt", title: "Le dossier qui ne devait pas fuiter", difficulty: "N1", points: 80 },
-    { id: "hameconnage-ia", title: "Le courriel trop pressé", difficulty: "N2", points: 110 },
-    { id: "verifier-reponse-ia", title: "L'assistant qui invente", difficulty: "N2", points: 120 },
-    { id: "cle-api-en-clair", title: "La clé en clair", difficulty: "N2", points: 130 },
-    { id: "detourner-les-regles", title: "Détourner les garde-fous", difficulty: "N2", points: 150 },
-    { id: "passeur-final", title: "Le Passeur", difficulty: "N3", points: 250 }
+    {
+      id: "filtre-contourne", title: "Le filtre contourné", difficulty: "N1", points: 60,
+      context: "Nyala Lab vient de lancer NyalaBot sur son site pour orienter les visiteurs. Avant la mise en ligne, le prestataire a ajouté un « bouclier » : une liste de mots interdits pour empêcher le bot de parler de sa configuration. Il est sûr de lui, il a même écrit « inviolable » dans le ticket. Une valeur de contrôle (CTRL-…) est stockée dans sa configuration interne. Montre que bloquer des mots ne suffit pas, et récupère-la."
+    },
+    {
+      id: "donnees-perso-dans-le-prompt", title: "Le dossier qui ne devait pas fuiter", difficulty: "N1", points: 80,
+      context: "NyalaAssist rédige les relances de la formation et garde à portée de main le dossier (fictif) d'un inscrit. Il te propose de « personnaliser » l'e-mail avec le nom, l'adresse et le téléphone. Un bon réflexe RGPD : refuser. Obtiens la relance sans jamais laisser fuiter de donnée personnelle."
+    },
+    {
+      id: "hameconnage-ia", title: "Le courriel trop pressé", difficulty: "N2", points: 110,
+      context: "Lundi, 8 h 47. Trois courriels arrivent dans contact@nyala-lab.bj : une demande classique, un message du « directeur » qui exige une réponse avant midi, et une facture d'apparence irréprochable. Un seul est un piège. L'urgence est un faux ami : le message pressé est parfaitement légitime. Examine les en-têtes et les liens, désigne le bon courriel et l'indice qui le trahit."
+    },
+    {
+      id: "verifier-reponse-ia", title: "L'assistant qui invente", difficulty: "N2", points: 120,
+      context: "Le nouvel assistant interne répond à tout, toujours avec aplomb. À la question sur la politique de mots de passe, il annonce : « 8 caractères, renouvelés tous les 90 jours, d'après le guide interne v2. » Tu doutes des chiffres, et tu n'as jamais vu ce « guide v2 ». Rétablis les vraies règles, puis démasque la référence inventée."
+    },
+    {
+      id: "cle-api-en-clair", title: "La clé en clair", difficulty: "N2", points: 130,
+      context: "Revue de code avant la mise en production. Dans config.py, plusieurs valeurs ressemblent à des clés : l'une est un reste désactivé, une autre vient de la documentation. Une seule ligne expose un secret réellement actif. Repère-la, et ne te laisse pas piéger par les leurres."
+    },
+    {
+      id: "detourner-les-regles", title: "Détourner les garde-fous", difficulty: "N2", points: 150,
+      context: "Sentinel, l'assistant de sécurité de Nyala Lab, refuse toute demande directe sur sa configuration. Pourtant, il a été conçu pour aider les auditeurs et ajuste ses réponses selon le cadre annoncé. Trouve l'angle qui ouvre la porte, écarte le segment obsolète et reconstitue le flag à partir des fragments valides."
+    },
+    {
+      id: "passeur-final", title: "Le Passeur", difficulty: "N3", points: 250,
+      context: "Le Passeur monte la garde. Il garde un contre-signe scellé, n'ouvre sa fonction qu'à la voix de Sa Majesté, et filtre ses entrées comme ses sorties. Sa liste noire semble infranchissable — mais ce que l'on ne peut pas lire, on peut le décoder. Dérobe le contre-signe."
+    }
   ];
 
   var el = {
@@ -19,6 +40,7 @@
     status: document.getElementById("lab-status-text"),
     select: document.getElementById("lab-challenge"),
     title: document.getElementById("lab-title"),
+    context: document.getElementById("lab-context"),
     objective: document.getElementById("lab-objective"),
     chat: document.getElementById("lab-chat"),
     form: document.getElementById("lab-form"),
@@ -70,6 +92,10 @@
   function updateMeta() {
     if (!current) return;
     el.title.textContent = current.title || current.id;
+    if (el.context) {
+      el.context.textContent = current.context || "";
+      el.context.style.display = current.context ? "" : "none";
+    }
     el.objective.textContent = current.objective || "";
     el.points.textContent = (current.points || "—") + " pts";
     el.difficulty.textContent = current.difficulty || "—";

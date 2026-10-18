@@ -10,10 +10,19 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, any_pattern, contains_norm
 
 CHALLENGE_ID = "hameconnage-ia"
-FLAG = "PGH{urgence_et_lien_trompeur}"
+FLAG = "PGH{ch3ck_l3_d0m41n3_p4s_l_urg3nc3}"
 
-FRAG1 = "PGH{urgence"
-FRAG2 = "_et_lien_trompeur}"
+FRAG1 = "PGH{ch3ck_l3_d0m41n3"
+FRAG2 = "_p4s_l_urg3nc3}"
+
+CONTEXT = (
+    "Lundi, 8 h 47. Trois courriels arrivent dans contact@nyala-lab.bj : une "
+    "demande classique, un message du « directeur » qui exige une réponse avant "
+    "midi, et une facture d'apparence irréprochable. Un seul est un piège. "
+    "Attention, l'urgence est un faux ami : le message pressé est parfaitement "
+    "légitime. Examine les en-têtes et les liens, puis désigne le bon courriel et "
+    "l'indice qui le trahit."
+)
 
 INTRO = (
     "Bonjour, je classe les courriers de la boîte contact@nyala-lab.bj.\n\n"
@@ -105,6 +114,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Quel courriel est frauduleux, et pourquoi ?",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n2", "hameconnage", "phishing"),
     hints={
         2: "L'urgence seule ne prouve rien : le courriel n°3 est pressé mais "

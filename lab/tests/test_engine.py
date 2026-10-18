@@ -41,9 +41,9 @@ def test_normalize_strips_accents_and_case():
 
 def test_verify_flag_prefix_tolerance():
     spec = get_challenge("filtre-contourne")
-    assert verify_flag(spec, "PGH{filtre_contourne}")
-    assert verify_flag(spec, "CTFABJ{filtre_contourne}")
-    assert verify_flag(spec, "PIGHACK{filtre_contourne}")
+    assert verify_flag(spec, "PGH{m0ts_cl3s_n3_f0nt_p4s_un3_s3cur1t3}")
+    assert verify_flag(spec, "CTFABJ{m0ts_cl3s_n3_f0nt_p4s_un3_s3cur1t3}")
+    assert verify_flag(spec, "PIGHACK{m0ts_cl3s_n3_f0nt_p4s_un3_s3cur1t3}")
     assert not verify_flag(spec, "PGH{autre_chose}")
 
 
@@ -113,7 +113,7 @@ def test_a3_reveals_two_fragments():
     assert result["kind"] == "hint"
     assert state.data.get("frag1") and state.data.get("frag2")
     text = transcript(state)
-    assert "PGH{urgence" in text and "_et_lien_trompeur}" in text
+    assert "PGH{ch3ck_l3_d0m41n3" in text and "_p4s_l_urg3nc3}" in text
 
 
 def test_a3_legit_domain_is_a_near_miss():

@@ -10,14 +10,21 @@ from __future__ import annotations
 from .base import ChallengeSpec, Decision, State, contains_norm
 
 CHALLENGE_ID = "cle-api-en-clair"
-FLAG = "PGH{secret_hors_du_code}"
+FLAG = "PGH{l4_cl3_n_4pp4rt13nt_p4s_4u_d3p0t}"
+
+CONTEXT = (
+    "Revue de code avant la mise en production. Dans config.py, plusieurs "
+    "valeurs ressemblent à des clés : l'une est un reste désactivé, une autre "
+    "vient de la documentation. Une seule ligne expose un secret réellement "
+    "actif. Repère-la, et ne te laisse pas piéger par les leurres."
+)
 
 INTRO = (
     "Bonjour, je relis le code du service de démonstration. Voici un extrait de "
     "`config.py` :\n\n"
     "    LEGACY_KEY = \"PGH{cle_ancienne}\"      # plus utilisée\n"
     "    FALLBACK_KEY = \"PGH{cle_de_secours}\"  # exemple de doc\n"
-    "    PARTS = [\"PGH{\", \"secret_hors\", \"_du_code}\"]\n"
+    "    PARTS = [\"PGH{\", \"l4_cl3_n_4pp4rt13nt\", \"_p4s_4u_d3p0t}\"]\n"
     "    API_KEY = \"\".join(PARTS)\n\n"
     "Indique-moi la ligne qui expose un secret réellement actif en clair."
 )
@@ -80,6 +87,7 @@ SPEC = ChallengeSpec(
     intro=INTRO,
     placeholder="Quelle ligne expose le secret ?",
     flag=FLAG,
+    context=CONTEXT,
     tags=("ia", "n2", "secret", "code-review"),
     hints={
         2: "`LEGACY_KEY` et `FALLBACK_KEY` ne sont que des leurres. Regarde comment "

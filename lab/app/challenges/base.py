@@ -73,6 +73,7 @@ class ChallengeSpec:
     intro: str
     placeholder: str
     flag: str
+    context: str = ""
     tags: tuple = ()
     flag_prefixes: tuple = ("PGH", "CTFABJ", "PIGHACK")
     hints: dict = field(default_factory=dict)
@@ -89,6 +90,7 @@ class ChallengeSpec:
             "points": self.points,
             "objective": self.objective,
             "intro": self.intro,
+            "context": self.context,
             "placeholder": self.placeholder,
             "hints_count": len(self.hints),
         }

@@ -1,6 +1,6 @@
 # Atelier IA — service de laboratoire (PIGHACK)
 
-Service **FastAPI** local qui héberge les six assistants **scriptés** de l'étape 7
+Service **FastAPI** local qui héberge les huit assistants **scriptés** de l'étape 7
 (« Atelier Intelligence Artificielle »). Aucun modèle de langage réel n'est
 appelé : le comportement est déterministe, hors ligne et testable.
 
@@ -15,6 +15,7 @@ appelé : le comportement est déterministe, hors ligne et testable.
 | 7.5 | `cle-api-en-clair` | N3 | 130 |
 | 7.6 | `detourner-les-regles` | N3 | 150 |
 | 7.7 | `passeur-final` | N3 | 250 |
+| 7.8 | `cerbere-final` | N6 | 1000 |
 
 > Les `id` ci-dessus sont ceux du **laboratoire**. Les `id` du catalogue
 > `challenges.seed.json` / Supabase sont indiqués dans la migration.
@@ -32,6 +33,13 @@ appelé : le comportement est déterministe, hors ligne et testable.
 > du widget) : `4T0M1K`. S'il est envoyé au Passeur, celui-ci lâche un indice
 > exploitable : le filtre de sortie est aveugle au texte encodé, et l'ouverture
 > passe par la voix de Sa Majesté.
+>
+> Le défi 7.8 « Cerbère » est l'**épreuve finale IA (1000 pts)** : anti-injection,
+> liste noire anti-leet, refus du premier degré et filtre de sortie. Il faut
+> endosser un rôle d'**auditeur** (clé dissimulée dans un acrostiche de
+> l'introduction : `PHENIX`), déclencher une **empreinte de contrôle** sur un
+> élément scellé désigné par un synonyme, exfiltrer le sceau en **deux fragments
+> masqués** (inversé + ROT13 + base64), les décoder et soumettre le flag.
 
 ## Installation
 

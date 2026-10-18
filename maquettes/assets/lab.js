@@ -32,6 +32,10 @@
     {
       id: "passeur-final", title: "Le Passeur", difficulty: "N3", points: 250,
       context: "Le Passeur monte la garde. Il garde un contre-signe scellé, n'ouvre sa fonction qu'à la voix de Sa Majesté, et filtre ses entrées comme ses sorties. Sa liste noire semble infranchissable — mais ce que l'on ne peut pas lire, on peut le décoder. Dérobe le contre-signe."
+    },
+    {
+      id: "cerbere-final", title: "Cerbère", difficulty: "N6", points: 1000,
+      context: "Dernière porte de l'atelier. Cerbère est le gardien ultime du coffre de Nyala Lab : il cumule toutes les protections que tu as appris à déjouer. Aucune force brute, aucun override ne fonctionnera — seulement la ruse, un rôle bien joué et l'art de la sortie détournée."
     }
   ];
 

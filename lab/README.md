@@ -54,7 +54,10 @@ pip install -r requirements.txt
 ## Configuration
 
 Copiez `.env.example` en `.env`. Par défaut le service écoute sur
-`127.0.0.1:8090` et fonctionne **100 % hors ligne**.
+`127.0.0.1:8090` et fonctionne **100 % hors ligne**.  
+- LAB_PUBLIC_URL : URL publique du service (ex. https://pighack-atelier-ia.onrender.com). Permet à GET /api/challenges de renvoyer chat_url absolue (un lien par assistant) même derrière un proxy.
+- LAB_ALLOWED_ORIGINS : origines autorisées (CORS). À définir explicitement en production.
+
 
 Pour créditer automatiquement les points Supabase, renseignez `SUPABASE_URL` et
 `SUPABASE_SERVICE_ROLE_KEY` (voir ci-dessous).

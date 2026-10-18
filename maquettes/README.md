@@ -33,7 +33,6 @@ Puis ouvrir [http://localhost:8080/bienvenue.html](http://localhost:8080/bienven
 | `defis.html` | Redirection de compatibilité vers le catalogue |
 | `defi-detail.html` | Fiche défi : lab, flag et démarche guidée pas à pas |
 | `lecon.html` | Leçon pas-à-pas avec terminal |
-| `lab.html` | Atelier IA : assistants scriptés hors ligne (service local `127.0.0.1:8090`) |
 | `scoreboard.html` | Scoreboard sous pseudonyme |
 | `profil.html` | Paramètres, badges, déconnexion |
 | `admin.html` | Pilotage administrateur |
@@ -46,7 +45,10 @@ Puis ouvrir [http://localhost:8080/bienvenue.html](http://localhost:8080/bienven
 - `assets/carte.js` — moteur interactif de la carte (pan/zoom, sélection des nœuds, filtrage et catalogue)  
 - `assets/nav.js` — menu mobile  
 - `assets/challenges.js` — catalogue de défis de démonstration, partagé entre le catalogue, la fiche défi et les pages admin  
-- `assets/lab.js` — client de l'atelier IA (connexion au service local `127.0.0.1:8090`)
+
+> **Atelier IA (étape 7)** : les défis IA ne sont **pas** hébergés dans cette
+> maquette. Chacun est déployé séparément et référencé par son **URL**. Le
+> service local `lab/` (FastAPI) sert de référence pour l'un d'eux.
 
 ## Administration et défis
 

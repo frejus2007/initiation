@@ -59,10 +59,22 @@ Copiez `.env.example` en `.env`. Par défaut le service écoute sur
 Pour créditer automatiquement les points Supabase, renseignez `SUPABASE_URL` et
 `SUPABASE_SERVICE_ROLE_KEY` (voir ci-dessous).
 
+## Interface de discussion (intégrée)
+
+Le service sert lui-même une interface légère (aucune dépendance, aucun modèle
+réel) pour discuter avec les assistants :
+
+- `/` : liste des défis ;
+- `/challenge/<id>` : discussion d'un défi (ex. `/challenge/cerbere-final`).
+
+Une URL par défi peut donc être partagée telle quelle aux étudiants. Aucun
+fichier frontend supplémentaire n'est nécessaire.
+
 ## Déploiement (Railway / Render)
 
 Le service est prêt à être hébergé : `Dockerfile` à la racine du dépôt, écoute
-sur `0.0.0.0:$PORT`, healthcheck sur `/health`.
+sur `0.0.0.0:$PORT`, healthcheck sur `/health`. Une fois en ligne, chaque défi
+est accessible directement, par ex. `https://<service>/challenge/filtre-contourne`.
 
 - **Render** : Blueprint `render.yaml` (racine). Dashboard → *New* → *Blueprint*
   → sélectionner le dépôt. Les variables Supabase sont demandées au déploiement.
@@ -96,6 +108,8 @@ Ouvrez la maquette `maquettes/lab.html` (le widget appelle `http://127.0.0.1:809
 | `POST` | `/api/chat` | Envoie un message : `{ "session_id", "message" }` |
 | `POST` | `/api/submit` | Valide le flag : `{ "session_id", "flag" }` |
 | `DELETE` | `/api/session/{id}` | Ferme la session |
+| `GET` | `/` | Interface : liste des défis |
+| `GET` | `/challenge/{id}` | Interface : discussion d'un défi |
 
 ## Crédit des points Supabase
 
@@ -118,7 +132,8 @@ python -m pytest -q
 
 ## Sécurité
 
-- Écoute **locale uniquement** : ne jamais exposer ce service sur Internet.
+- En local, écoute sur `127.0.0.1`. En déploiement, rester sur du HTTPS et
+  restreindre `LAB_ALLOWED_ORIGINS` à l'origine du site.
 - Les défis sont entièrement fictifs ; aucune donnée personnelle réelle.
 - Les flags sont validés côté serveur, jamais envoyés au navigateur avant
   réussite.

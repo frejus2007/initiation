@@ -7,9 +7,11 @@ principe sur 127.0.0.1 ; en déploiement (Railway/Render), le service écoute su
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import engine
@@ -20,6 +22,9 @@ from .sessions import SessionStore
 from .supabase_client import SupabaseAwarder
 
 logger = logging.getLogger("pighack.lab")
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+INDEX_FILE = STATIC_DIR / "index.html"
 
 app = FastAPI(title="PIGHACK — Atelier IA", version="1.0.0")
 
@@ -60,6 +65,18 @@ class SubmitRequest(BaseModel):
     flag: str = Field(..., max_length=200)
     user_id: str | None = None
     access_token: str | None = None
+
+
+@app.get("/", include_in_schema=False)
+async def ui_index():
+    """Interface de discussion servie directement par le lab (une URL par défi)."""
+    return FileResponse(INDEX_FILE)
+
+
+@app.get("/challenge/{challenge_id}", include_in_schema=False)
+async def ui_challenge(challenge_id: str):
+    """Page de discussion d'un défi : /challenge/<id>."""
+    return FileResponse(INDEX_FILE)
 
 
 @app.get("/health")

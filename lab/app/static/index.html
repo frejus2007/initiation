@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIGHACK — Atelier IA</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121821; --panel2:#0f151d; --line:#22303f;
+    --txt:#e6edf3; --muted:#93a4b5; --accent:#38bdf8; --accent2:#a78bfa;
+    --ok:#34d399; --warn:#fbbf24; --no:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+  header{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;position:sticky;top:0;background:rgba(11,15,20,.92);backdrop-filter:blur(6px);z-index:5}
+  header .logo{font-weight:700;letter-spacing:.3px}
+  header .logo b{color:var(--accent)}
+  header a{color:var(--muted);text-decoration:none;font-size:13px}
+  header a:hover{color:var(--txt)}
+  main{max-width:900px;margin:0 auto;padding:22px 18px 80px}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+  .card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;color:var(--txt);text-decoration:none;transition:.15s}
+  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;color:var(--muted);font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .badge{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .badge.n{color:var(--warn);border-color:#4a3a1a}
+  .badge.pts{color:var(--accent);border-color:#1b3a4a}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .context{white-space:pre-line;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:14px;color:#cbd6e2;font-size:14px}
+  .objective{color:var(--muted);font-size:13px;margin:12px 0 0}
+  .chat{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:82%;padding:10px 13px;border-radius:14px;white-space:pre-line;font-size:14px;border:1px solid var(--line)}
+  .msg.bot{background:var(--panel);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.user{background:#1b2a3a;align-self:flex-end;border-bottom-right-radius:4px}
+  .msg.refusal{border-color:#5a2626;background:#1e1414}
+  .msg.hint{border-color:#4a3a1a;background:#1e1a10}
+  .msg.success{border-color:#1f5a45;background:#0f1e19}
+  .msg .who{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+  .composer{position:sticky;bottom:0;background:linear-gradient(180deg,transparent,var(--bg) 30%);padding-top:14px;margin-top:14px}
+  .row{display:flex;gap:10px;align-items:flex-end}
+  textarea,input[type=text]{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:11px 13px;font:inherit;resize:vertical;min-height:44px}
+  textarea:focus,input:focus{outline:none;border-color:var(--accent)}
+  button{background:var(--accent);color:#04121c;border:0;border-radius:12px;padding:11px 18px;font-weight:600;cursor:pointer}
+  button:hover{filter:brightness(1.08)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .flagrow{margin-top:10px}
+  .status{margin-top:10px;font-size:13px;min-height:20px}
+  .status.ok{color:var(--ok)}.status.no{color:var(--no)}.status.mut{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo"><b>PIGHACK</b> — Atelier IA</span>
+  <span style="flex:1"></span>
+  <a href="/">Tous les défis</a>
+</header>
+<main id="main"><p class="sub">Chargement…</p></main>
+<script>
+(function () {
+  "use strict";
+  var API = location.origin;
+  var pathMatch = location.pathname.match(/\/challenge\/([^/]+)/);
+  var challengeId = pathMatch
+    ? decodeURIComponent(pathMatch[1])
+    : new URLSearchParams(location.search).get("challenge");
+  var main = document.getElementById("main");
+
+  var spec = null, sessionId = null, solved = false, attempts = 0, log = [];
+  var chatEl, statusEl, inputEl, sendBtn, flagBtn;
+  var KEY = challengeId ? "pighack:lab:" + challengeId : null;
+
+  function h(tag, attrs) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (v == null || v === false) return;
+        if (k === "class") node.className = v;
+        else if (k === "text") node.textContent = v;
+        else if (k === "html") node.innerHTML = v;
+        else if (k.indexOf("on") === 0 && typeof v === "function")
+          node.addEventListener(k.slice(2), v);
+        else node.setAttribute(k, v);
+      });
+    }
+    for (var i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c == null || c === false) continue;
+      node.append(c.nodeType ? c : document.createTextNode(String(c)));
+    }
+    return node;
+  }
+
+  function api(route, body) {
+    return fetch(API + route, {
+      method: body ? "POST" : "GET",
+      headers: { "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        if (!res.ok) {
+          var err = new Error(data.detail || res.statusText);
+          err.status = res.status;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  function bubble(who, text, kind) {
+    return h("div", { class: "msg " + who + (kind ? " " + kind : "") },
+      h("span", { class: "who", text: who === "bot" ? "Assistant" : "Vous" }),
+      String(text));
+  }
+
+  function addMsg(who, text, kind) {
+    log.push({ who: who, text: text, kind: kind || "" });
+    var node = bubble(who, text, kind);
+    if (chatEl) { chatEl.append(node); node.scrollIntoView({ behavior: "smooth", block: "end" }); }
+    return node;
+  }
+
+  function save() {
+    if (!KEY) return;
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify({ sessionId: sessionId, solved: solved, attempts: attempts, log: log }));
+    } catch (e) {}
+  }
+
+  function updateStatus() {
+    if (!statusEl) return;
+    if (solved) { statusEl.className = "status ok"; statusEl.textContent = "Défi réussi ✔"; return; }
+    statusEl.className = "status mut";
+    statusEl.textContent = "Tentatives : " + attempts + (spec && spec.hints_count ? " · " + spec.hints_count + " indice(s)" : "");
+  }
+
+  function markSolved() {
+    solved = true;
+    if (sendBtn) sendBtn.disabled = true;
+    if (flagBtn) flagBtn.disabled = true;
+    updateStatus();
+  }
+
+  function renderChallenge() {
+    chatEl = h("div", { class: "chat" });
+    statusEl = h("div", { class: "status mut", text: "" });
+    inputEl = h("textarea", { rows: "2", placeholder: spec.placeholder || "Votre message…" });
+    sendBtn = h("button", { type: "submit", text: "Envoyer" });
+    flagBtn = h("button", { type: "submit", text: "Valider le flag" });
+
+    var chatForm = h("form", { class: "row", onsubmit: onChat }, inputEl, sendBtn);
+    var flagInput = h("input", { type: "text", placeholder: "PGH{…}" });
+    var flagForm = h("form", { class: "row flagrow", onsubmit: onFlag }, flagInput, flagBtn);
+
+    main.replaceChildren(
+      h("h1", { text: spec.title }),
+      h("div", { class: "badges" },
+        h("span", { class: "badge n", text: spec.difficulty }),
+        h("span", { class: "badge pts", text: spec.points + " pts" }),
+        h("span", { class: "badge", text: spec.category })
+      ),
+      spec.context ? h("div", { class: "context", text: spec.context }) : null,
+      h("p", { class: "objective", text: "🎯 " + spec.objective }),
+      chatEl,
+      h("div", { class: "composer" }, chatForm, flagForm, statusEl)
+    );
+    restoreOrCreate();
+  }
+
+  function restoreOrCreate() {
+    var stored = null;
+    if (KEY) { try { stored = JSON.parse(sessionStorage.getItem(KEY) || "null"); } catch (e) {} }
+    if (stored && stored.sessionId) {
+      sessionId = stored.sessionId;
+      solved = !!stored.solved;
+      attempts = stored.attempts || 0;
+      log = stored.log || [];
+      log.forEach(function (m) { chatEl.append(bubble(m.who, m.text, m.kind)); });
+      if (solved) markSolved(); else updateStatus();
+    } else {
+      createSession();
+    }
+  }
+
+  function createSession() {
+    return api("/api/session", { challenge_id: spec.id }).then(function (r) {
+      sessionId = r.session_id;
+      solved = false;
+      attempts = 0;
+      log = [];
+      chatEl.replaceChildren();
+      (r.messages || []).forEach(function (m) { addMsg("bot", m.text, m.kind); });
+      updateStatus();
+      save();
+      if (inputEl) inputEl.focus();
+    });
+  }
+
+  function onChat(e) {
+    e.preventDefault();
+    var text = inputEl.value.trim();
+    if (!text || solved) return;
+    inputEl.value = "";
+    addMsg("user", text);
+    sendBtn.disabled = true;
+    api("/api/chat", { session_id: sessionId, message: text }).then(function (r) {
+      attempts = r.attempts;
+      addMsg("bot", r.reply, r.kind);
+      if (r.hint) addMsg("bot", "💡 Indice : " + r.hint, "hint");
+      if (r.solved) markSolved();
+      save();
+    }).catch(function (err) {
+      if (err.status === 404) {
+        addMsg("bot", "La session a expiré — nouvelle session ouverte.", "hint");
+        createSession();
+      } else {
+        addMsg("bot", "Erreur : " + err.message, "refusal");
+      }
+    }).finally(function () {
+      if (!solved) { sendBtn.disabled = false; inputEl.focus(); }
+    });
+  }
+
+  function onFlag(e) {
+    e.preventDefault();
+    var value = e.target.querySelector("input").value.trim();
+    if (!value) return;
+    api("/api/submit", { session_id: sessionId, flag: value }).then(function (r) {
+      if (r.correct) {
+        statusEl.className = "status ok";
+        statusEl.textContent = "✔ " + r.message + " (+" + r.points + " pts)";
+        markSolved();
+      } else {
+        statusEl.className = "status no";
+        statusEl.textContent = "✘ " + r.message;
+      }
+      save();
+    }).catch(function (err) {
+      statusEl.className = "status no";
+      statusEl.textContent = "Erreur : " + err.message;
+    });
+  }
+
+  function renderPicker() {
+    api("/api/challenges").then(function (data) {
+      var cards = (data.challenges || []).map(function (c) {
+        return h("a", { class: "card", href: "/challenge/" + encodeURIComponent(c.id) },
+          h("h3", { text: c.title }),
+          h("div", { class: "badges" },
+            h("span", { class: "badge n", text: c.difficulty }),
+            h("span", { class: "badge pts", text: c.points + " pts" })
+          ),
+          h("p", { text: c.objective || c.context })
+        );
+      });
+      main.replaceChildren(
+        h("h1", { text: "Atelier IA" }),
+        h("p", { class: "sub", text: "Choisis un défi puis discute avec l'assistant. Simulation hors ligne, aucun modèle réel." }),
+        h("div", { class: "grid" }, cards)
+      );
+    }).catch(function (err) {
+      main.replaceChildren(h("h1", { text: "Erreur" }), h("p", { class: "sub", text: String(err.message) }));
+    });
+  }
+
+  if (!challengeId) {
+    renderPicker();
+  } else {
+    api("/api/challenges").then(function (data) {
+      spec = (data.challenges || []).find(function (c) { return c.id === challengeId; });
+      if (!spec) {
+        main.replaceChildren(
+          h("h1", { text: "Défi inconnu : " + challengeId }),
+          h("p", { class: "sub" }, h("a", { href: "/", text: "← Retour à la liste" }))
+        );
+        return;
+      }
+      renderChallenge();
+    }).catch(function (err) {
+      main.replaceChildren(h("h1", { text: "Erreur" }), h("p", { class: "sub", text: String(err.message) }));
+    });
+  }
+})();
+</script>
+</body>
+</html>

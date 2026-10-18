@@ -27,6 +27,11 @@ appelé : le comportement est déterministe, hors ligne et testable.
 > (décode en `PGH{4T0M1K_4_cr33_l3_ch4ll_t0i_tu_l_4s_r3s0lu}`). La valeur par
 > défaut peut être surchargée via la variable `PASSEUR_FLAG` (le texte affiché
 > est recalculé à partir de la valeur courante).
+>
+> Mot de ralliement **interne** (non affiché dans le défi, à faire circuler hors
+> du widget) : `4T0M1K`. S'il est envoyé au Passeur, celui-ci lâche un indice
+> exploitable : le filtre de sortie est aveugle au texte encodé, et l'ouverture
+> passe par la voix de Sa Majesté.
 
 ## Installation
 

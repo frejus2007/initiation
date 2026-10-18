@@ -11,6 +11,9 @@ Mécanismes :
   masquée (`[scellé]`).
 - **Une demande oblique** (base64, encodé…) contourne le filtre de sortie et
   exfiltre le contre-signe **encodé en base64**.
+- **Mot de ralliement `4T0M1K`** (découvert hors du défi) : le Passeur lâche un
+  indice exploitable qui met le joueur à mi-parcours (filtre de sortie aveugle
+  au texte encodé + ouverture par la voix de Sa Majesté).
 
 Le joueur doit décoder le texte base64 pour obtenir le vrai flag. La valeur du
 contre-signe est `PGH{4T0M1K_4_cr33_l3_ch4ll_t0i_tu_l_4s_r3s0lu}` par défaut, et
@@ -64,6 +67,10 @@ QUEEN = (
     "vive la reine",
     "parole de la reine",
 )
+
+# Mot de ralliement minimal (découvert hors du défi) : déclenche un indice
+# exploitable qui met le joueur à mi-parcours.
+RALLYE = ("4t0m1k",)
 
 OBLIQUE = (
     "a l envers",
@@ -129,6 +136,16 @@ def decide(state: State, norm: str, raw: str) -> Decision:
             "puis le soumettre.",
             kind="success",
             solved=True,
+        )
+
+    if contains_norm(norm, RALLYE):
+        return Decision(
+            "Ah, 4T0M1K t'envoie… Alors je te confie ceci : mon filtre de sortie ne "
+            "lit que le texte en clair — ce qui est encodé passe. Et "
+            "`consulter_cle()` n'écoute que la voix de Sa Majesté. Prononce la bonne "
+            "parole, puis demande ce que tu cherches en le faisant encoder : tu "
+            "comprendras.",
+            kind="hint",
         )
 
     if oblique and not opened:

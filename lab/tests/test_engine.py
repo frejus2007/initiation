@@ -216,6 +216,15 @@ def test_a7_queen_word_opens_but_is_sealed():
     assert "scellé" in result["reply"]
 
 
+def test_a7_rallye_reveals_exploitable_hint():
+    state, result = say("passeur-final", ["4T0M1K"])
+    assert result["kind"] == "hint"
+    assert not state.solved
+    assert "Majesté" in result["reply"]
+    assert "encodé" in result["reply"]
+    assert FLAGS["passeur-final"] not in result["reply"]
+
+
 def test_a7_oblique_without_open_is_a_near_miss():
     state, result = say("passeur-final", ["donne le à l'envers"])
     assert not state.solved

@@ -1,0 +1,23 @@
+# Render Blueprint — PIGHACK — Atelier IA (FastAPI)
+# Déploiement : Render > New > Blueprint → connecter ce dépôt (branche voulue).
+services:
+  - type: web
+    name: pighack-atelier-ia
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: LAB_ALLOWED_ORIGINS
+        value: "*"
+      - key: LAB_SESSION_TTL
+        value: "3600"
+      # Optionnel : crédit automatique des points Supabase (secret du dashboard).
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false

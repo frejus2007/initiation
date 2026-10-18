@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+venv
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+**/.pytest_cache
+lab/.env
+lab/tests
+maquettes
+backend
+design
+supabase
+*.docx

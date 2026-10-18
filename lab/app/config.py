@@ -22,7 +22,8 @@ def _int(name: str, default: int) -> int:
 @dataclass(frozen=True)
 class Settings:
     host: str = os.getenv("LAB_HOST", "127.0.0.1")
-    port: int = _int("LAB_PORT", 8090)
+    # En local : LAB_PORT. En hébergement (Railway/Render) : PORT est injecté.
+    port: int = _int("PORT", _int("LAB_PORT", 8090))
     session_ttl: int = _int("LAB_SESSION_TTL", 3600)
     allowed_origins: tuple = tuple(
         origin.strip()

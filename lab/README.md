@@ -59,6 +59,23 @@ Copiez `.env.example` en `.env`. Par défaut le service écoute sur
 Pour créditer automatiquement les points Supabase, renseignez `SUPABASE_URL` et
 `SUPABASE_SERVICE_ROLE_KEY` (voir ci-dessous).
 
+## Déploiement (Railway / Render)
+
+Le service est prêt à être hébergé : `Dockerfile` à la racine du dépôt, écoute
+sur `0.0.0.0:$PORT`, healthcheck sur `/health`.
+
+- **Render** : Blueprint `render.yaml` (racine). Dashboard → *New* → *Blueprint*
+  → sélectionner le dépôt. Les variables Supabase sont demandées au déploiement.
+- **Railway** : `railway.json` (racine). `railway up`, ou connecter le dépôt ;
+  Dockerfile détecté automatiquement.
+- **CORS** : définir `LAB_ALLOWED_ORIGINS` avec l'origine du frontend en
+  production (par défaut `*`).
+- **Supabase (optionnel)** : `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` pour
+  créditer les points automatiquement.
+
+> Les sessions sont **en mémoire** : un redémarrage (ou le spin-down d'une offre
+> gratuite) les réinitialise. Garder un seul worker.
+
 ## Lancement
 
 ```bash

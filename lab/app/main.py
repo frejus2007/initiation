@@ -1,8 +1,8 @@
-"""PIGHACK — Atelier IA : service FastAPI local.
+"""PIGHACK — Atelier IA : service FastAPI des défis 7.1 → 7.8.
 
-Expose les assistants scriptés des défis 7.1 → 7.6 et la validation des flags.
-Écoute uniquement sur 127.0.0.1 (voir config.py) : ce laboratoire ne doit
-jamais être exposé sur Internet.
+Expose les assistants scriptés et la validation des flags. En local, écoute en
+principe sur 127.0.0.1 ; en déploiement (Railway/Render), le service écoute sur
+0.0.0.0 et sur le port fourni par la plateforme via `$PORT`.
 """
 from __future__ import annotations
 
